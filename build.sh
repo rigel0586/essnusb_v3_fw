@@ -30,6 +30,8 @@ cd ${fw_directory}
 cd ${dependencies_dir}
 /bin/bash build.sh
 
+cd ${fw_directory}
+
 #Cern root
 mkdir cern_root
 cd cern_root
