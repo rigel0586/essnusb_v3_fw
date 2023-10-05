@@ -32,7 +32,7 @@ cd ${dependencies_dir}
 
 cd ${fw_directory}
 
-#Cern root
+# Cern root
 mkdir cern_root
 cd cern_root
 mkdir build
