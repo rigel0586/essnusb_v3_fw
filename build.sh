@@ -64,7 +64,7 @@ cd geant4
 mkdir build
 mkdir install
 cd build
-cmake -S ${geant4_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install
+cmake -S ${geant4_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/geant4/install
 cmake --build . 
 cmake --install .
 
