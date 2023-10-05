@@ -28,7 +28,7 @@ cd ${fw_directory}
 
 # Build dependencies first
 cd ${dependencies_dir}
-/bin/bash build.sh
+#/bin/bash build.sh
 
 cd ${fw_directory}
 
@@ -41,6 +41,30 @@ cd build
 pythia6_inc=${dependencies_dir}/genie/pythia6/v6_428/inc/
 pythia6_lib=${dependencies_dir}/genie/pythia6/v6_428/lib/
 cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/install -Dmathmore=mathmore -Dpythia6=pythia6 -DPYTHIA6_INCLUDE_DIR=${pythia6_inc} -DPYTHIA6_LIBRARY=${pythia6_lib}
+cmake --build . 
+cmake --install .
+
+cd ${fw_directory}
+
+# Genfit
+mkdir genfit
+cd genfit
+mkdir build
+mkdir install
+cd build
+cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install
+cmake --build . 
+cmake --install .
+
+cd ${fw_directory}
+
+# Geant
+mkdir geant4
+cd geant4
+mkdir build
+mkdir install
+cd build
+cmake -S ${geant4_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install
 cmake --build . 
 cmake --install .
 
