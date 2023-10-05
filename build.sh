@@ -28,7 +28,7 @@ cd ${fw_directory}
 
 # Build dependencies first
 cd ${dependencies_dir}
-#/bin/bash build.sh
+/bin/bash build.sh
 
 cd ${fw_directory}
 
