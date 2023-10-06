@@ -23,6 +23,7 @@ dependencies_dir=${base_directory}/${third_party_dir}/dependencies
 geant4_dir=${base_directory}/${third_party_dir}/geant4_11_1
 genfit_dir=${base_directory}/${third_party_dir}/genfit
 genie_dir=${base_directory}/${third_party_dir}/genie
+googletest_dir=${base_directory}/${third_party_dir}/googletest
 
 cd ${fw_directory}
 
@@ -44,6 +45,24 @@ cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/insta
 cmake --build . 
 cmake --install .
 
+#root_check_lib=${fw_directory}/cern_root/install/lib/libCling.so
+#check_lib_exists ${root_check_lib}
+
+cd ${fw_directory}
+
+# Googlest
+mkdir googletest
+cd googletest
+mkdir build
+mkdir install
+cd build
+cmake -S ${googletest_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/googletest/install
+cmake --build . 
+cmake --install .
+
+googletest_lib=${fw_directory}/googletest/install/lib/libgtest.a
+check_lib_exists ${googletest_lib}
+
 cd ${fw_directory}
 
 # Genfit
@@ -52,9 +71,13 @@ cd genfit
 mkdir build
 mkdir install
 cd build
-cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install
+cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install -DCMAKE_SYSTEM_PREFIX_PATH="${fw_directory}/cern_root/build;${fw_directory}/googletest/install/lib/cmake"
 cmake --build . 
 cmake --install .
+
+genfit_check_lib=${fw_directory}/genfit/install/lib/libexpat.so
+check_lib_exists ${genfit_check_lib}
+
 
 cd ${fw_directory}
 
@@ -67,4 +90,7 @@ cd build
 cmake -S ${geant4_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/geant4/install
 cmake --build . 
 cmake --install .
+
+geant4_check_lib=${fw_directory}/geant4/install/lib/libG4clhep.so
+check_lib_exists ${geant4_check_lib}
 
