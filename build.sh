@@ -29,7 +29,7 @@ cd ${fw_directory}
 
 # Build dependencies first
 cd ${dependencies_dir}
-#/bin/bash build.sh
+/bin/bash build.sh
 
 cd ${fw_directory}
 
@@ -40,8 +40,8 @@ mkdir build
 mkdir install
 cd build
 pythia6_inc=${dependencies_dir}/genie/pythia6/v6_428/inc/
-pythia6_lib=${dependencies_dir}/genie/pythia6/v6_428/lib/
-cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/install -Dmathmore=mathmore -Dtmva-sofie=ON -Dpythia6=pythia6 -DPYTHIA6_INCLUDE_DIR=${pythia6_inc} -DPYTHIA6_LIBRARY=${pythia6_lib}
+pythia6_lib=${dependencies_dir}/genie/pythia6/v6_428/lib/libPythia6.so
+cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/install -Dmathmore=mathmore -Dtmva-sofie=ON -Dopengl=ON -Dpythia6=pythia6 -DPYTHIA6_INCLUDE_DIR=${pythia6_inc} -DPYTHIA6_LIBRARY=${pythia6_lib}
 cmake --build . 
 cmake --install .
 
