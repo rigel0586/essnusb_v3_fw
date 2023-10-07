@@ -90,6 +90,6 @@ cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/instal
 cmake --build . 
 cmake --install .
 
-genfit_check_lib=${fw_directory}/genfit/install/lib/libexpat.so
+genfit_check_lib=${fw_directory}/genfit/install/lib/libgenfit2.so
 check_lib_exists ${genfit_check_lib}
 
