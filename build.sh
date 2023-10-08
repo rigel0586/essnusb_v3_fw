@@ -147,3 +147,5 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${
 gmake
 gmake install
 
+genielib=${fw_directory}/genie/install/libGFwAlg.so
+check_lib_exists ${genielib}
