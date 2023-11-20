@@ -1,8 +1,10 @@
-#include "DetectorConstruction.hh"
-#include "PhysicsList.hh"
-#include "ActionInitialization01.hh"
+//#include "DetectorConstruction.hh"
+//#include "PhysicsList.hh"
+//#include "ActionInitialization01.hh"
 #include "G4RunManagerFactory.hh"
 #include "G4UImanager.hh"
+
+#include "ESSnusbPhysicsList.hpp"
 
 int main()
 {
@@ -10,7 +12,7 @@ int main()
     auto runManager = G4RunManagerFactory::CreateRunManager();
     // set mandatory initialization classes
     //runManager->SetUserInitialization(new DetectorConstruction);
-    //runManager->SetUserInitialization(new PhysicsList);
+    runManager->SetUserInitialization(new esbcore::physicslist::ESSnusbPhysicsList());
     //runManager->SetUserInitialization(new ActionInitialization);
     // initialize G4 kernel
     runManager->Initialize();
