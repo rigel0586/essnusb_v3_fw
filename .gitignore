@@ -3,4 +3,6 @@ geant4/
 genfit/
 genie/
 googletest/
+log4cpp/
+pythia6/
 framework/build

@@ -16,11 +16,28 @@ find_package(ROOT   REQUIRED PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
 find_package(Geant4 REQUIRED PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)
 find_package(GTest  REQUIRED PATHS   ${GOOGLE_CONFIG} NO_DEFAULT_PATH)
 
+#==== Genie dependencies import
+file(GLOB log4cpp_so_files "${FW_BASE}/log4cpp/lib/*.so")
+file(GLOB log4cpp_a_files "${FW_BASE}/log4cpp/lib/*.a")
+add_library(fw_log4cpp INTERFACE)
+target_link_libraries(fw_log4cpp INTERFACE ${log4cpp_so_files} ${log4cpp_a_files})
+target_include_directories(fw_log4cpp INTERFACE "${FW_BASE}/log4cpp/include")
+
+file(GLOB pythia6_so_files "${FW_BASE}/pythia6/lib/*.so")
+file(GLOB pythia6_a_files "${FW_BASE}/pythia6/lib/*.a")
+add_library(fw_pythia6 INTERFACE)
+target_link_libraries(fw_pythia6 INTERFACE ${pythia6_so_files} ${pythia6_a_files})
+target_include_directories(fw_pythia6 INTERFACE "${FW_BASE}/pythia6/inc")
+#==================
+
 #==== Genie import
 file(GLOB genie_so_files "${FW_BASE}/genie/install/lib/*.so")
 add_library(fw_genie INTERFACE)
-target_link_libraries(fw_genie INTERFACE ${genie_so_files})
-target_include_directories(fw_genie INTERFACE "${FW_BASE}/genie/install/include")
+foreach(genie_so ${genie_so_files})
+    target_link_libraries(fw_genie INTERFACE ${genie_so})
+endforeach()
+target_link_libraries(fw_genie INTERFACE ${fw_log4cpp} ${fw_pythia6})
+target_include_directories(fw_genie INTERFACE "${FW_BASE}/genie/install/include/GENIE")
 #==================
 
 #==== Genfit import

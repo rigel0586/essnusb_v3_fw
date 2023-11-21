@@ -8,18 +8,16 @@
 namespace esbcore {
 namespace physicslist {
 
-class ESSnusbPhysicsList : public G4VUserPhysicsList
-{
+class ESSnusbPhysicsList : public G4VUserPhysicsList {
 public:
-    ESSnusbPhysicsList();
-    virtual ~ESSnusbPhysicsList();
+  ESSnusbPhysicsList();
+  virtual ~ESSnusbPhysicsList();
 
-    virtual void ConstructParticle() override;
-    virtual void ConstructProcess() override;
+  virtual void ConstructParticle() override;
+  virtual void ConstructProcess() override;
 
-    virtual void SetCuts() override;
-      // Sets a cut value for all particle types in the particle table.
-    
+  virtual void SetCuts() override;
+  // Sets a cut value for all particle types in the particle table.
 };
 
 } // namespace physicslist

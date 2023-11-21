@@ -149,3 +149,13 @@ gmake install
 
 genielib=${fw_directory}/genie/install/lib/libGFwAlg.so
 check_lib_exists ${genielib}
+
+mkdir pythia6
+cd ${fw_directory}
+cp -R ${dependencies_dir}/genie/pythia6/v6_428/lib ./pythia6
+cp -R ${dependencies_dir}/genie/pythia6/v6_428/inc ./pythia6
+
+mkdir log4cpp
+cd ${fw_directory}
+cp -R ${dependencies_dir}/genie/log4cpp/install/lib ./log4cpp
+cp -R ${dependencies_dir}/genie/log4cpp/install/include ./log4cpp

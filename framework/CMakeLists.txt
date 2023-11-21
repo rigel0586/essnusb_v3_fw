@@ -10,7 +10,9 @@ add_executable(fw_essnusb main.cpp)
 #target_link_libraries(fw_essnusb PUBLIC GTest)
 
 add_subdirectory(core)
+add_subdirectory(generators)
 
 target_link_libraries(fw_essnusb PUBLIC 
                         ${Geant4_LIBRARIES}
-                        essNuSb_physicsList)
+                        essnusb_physicsList
+                        essnusb_generators)

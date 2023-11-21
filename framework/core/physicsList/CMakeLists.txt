@@ -1,4 +1,4 @@
-set(PhysicsList_Target essNuSb_physicsList)
+set(PhysicsList_Target essnusb_physicsList)
 
 add_library(${PhysicsList_Target} INTERFACE)
 

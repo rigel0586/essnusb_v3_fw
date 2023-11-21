@@ -1,5 +1,5 @@
-#include "EsbGenerators/GenieGenerator.h"
-#include "EsbTools/UtilityDefs.h"
+#include "GenieGenerator.hpp"
+// #include "EsbTools/UtilityDefs.h"
 
 /* Fair Root headers */
 #include "TGeoManager.h" // for gGeoManager
@@ -90,7 +90,8 @@ GenieGenerator::GenieGenerator(genie::GFluxI *fluxI, genie::GeomAnalyzerI *geomI
 *       Reads the events from the genie::GMCJDriver
 *      instead of a passed in file.
 */
-/*virtual*/ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+/*virtual*/ // Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+Bool_t GenieGenerator::ReadEvent()
 {
     //!Budimir: this function is not entirely correct. The vertex position is
     //!always at (0,0,0). However, each track starts at the position
@@ -124,7 +125,7 @@ GenieGenerator::GenieGenerator(genie::GFluxI *fluxI, genie::GeomAnalyzerI *geomI
 			{
 				if(IsPdgAllowed(p->Pdg()))
 				{
-					primGen->AddTrack(p->Pdg(), p->Px(), p->Py(), p->Pz(), v->X(), v->Y(), v->Z());
+					// primGen->AddTrack(p->Pdg(), p->Px(), p->Py(), p->Pz(), v->X(), v->Y(), v->Z());
 					eventParticles.push_back(p);
 				}
 			}
@@ -177,12 +178,12 @@ void GenieGenerator::WriteToOutputFile(const genie::EventRecord* event, Bool_t f
 	// No implementation required in base class
 }
 
-FairGenerator* GenieGenerator::CloneGenerator() const
-{
-  // Clone for worker (used in MT mode only)
-  // TODO: check that this actually works
-  return new GenieGenerator(*this);
-}
+// FairGenerator* GenieGenerator::CloneGenerator() const
+// {
+//   // Clone for worker (used in MT mode only)
+//   // TODO: check that this actually works
+//   return new GenieGenerator(*this);
+// }
 
 }
 }
