@@ -9,8 +9,15 @@ target_sources(${Generators_Target} PUBLIC
 
 target_include_directories(${Generators_Target} PUBLIC 
                                 ${CMAKE_CURRENT_SOURCE_DIR}
+                                ${log4cpp_includes}
+                                ${pythia6_includes}
+                                ${genie_includes}
                                 ${ROOT_INCLUDE_DIRS})
 
-target_link_libraries(${Generators_Target} 
-                                fw_genie 
-                                ${ROOT_LIBRARIES})
+target_link_libraries(${Generators_Target} PUBLIC
+                                xml2
+                                ${genie_so_files}
+                                ${log4cpp_so_files}
+                                ${Geant4_LIBRARIES}
+                                ${ROOT_LIBRARIES}
+                                ${pythia6_so_files})
