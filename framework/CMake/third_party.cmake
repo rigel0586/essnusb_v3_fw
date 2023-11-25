@@ -37,3 +37,25 @@ file(GLOB genfit_pcm_files "${FW_BASE}/genfit/install/lib/*.pcm")
 file(GLOB genfit_rootmap_files "${FW_BASE}/genfit/install/lib/*.rootmap")
 set(genfit_includes "${FW_BASE}/genfit/install/include")
 #==================
+
+macro(third_party_links project_to_link)
+    if(${ARGC} LESS 2)
+         set(scope_type PUBLIC)
+    else()
+        set(scope_type ${ARGV1})
+    endif()
+    target_include_directories(${project_to_link} ${scope_type} 
+                                ${log4cpp_includes}
+                                ${pythia6_includes}
+                                ${genie_includes}
+                                ${ROOT_INCLUDE_DIRS})
+
+    target_link_libraries(${project_to_link} ${scope_type}
+                                    xml2
+                                    ${genie_so_files}
+                                    ${log4cpp_so_files}
+                                    ${Geant4_LIBRARIES}
+                                    ${ROOT_LIBRARIES}
+                                    ${pythia6_so_files})
+endmacro()
+

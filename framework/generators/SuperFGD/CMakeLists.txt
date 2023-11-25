@@ -7,17 +7,6 @@ add_library(${Generators_Target} SHARED)
 target_sources(${Generators_Target} PUBLIC 
             GenieGenerator.cpp)
 
-target_include_directories(${Generators_Target} PUBLIC 
-                                ${CMAKE_CURRENT_SOURCE_DIR}
-                                ${log4cpp_includes}
-                                ${pythia6_includes}
-                                ${genie_includes}
-                                ${ROOT_INCLUDE_DIRS})
+third_party_links(${Generators_Target})
 
-target_link_libraries(${Generators_Target} PUBLIC
-                                xml2
-                                ${genie_so_files}
-                                ${log4cpp_so_files}
-                                ${Geant4_LIBRARIES}
-                                ${ROOT_LIBRARIES}
-                                ${pythia6_so_files})
+target_include_directories(${Generators_Target} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR})

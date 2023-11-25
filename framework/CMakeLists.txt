@@ -13,14 +13,10 @@ add_executable(${ESSNUSB_PROJECT_NAME} main.cpp)
 add_subdirectory(core)
 add_subdirectory(generators)
 
-target_include_directories(${ESSNUSB_PROJECT_NAME} PUBLIC
-                        ${log4cpp_includes}
-                        ${pythia6_includes}
-                        ${genie_includes})
+
+third_party_links(${ESSNUSB_PROJECT_NAME})
 
 target_link_libraries(${ESSNUSB_PROJECT_NAME} PUBLIC 
                         essnusb_physicsList
-                        essnusb_generators
-                        ${log4cpp_so_files}
-                        ${pythia6_so_files}
-                        ${genie_so_files})
+                        essnusb_generators)
+
