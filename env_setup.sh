@@ -17,7 +17,7 @@ googletest_dir=${base_directory}/${third_party_dir}/googletest
 cd ${fw_directory}
 
 export GENIE=${fw_directory}/genie/build/genie
-GENIE_install=${fw_directory}/genie/install
+export GENIE_install=${fw_directory}/genie/install
 export ROOTSYS=${fw_directory}/cern_root/install
 export PATH=$PATH:${fw_directory}/cern_root/install/bin
 export PYTHIA6=${dependencies_dir}/genie/pythia6/v6_428/lib/
