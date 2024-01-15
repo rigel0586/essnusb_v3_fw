@@ -13,8 +13,11 @@ set(GOOGLE_CONFIG "${FW_BASE}/googletest/install/lib/cmake/GTest/")
 
 
 find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
+#add ROOT macros to have ROOT_GENERATE_DICTIONARY available
+include(${ROOT_USE_FILE})
 find_package(Geant4 REQUIRED PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)
 find_package(GTest  REQUIRED PATHS   ${GOOGLE_CONFIG} NO_DEFAULT_PATH)
+
 
 #==== Genie dependencies import
 file(GLOB log4cpp_so_files "${FW_BASE}/log4cpp/lib/*.so")
