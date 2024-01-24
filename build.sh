@@ -162,6 +162,6 @@ cp -R ${dependencies_dir}/genie/log4cpp/install/lib ./log4cpp
 cp -R ${dependencies_dir}/genie/log4cpp/install/include ./log4cpp
 
 # Framework Essnusb v3
-cd framework_dir
+cd ${framework_dir}
 /bin/bash build.sh
 
