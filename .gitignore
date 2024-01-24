@@ -5,4 +5,5 @@ genie/
 googletest/
 log4cpp/
 pythia6/
+fairlogger/
 framework/build
