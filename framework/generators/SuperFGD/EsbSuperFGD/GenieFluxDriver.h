@@ -16,7 +16,7 @@
 #include "TRandom3.h"
 #include "TVector3.h"
 
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
 
 
 namespace esbroot {

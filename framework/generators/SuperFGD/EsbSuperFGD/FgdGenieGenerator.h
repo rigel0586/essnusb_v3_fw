@@ -1,11 +1,10 @@
 #ifndef ESBROOT_GENERATOR_FGD_GENIE_GENERATOR_H
 #define ESBROOT_GENERATOR_FGD_GENIE_GENERATOR_H 1
 
-#include "EsbGenerators/GenieGenerator.h"
+#include "GenieGenerator.hpp"
 
 #include <cmath>
 
-#include <FairRootManager.h>
 #include "TGeoManager.h"
 #include <TGeoVolume.h>
 
@@ -45,7 +44,7 @@ public:
 	virtual void PostProcessEvent(/*IN OUT*/ genie::GHepRecord* event) override;
 
 	//! Overrides initial implementation, reads from pregenerated events
-	virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) override;
+	//virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) override;
 
 	virtual Bool_t Configure() override; 
 

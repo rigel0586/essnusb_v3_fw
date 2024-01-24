@@ -3,7 +3,6 @@
 #include "EsbGenerators/EsbSuperFGD/FgdGeomAnalyzer.h"
 #include "EsbGeometry/EsbSuperFGD/Names.h"
 
-#include "FairLogger.h"
 #include <Framework/Conventions/Units.h>
 #include "Framework/GHEP/GHepParticle.h"
 #include "Framework/Interaction/ProcessInfo.h"
@@ -102,6 +101,7 @@ Bool_t FgdGenieGenerator::Configure()
 	return true;
 }
 
+/*
 Bool_t FgdGenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
 	if(fCurrentEvent < fGenieEvents.size())
@@ -139,6 +139,7 @@ Bool_t FgdGenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 	
     return true;
 }
+*/
 
 void FgdGenieGenerator::GenerateEvents()
 {

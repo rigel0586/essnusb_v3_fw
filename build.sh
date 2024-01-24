@@ -24,6 +24,7 @@ geant4_dir=${base_directory}/${third_party_dir}/geant4_11_1
 genfit_dir=${base_directory}/${third_party_dir}/genfit
 genie_dir=${base_directory}/${third_party_dir}/genie
 googletest_dir=${base_directory}/${third_party_dir}/googletest
+framework_dir=${base_directory}/framework
 
 cd ${fw_directory}
 
@@ -159,3 +160,8 @@ mkdir log4cpp
 cd ${fw_directory}
 cp -R ${dependencies_dir}/genie/log4cpp/install/lib ./log4cpp
 cp -R ${dependencies_dir}/genie/log4cpp/install/include ./log4cpp
+
+# Framework Essnusb v3
+cd framework_dir
+/bin/bash build.sh
+
