@@ -4,9 +4,9 @@
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "CLHEP/Units/PhysicalConstants.h"
 
-#include "EsbGeometry/EsbSuperFGD/Materials.h"
-#include "EsbGeometry/EsbSuperFGD/Names.h"
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "volumes/SuperFGD/EsbSuperFGD/Materials.h"
+#include "volumes/SuperFGD/EsbSuperFGD/Names.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
 
 #include "TVector3.h"
 #include "TObject.h"
@@ -15,7 +15,7 @@
 class FgdDetectorParameters;
 
 namespace esbroot {
-namespace geometry {
+namespace volumes {
 namespace superfgd {
 
 class SuperFGDDetectorConstruction : public TObject
@@ -63,7 +63,7 @@ private:
 };
 
 }   //superfgd
-}   //geometry
+}   //volumes
 }   //esbroot
 
 

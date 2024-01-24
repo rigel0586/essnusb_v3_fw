@@ -16,6 +16,6 @@ third_party_links(${Generators_Target})
 
 target_include_directories(${Generators_Target} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR})
 
-ROOT_GENERATE_DICTIONARY( G___Generators ${Generator_Header}
+ROOT_GENERATE_DICTIONARY( G___${Generators_Target} ${Generator_Header}
                          LINKDEF 
                          MODULE ${Generators_Target} )

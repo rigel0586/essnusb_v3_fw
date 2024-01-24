@@ -1,14 +1,15 @@
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbGeometry/EsbSuperFGD/Materials.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "volumes/SuperFGD/EsbSuperFGD/Materials.h"
 #include <exception>
+#include <fstream>
 
-#include "FairLogger.h"                 // for FairLogger, etc
+// #include "FairLogger.h"                 // for FairLogger, etc
 
 using namespace std;
 
 namespace esbroot {
 
-namespace geometry {
+namespace volumes {
 
 namespace superfgd {
 
@@ -38,7 +39,7 @@ FgdDetectorParameters::~FgdDetectorParameters(void)
     key = value; This will be easier for maintenance
     if more values are required.
 */
-#include <fstream>
+
 void FgdDetectorParameters::LoadPartParams(string fullfilePathName)
 {
     std::ifstream file(fullfilePathName);
@@ -96,5 +97,5 @@ Bool_t   FgdDetectorParameters::ExistsParam(const string& paramName) const
 }
 
 }   // superfgd
-}   // geometry
+}   // volumes
 }   // esbroot

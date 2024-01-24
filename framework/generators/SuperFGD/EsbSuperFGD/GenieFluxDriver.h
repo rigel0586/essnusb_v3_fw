@@ -101,7 +101,7 @@ protected:
     virtual void CalculateProbability();
 
     /* Detector parameters */
-    esbroot::geometry::superfgd::FgdDetectorParameters fdetectorParams;
+    esbroot::volumes::superfgd::FgdDetectorParameters fdetectorParams;
 
     /* Uniform random number generators for neutrino flux calculations */
     std::mt19937 frndGen;//!<!

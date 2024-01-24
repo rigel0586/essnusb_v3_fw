@@ -1,15 +1,15 @@
-#include "EsbGeometry/EsbSuperFGD/EsbSuperFGDConstructor.h"
-#include "EsbGeometry/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbGeometry/EsbSuperFGD/Materials.h"
-#include "EsbGeometry/EsbSuperFGD/Names.h"
+#include "volumes/EsbSuperFGD/EsbSuperFGDConstructor.h"
+#include "volumes/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
+#include "volumes/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "volumes/EsbSuperFGD/Materials.h"
+#include "volumes/EsbSuperFGD/Names.h"
 
-#include "FairLogger.h"                 // for FairLogger, etc
+//#include "FairLogger.h"                 // for FairLogger, etc
 
 #include "TGeoMaterial.h"
 
 namespace esbroot {
-namespace geometry {
+namespace volumes {
 namespace superfgd {
 
 
@@ -124,5 +124,5 @@ TGeoVolume* SuperFGDConstructor::Construct()
 
 
 }   //superfgd
-}   //geometry
+}   //volumes
 }   //esbroot
