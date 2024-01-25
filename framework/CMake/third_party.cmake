@@ -10,6 +10,7 @@ set(FW_BASE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(ROOT_CONFIG "${FW_BASE}/cern_root/install/cmake/")
 set(GEANT4_CONFIG "${FW_BASE}/geant4/install/lib/cmake/Geant4/")
 set(GOOGLE_CONFIG "${FW_BASE}/googletest/install/lib/cmake/GTest/")
+set(FAIRROOT_CONFIG "${FW_BASE}/fairlogger/install/lib/cmake/FairLogger-1.11.1/")
 
 
 find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
@@ -41,6 +42,10 @@ file(GLOB genfit_rootmap_files "${FW_BASE}/genfit/install/lib/*.rootmap")
 set(genfit_includes "${FW_BASE}/genfit/install/include")
 #==================
 
+#==== Fairlogger import
+find_package(FairLogger REQUIRED PATHS ${FAIRROOT_CONFIG} NO_DEFAULT_PATH)
+#==================
+
 macro(third_party_links project_to_link)
     if(${ARGC} LESS 2)
          set(scope_type PUBLIC)
@@ -59,6 +64,7 @@ macro(third_party_links project_to_link)
                                     ${log4cpp_so_files}
                                     ${Geant4_LIBRARIES}
                                     ${ROOT_LIBRARIES}
-                                    ${pythia6_so_files})
+                                    ${pythia6_so_files}
+                                    FairLogger::FairLogger)
 endmacro()
 

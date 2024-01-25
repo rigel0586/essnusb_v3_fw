@@ -1,8 +1,8 @@
-#include "volumes/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "volumes/EsbSuperFGD/EsbSuperFGDConstructor.h"
-#include "volumes/EsbSuperFGD/Names.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
+#include "volumes/SuperFGD/EsbSuperFGD/Names.h"
 
-//#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 namespace esbroot {
 namespace volumes {

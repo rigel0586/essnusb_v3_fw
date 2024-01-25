@@ -1,8 +1,8 @@
-#include "volumes/EsbSuperFGD/EsbSuperFGDConstructor.h"
-#include "volumes/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
-#include "volumes/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "volumes/EsbSuperFGD/Materials.h"
-#include "volumes/EsbSuperFGD/Names.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
+#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "volumes/SuperFGD/EsbSuperFGD/Materials.h"
+#include "volumes/SuperFGD/EsbSuperFGD/Names.h"
 
 //#include "FairLogger.h"                 // for FairLogger, etc
 
@@ -72,7 +72,7 @@ TGeoVolume* SuperFGDConstructor::Construct()
   cube.Construct();
   fSensVol = cube.GetSensitiveVolume();
 
-  TGeoMedium *air = gGeoManager->GetMedium(esbroot::geometry::superfgd::materials::air);
+  TGeoMedium *air = gGeoManager->GetMedium(esbroot::volumes::superfgd::materials::air);
   //========================================
   // Repeat the volume in X
   TGeoBBox* rowX = new TGeoBBox("rowX", TotWidth/2, fEdge/2, fEdge/2);

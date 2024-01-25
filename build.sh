@@ -181,5 +181,5 @@ cd ${fw_directory}
 
 # Framework Essnusb v3
 cd ${framework_dir}
-/bin/bash build.sh
+#/bin/bash build.sh
 

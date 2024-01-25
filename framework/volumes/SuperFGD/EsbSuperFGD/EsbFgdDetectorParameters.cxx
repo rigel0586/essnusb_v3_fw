@@ -3,7 +3,7 @@
 #include <exception>
 #include <fstream>
 
-// #include "FairLogger.h"                 // for FairLogger, etc
+#include <fairlogger/Logger.h>
 
 using namespace std;
 
