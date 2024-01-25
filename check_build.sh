@@ -24,6 +24,8 @@ geant4_dir=${base_directory}/${third_party_dir}/geant4_11_1
 genfit_dir=${base_directory}/${third_party_dir}/genfit
 genie_dir=${base_directory}/${third_party_dir}/genie
 googletest_dir=${base_directory}/${third_party_dir}/googletest
+fairlogger_dir=${base_directory}/${third_party_dir}/fairlogger
+framework_dir=${base_directory}/framework
 
 echo "Checking if build was successful for depedencies and framework:"
 
@@ -62,3 +64,7 @@ cd ${fw_directory}
 # Genie
 genielib=${fw_directory}/genie/install/lib/libGFwAlg.so
 check_lib_exists ${genielib}
+
+# Fairlogger
+fairlogger_lib=${fw_directory}/fairlogger/install/lib/libFairLogger.so
+check_lib_exists ${fairlogger_lib}
