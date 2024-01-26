@@ -6,4 +6,5 @@ googletest/
 log4cpp/
 pythia6/
 fairlogger/
+pathfinder/
 framework/build

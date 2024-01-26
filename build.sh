@@ -26,6 +26,7 @@ genie_dir=${base_directory}/${third_party_dir}/genie
 googletest_dir=${base_directory}/${third_party_dir}/googletest
 fairlogger_dir=${base_directory}/${third_party_dir}/fairlogger
 framework_dir=${base_directory}/framework
+pathfinder_dir=${base_directory}/${third_party_dir}/PathFinder
 
 cd ${fw_directory}
 
@@ -176,6 +177,22 @@ cmake --install .
 
 fairlogger_lib=${fw_directory}/fairlogger/install/lib/libFairLogger.so
 check_lib_exists ${fairlogger_lib}
+
+cd ${fw_directory}
+
+# PathFinder
+export PATH=$PATH:${fw_directory}/cern_root/install/bin #PathFinder requires CERN ROOT
+mkdir pathfinder
+cd pathfinder
+mkdir build
+mkdir install
+cd build
+cmake -S ${pathfinder_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/pathfinder/install
+cmake --build . 
+cmake --install .
+
+pathfinder_lib=${fw_directory}/pathfinder/install/lib/libPathFinder.so
+check_lib_exists ${pathfinder_lib}
 
 cd ${fw_directory}
 
