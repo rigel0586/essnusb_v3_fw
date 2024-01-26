@@ -16,7 +16,7 @@
 #include "TRandom3.h"
 #include "TVector3.h"
 
-#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
 
 
 namespace esbroot {
@@ -101,7 +101,7 @@ protected:
     virtual void CalculateProbability();
 
     /* Detector parameters */
-    esbroot::volumes::superfgd::FgdDetectorParameters fdetectorParams;
+    esbroot::geometry::superfgd::FgdDetectorParameters fdetectorParams;
 
     /* Uniform random number generators for neutrino flux calculations */
     std::mt19937 frndGen;//!<!

@@ -13,7 +13,7 @@
 #include <TVector3.h>
 #include <TLorentzVector.h>
 
-#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
 
 namespace esbroot {
 namespace generators {

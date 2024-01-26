@@ -14,7 +14,7 @@ using namespace std;
         
 namespace esbroot {
 
-namespace volumes {
+namespace geometry {
 
 namespace superfgd {
 
@@ -145,7 +145,7 @@ private:
 };
 
 }   // superfgd
-}   // volumes
+}   // geometry
 }   // esbroot
 
 #endif

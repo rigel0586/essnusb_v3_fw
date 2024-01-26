@@ -10,7 +10,7 @@
 /// Create a bounding box to contain the geometry of the detector 
 
 namespace esbroot {
-namespace volumes {
+namespace geometry {
 namespace superfgd {
 
 class SuperFGDConstructor  : public TObject
@@ -190,7 +190,7 @@ private:
 };
 
 }   //superfgd
-}   //volumes
+}   //geometry
 }   //esbroot
 
 #endif

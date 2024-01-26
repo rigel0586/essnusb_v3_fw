@@ -1,5 +1,5 @@
-#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "volumes/SuperFGD/EsbSuperFGD/Materials.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/Materials.h"
 #include <exception>
 #include <fstream>
 
@@ -9,7 +9,7 @@ using namespace std;
 
 namespace esbroot {
 
-namespace volumes {
+namespace geometry {
 
 namespace superfgd {
 
@@ -97,5 +97,5 @@ Bool_t   FgdDetectorParameters::ExistsParam(const string& paramName) const
 }
 
 }   // superfgd
-}   // volumes
+}   // geometry
 }   // esbroot

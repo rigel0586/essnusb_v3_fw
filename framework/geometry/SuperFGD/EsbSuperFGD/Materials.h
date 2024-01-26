@@ -9,7 +9,7 @@ using namespace CLHEP;
 
 namespace esbroot {
 
-namespace volumes {
+namespace geometry {
 
 namespace superfgd {
 

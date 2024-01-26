@@ -14,7 +14,7 @@ set(ESSNUSB_PROJECT_NAME fw_essnusb)
 
 #add_subdirectory(core)
 add_subdirectory(generators)
-add_subdirectory(volumes)
+add_subdirectory(geometry)
 
 #add_subdirectory(test_delete)
 

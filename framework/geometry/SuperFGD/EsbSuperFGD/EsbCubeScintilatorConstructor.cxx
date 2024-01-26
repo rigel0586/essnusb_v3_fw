@@ -1,16 +1,16 @@
-#include "volumes/SuperFGD/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
-#include "volumes/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
 
-#include "volumes/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "volumes/SuperFGD/EsbSuperFGD/Materials.h"
-#include "volumes/SuperFGD/EsbSuperFGD/Names.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/Materials.h"
+#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 
 #include "TGeoBBox.h"
 #include "TGeoCone.h"
 #include "TGeoCompositeShape.h"
 
 namespace esbroot {
-namespace volumes {
+namespace geometry {
 namespace superfgd {
 
 CubeScintConstructor::CubeScintConstructor() : fLength(0.), fBase(0.), fHeight(0.), fHoleRadius(0.)
@@ -33,7 +33,7 @@ TGeoVolume* CubeScintConstructor::Construct()
   // Base is X direction
   // Height is Y direction
   // Lenght is Z direction
-  using namespace esbroot::volumes::superfgd;
+  using namespace esbroot::geometry::superfgd;
 
   // The Box shape from which the holes for the fiber will be subtracted
   TGeoBBox* cubeWithCoating = new TGeoBBox("CubeCoating",GetBase()/2, GetHeight()/2, GetLength()/2);
@@ -226,5 +226,5 @@ TGeoVolume* CubeScintConstructor::Construct()
 }
 
 }   //superfgd
-}   //volumes
+}   //geometry
 }   //esbroot

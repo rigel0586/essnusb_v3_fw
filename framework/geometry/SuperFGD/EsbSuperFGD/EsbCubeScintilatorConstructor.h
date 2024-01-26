@@ -26,7 +26,7 @@
 
 
 namespace esbroot {
-namespace volumes {
+namespace geometry {
 namespace superfgd {
 
  struct ThreeVector{
@@ -299,7 +299,7 @@ private:
 };
 
 }   //superfgd
-}   //volumes
+}   //geometry
 }   //esbroot
 
 #endif

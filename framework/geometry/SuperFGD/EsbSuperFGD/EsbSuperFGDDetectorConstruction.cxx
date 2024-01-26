@@ -1,11 +1,11 @@
-#include "volumes/SuperFGD/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "volumes/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
-#include "volumes/SuperFGD/EsbSuperFGD/Names.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
+#include "geometry/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
+#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 
 #include <fairlogger/Logger.h>
 
 namespace esbroot {
-namespace volumes {
+namespace geometry {
 namespace superfgd {
 
 
@@ -64,5 +64,5 @@ TVector3 SuperFGDDetectorConstruction::GetMagneticField()
 }
 
 }   //superfgd
-}   //volumes
+}   //geometry
 }   //esbroot

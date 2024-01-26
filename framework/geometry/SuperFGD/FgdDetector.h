@@ -21,7 +21,7 @@ class TClonesArray;
 
 namespace esbroot {
 
-namespace volumes {
+namespace geometry {
 	class FgdDetector: public FairDetector
 	{
 
