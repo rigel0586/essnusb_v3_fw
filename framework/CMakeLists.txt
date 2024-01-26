@@ -13,6 +13,7 @@ set(ESSNUSB_PROJECT_NAME fw_essnusb)
 #target_link_libraries(fw_essnusb PUBLIC GTest)
 
 #add_subdirectory(core)
+#add_subdirectory(data)
 add_subdirectory(generators)
 add_subdirectory(geometry)
 
