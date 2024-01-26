@@ -28,7 +28,8 @@ export LHAPDF6_LIB=${dependencies_dir}/genie/LHAPDF-6.5.4/install/lib/
 export GEANT4_INC=${fw_directory}/geant4/install/include/
 export GEANT4_LIB=${fw_directory}/geant4/install/lib/ 
 
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${LHAPDF6_LIB}:${LHAPDF5_LIB}/.libs:/usr/local/lib:${GENIE_install}/lib:${ROOTSYS}/lib:${PYTHIA6}
+framework_build_dir=${fw_directory}/framework/build
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${LHAPDF6_LIB}:${LHAPDF5_LIB}/.libs:/usr/local/lib:${GENIE_install}/lib:${ROOTSYS}/lib:${PYTHIA6}:${framework_build_dir}/generators/SuperFGD/:${framework_build_dir}/geometry/SuperFGD/
 
 export PATH=$PATH:${ROOTSYS}/bin:${GENIE_install}/bin 
 
