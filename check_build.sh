@@ -15,17 +15,8 @@ fw_directory=${PWD}
 
 cd ../..
 base_directory=${PWD}
-
 third_party_dir=third_party
-
-root_dir=${base_directory}/${third_party_dir}/cern_root
 dependencies_dir=${base_directory}/${third_party_dir}/dependencies
-geant4_dir=${base_directory}/${third_party_dir}/geant4_11_1
-genfit_dir=${base_directory}/${third_party_dir}/genfit
-genie_dir=${base_directory}/${third_party_dir}/genie
-googletest_dir=${base_directory}/${third_party_dir}/googletest
-fairlogger_dir=${base_directory}/${third_party_dir}/fairlogger
-framework_dir=${base_directory}/framework
 
 echo "Checking if build was successful for depedencies and framework:"
 
@@ -68,3 +59,7 @@ check_lib_exists ${genielib}
 # Fairlogger
 fairlogger_lib=${fw_directory}/fairlogger/install/lib/libFairLogger.so
 check_lib_exists ${fairlogger_lib}
+
+# PathFinder
+pathfinder_lib=${fw_directory}/pathfinder/install/lib/libPathFinder.so
+check_lib_exists ${pathfinder_lib}
