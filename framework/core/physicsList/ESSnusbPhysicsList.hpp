@@ -5,6 +5,7 @@
 
 #include "G4VUserPhysicsList.hh"
 
+namespace esbroot {
 namespace esbcore {
 namespace physicslist {
 
@@ -22,5 +23,6 @@ public:
 
 } // namespace physicslist
 } // namespace esbcore
+} // namespace esbroot
 
 #endif

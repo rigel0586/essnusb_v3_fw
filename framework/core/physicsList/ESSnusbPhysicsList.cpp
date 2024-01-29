@@ -7,6 +7,7 @@
 #include "G4MesonConstructor.hh"
 #include "G4ShortLivedConstructor.hh"
 
+namespace esbroot {
 namespace esbcore {
 namespace physicslist {
 
@@ -48,3 +49,4 @@ void ESSnusbPhysicsList::SetCuts() {
 
 } // namespace physicslist
 } // namespace esbcore
+} // namespace esbroot
