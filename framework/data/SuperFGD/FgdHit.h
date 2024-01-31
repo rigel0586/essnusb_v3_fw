@@ -10,7 +10,8 @@
 #ifndef ESBROOT_ESBDATA_SUPERFGD_FGD_HIT_H
 #define ESBROOT_ESBDATA_SUPERFGD_FGD_HIT_H
 
-//#include <FairHit.h>
+#include <TObject.h>
+#include <TVector3.h>
 
 namespace esbroot {
 namespace data {
@@ -20,7 +21,7 @@ namespace superfgd {
 /// This is the definition of the Fgd digit class.
 /// The data is transformed from energy deposited inside a cube into
 /// number of photons generated
-class FgdHit //: public FairHit
+class FgdHit : public TObject
 {
  public:
   
@@ -75,6 +76,10 @@ class FgdHit //: public FairHit
   Double_t GetTrackLengthOrigin(){return ftrackLengthOrigin;}
   Double_t GetEdep() {return fedep;}
   Double_t GetPe(){return fpe;}
+  Double_t GetX() const { return fX; };
+  Double_t GetY() const { return fY; };
+  Double_t GetZ() const { return fZ; };
+  Double_t GetTimeStamp() const { return fTimeStamp; }
 
   /** Modifiers **/
   void SetMppcLoc(TVector3 mppcLoc){fmppcLoc = mppcLoc;}
@@ -91,6 +96,11 @@ class FgdHit //: public FairHit
   void SetTrackId(Int_t trackId){ftrackId = trackId;}
   void SetEdep(Double_t edep){fedep = edep;}
   void SetPe(Double_t pe){ fpe = pe;}
+  void SetX(Double_t x) { fX = x; }
+  void SetY(Double_t y) { fY = y; }
+  void SetZ(Double_t z) { fZ = z; }
+  void SetXYZ(Double_t x, Double_t y, Double_t z);
+  void SetTimeStamp(Double_t t) { fTimeStamp = t; }
    
   /** Output to screen **/
   virtual void Print(const Option_t* opt) const;
@@ -115,6 +125,10 @@ class FgdHit //: public FairHit
   Int_t ftrackId;
   Double_t fedep;
   Double_t fpe;
+  Double_t fX;
+  Double_t fY;
+  Double_t fZ;
+  Double_t fTimeStamp;
 
   ClassDef(FgdHit, 2);
 };

@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "EsbData/EsbSuperFGD/FgdHit.h"
+#include "data/SuperFGD/FgdHit.h"
 
 #include <cmath>
 
@@ -19,7 +19,6 @@ namespace superfgd {
 
 // -----   Default constructor   -------------------------------------------
 FgdHit::FgdHit()
-  //: FairHit()
 {
 }
 // -------------------------------------------------------------------------
@@ -30,15 +29,12 @@ FgdHit::FgdHit(Double_t x, Double_t y, Double_t z, TVector3 mppcLoc
         , Double_t trackLength, Double_t trackLengthOrigin , TVector3 photoE_direction1, TVector3 distance_to_mppcLoc1
         , TVector3 photoE_direction2, TVector3 distance_to_mppcLoc2
         , Int_t pdg, Int_t trackId, Double_t edep, Double_t pe)
-  //: FairHit(),fmppcLoc(mppcLoc),fphotoE(photoE), fdpos(dpos), ftime(time), fmom(mom)
+  : fmppcLoc(mppcLoc),fphotoE(photoE), fdpos(dpos), ftime(time), fmom(mom)
   , fphotoE_dist1(photoE_direction1), fmppcLoc_dist1(distance_to_mppcLoc1)
   , fphotoE_dist2(photoE_direction2), fmppcLoc_dist2(distance_to_mppcLoc2)
   , fpdg(pdg), ftrackId(trackId), fmomExit(momExit), ftrackLength(trackLength)
-  , fedep(edep), ftrackLengthOrigin(trackLengthOrigin), fpe(pe)
+  , fedep(edep), ftrackLengthOrigin(trackLengthOrigin), fpe(pe), fX(x), fY(y), fZ(z)
 {
-  SetX(x);
-  SetY(y);
-  SetZ(z);
 }
 // -------------------------------------------------------------------------
 

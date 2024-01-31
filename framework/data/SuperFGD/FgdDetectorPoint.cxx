@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
+#include "data/SuperFGD/FgdDetectorPoint.h"
 
 #include <iostream>
 using std::cout;
@@ -19,7 +19,6 @@ namespace superfgd {
 
 // -----   Default constructor   -------------------------------------------
 FgdDetectorPoint::FgdDetectorPoint()
-  //: FairMCPoint()
 {
 }
 // -------------------------------------------------------------------------
@@ -30,7 +29,9 @@ FgdDetectorPoint::FgdDetectorPoint(Int_t trackID, Int_t detID,
                                   TVector3 pos, TVector3 posExit, TVector3 mom, TVector3 momExit,
                                   Double_t tof, Double_t edep, Double_t trackLenght,
                                   Int_t pdg , Double_t trackLenghtFromOrigin)
-  //: FairMCPoint(trackID, detID, pos, mom, tof, 0 , edep /* eLoss*/)
+    : fTrackID(trackID), fDetectorID(detID), fX(pos.X()), fY(pos.Y())
+    , fZ(pos.Z()), fPx(mom.Px()), fPy(mom.Py()), fPz(mom.Pz()), fTime(tof)
+    , fLength(0), fEventId(0), fELoss(edep)
     ,fposExit(posExit), fdetectorPos(detectorPos), ftrackLenght(trackLenght)
     ,fpdg(pdg), fmomExit(momExit), ftrackLenghtFromOrigin(trackLenghtFromOrigin)
 {

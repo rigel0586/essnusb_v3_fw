@@ -20,7 +20,7 @@ namespace data {
 
 namespace superfgd {
 
-class FgdDetectorPoint //: public FairMCPoint
+class FgdDetectorPoint : public TObject
 {
 
   public:
@@ -72,7 +72,36 @@ class FgdDetectorPoint //: public FairMCPoint
     // Get the track lenght 
     Double_t GetTrackLenght(){return ftrackLenght;}
 
+    // Accessors
     Double_t GetTrackLengthOrigin(){return ftrackLenghtFromOrigin;}
+    UInt_t GetEventID() const { return fEventId; }  
+    Int_t GetTrackID() const { return fTrackID; }
+    Double_t GetPx() const { return fPx; }
+    Double_t GetPy() const { return fPy; }
+    Double_t GetPz() const { return fPz; }
+    Double_t GetTime() const { return fTime; }
+    Double_t GetLength() const { return fLength; }
+    Double_t GetEnergyLoss() const { return fELoss; }
+    void Momentum(TVector3& mom) const { mom.SetXYZ(fPx, fPy, fPz); }
+    Int_t GetDetectorID() const { return fDetectorID; };
+    Double_t GetX() const { return fX; };
+    Double_t GetY() const { return fY; };
+    Double_t GetZ() const { return fZ; };
+    void Position(TVector3& pos) const { pos.SetXYZ(fX, fY, fZ); }
+
+    /** Modifiers **/
+    void SetEventID(UInt_t eventId) { fEventId = eventId; }
+    virtual void SetTrackID(Int_t id) { fTrackID = id; }
+    void SetTime(Double_t time) { fTime = time; }
+    void SetLength(Double_t length) { fLength = length; }
+    void SetEnergyLoss(Double_t eLoss) { fELoss = eLoss; }
+    void SetMomentum(const TVector3& mom);
+    void SetDetectorID(Int_t detID) { fDetectorID = detID; }
+    void SetX(Double_t x) { fX = x; }
+    void SetY(Double_t y) { fY = y; }
+    void SetZ(Double_t z) { fZ = z; }
+    void SetXYZ(Double_t x, Double_t y, Double_t z);
+    void SetPosition(const TVector3& pos);
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
@@ -89,8 +118,38 @@ class FgdDetectorPoint //: public FairMCPoint
     Double_t ftrackLenghtFromOrigin;
     Int_t fpdg;
 
+    Int_t fTrackID;             ///< Track index
+    UInt_t fEventId;            ///< MC Event id
+    Double_t fPx, fPy, fPz;     ///< Momentum components [GeV]
+    Double_t fTime;             ///< Time since event start [ns]
+    Double_t fLength;           ///< Track length since creation [cm]
+    Double_t fELoss;            ///< Energy loss at this point [GeV]
+    Int_t fDetectorID;          ///< Detector unique identifier
+    Double_t fX, fY, fZ;        ///< Position of hit [cm]
+
     ClassDef(FgdDetectorPoint,2)
 };
+
+inline void FgdDetectorPoint::SetMomentum(const TVector3& mom)
+{
+    fPx = mom.Px();
+    fPy = mom.Py();
+    fPz = mom.Pz();
+}
+
+inline void FgdDetectorPoint::SetXYZ(Double_t x, Double_t y, Double_t z)
+{
+    fX = x;
+    fY = y;
+    fZ = z;
+}
+
+inline void FgdDetectorPoint::SetPosition(const TVector3& pos)
+{
+    fX = pos.X();
+    fY = pos.Y();
+    fZ = pos.Z();
+}
 
 } //namespace superfgd
 

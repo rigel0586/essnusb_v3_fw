@@ -11,10 +11,4 @@ target_sources(${Data_Target} PUBLIC
             FgdDetectorPoint.cxx
             FgdHit.cxx)
 
-third_party_links(${Data_Target})
-
-target_include_directories(${Data_Target} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR})
-
-ROOT_GENERATE_DICTIONARY( G___${Data_Target} ${Data_Header}
-                         LINKDEF 
-                         MODULE ${Data_Target} )
+LIBRARY_FOOTER(${Data_Target} ${Data_Header})
