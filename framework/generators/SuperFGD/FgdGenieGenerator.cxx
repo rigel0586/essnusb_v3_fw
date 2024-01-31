@@ -22,7 +22,7 @@ namespace superfgd {
 FgdGenieGenerator::FgdGenieGenerator()
 	: GenieGenerator()
 {
-    fparticleGun = new G4GeneralParticleSource();
+    fparticleGun = new G4ParticleGun();
     fg4ParticleTable = G4ParticleTable::GetParticleTable();
 }
 
@@ -54,7 +54,7 @@ FgdGenieGenerator::FgdGenieGenerator(const char* geoConfigFile
 		, fUseUniformflux(uniformFlux)
 		, fKeepThrowingFluxNu(keepThrowingFluxNu)
 {
-    fparticleGun = new G4GeneralParticleSource();
+    fparticleGun = new G4ParticleGun();
     fg4ParticleTable = G4ParticleTable::GetParticleTable();
 }
 
@@ -158,7 +158,8 @@ void FgdGenieGenerator::GeneratePrimaries(G4Event* anEvent)
 		genie::EventRecord* event = fmcj_driver->GenerateEvent();
 		if(event != nullptr)
 		{
-			PostProcessEvent(event); // TODO check vertex, currently 0,0,0?
+			PostProcessEvent(event);
+            TLorentzVector* v = event->Vertex();
 			int nParticles = event->GetEntries();
 			std::vector<genie::GHepParticle*> eventParticles;
 			for (int i = 0; i < nParticles; i++) 
@@ -179,9 +180,49 @@ void FgdGenieGenerator::GeneratePrimaries(G4Event* anEvent)
                 for(genie::GHepParticle* par : eventParticles)
                 {
                     G4ParticleDefinition * parDef = fg4ParticleTable->FindParticle(par->Pdg());
-                    fparticleGun->SetParticleDefinition(parDef);
-                    // TODO continue
+                    if(parDef!= nullptr)
+                    {
+                        // Set definition
+                        fparticleGun->SetParticleDefinition(parDef);
+
+                        // Set momentum
+                        G4ParticleMomentum parMomentum;
+                        parMomentum.setX(par->Px());
+                        parMomentum.setY(par->Py());
+                        parMomentum.setZ(par->Pz());
+
+                        // Set position
+                        G4ThreeVector parPosition;
+                        parPosition.setX(v->X());
+                        parPosition.setY(v->Y());
+                        parPosition.setZ(v->Z());
+
+                        fparticleGun->SetParticlePosition(parPosition);
+
+                        // Set time
+                        fparticleGun->SetParticleTime(par->Vt());
+                        
+                        // Set polarization
+                        TVector3 polz;
+                        par->GetPolarization(polz);
+
+                        G4ThreeVector parPol;
+                        parPol.setX(polz.x());
+                        parPol.setY(polz.y());
+                        parPol.setZ(polz.z());
+
+                        fparticleGun->SetParticlePolarization(parPol);
+
+                        // Add particle to vertex
+                        fparticleGun->GeneratePrimaryVertex(anEvent);
+                    }
                 }
+
+                if(!GlobalState.fOutputFileName.empty())
+		        {
+			        WriteToOutputFile(event, false /* flaGkeepThrowing - check made in GenerateEvents*/);
+		        }
+
 				delete event;
 				break;
 			}

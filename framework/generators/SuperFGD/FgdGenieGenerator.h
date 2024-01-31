@@ -10,7 +10,7 @@
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4PhysicalConstants.hh"
-#include "G4GeneralParticleSource.hh"
+#include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ThreeVector.hh"
@@ -59,7 +59,7 @@ public:
 	void SetVertexPos(const TVector3& vp ) {fvertexPos = vp;}
 
     void GeneratePrimaries(G4Event* anEvent) override;
-    G4GeneralParticleSource* GetParticleGun(){return fparticleGun;} 
+    G4ParticleGun* GetParticleGun(){return fparticleGun;} 
 
 protected:
 	virtual Bool_t KeepThrowing(std::vector<genie::GHepParticle*>& eventParticles ) override;
@@ -82,7 +82,7 @@ private:
 	std::vector<genie::EventRecord> fGenieEvents;//!<!
 	void GenerateEvents();
 
-    G4GeneralParticleSource* fparticleGun{nullptr};
+    G4ParticleGun* fparticleGun{nullptr};
     G4ParticleTable * fg4ParticleTable{nullptr};
 	
 	
