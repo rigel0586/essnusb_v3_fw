@@ -8,7 +8,7 @@ add_library(${core_Target} SHARED)
 
 set(core_headers 
             physicsList/ESSnusbPhysicsList.hpp
-            hit/EsbCoreHit.h)
+            hit/EsbG4Hit.h)
 
 target_sources(${core_Target} PUBLIC 
             physicsList/ESSnusbPhysicsList.cpp)

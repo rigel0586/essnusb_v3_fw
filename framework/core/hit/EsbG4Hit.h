@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ESSnusbPhysicsList_hpp
-#define ESSnusbPhysicsList_hpp 1
+#ifndef EsbG4Hit_hpp
+#define EsbG4Hit_hpp 1
 
 #include "G4VHit.hh"
 #include "G4THitsCollection.hh"
@@ -13,16 +13,16 @@ namespace esbroot {
 namespace esbcore {
 
 template<typename Data>
-class EsbCoreHit : public G4VHit
+class EsbG4Hit : public G4VHit
 {
 public:
-    EsbCoreHit();
-    EsbCoreHit(const EsbCoreHit&) = default;
-    ~EsbCoreHit() override;
+    EsbG4Hit();
+    EsbG4Hit(const EsbG4Hit&) = default;
+    ~EsbG4Hit() override;
 
     // operators
-    EsbCoreHit& operator=(const EsbCoreHit&) = default;
-    G4bool operator==(const EsbCoreHit&) const;
+    EsbG4Hit& operator=(const EsbG4Hit&) = default;
+    G4bool operator==(const EsbG4Hit&) const;
     inline void* operator new(size_t);
     inline void operator delete(void*);
 
@@ -59,35 +59,36 @@ private:
 /*
     Every subclass must declare its own collection e.g.
     if SuperFgd is a subclass 
-    typedef G4THitsCollection<SuperFgd<Data>> SuperFgdHitsCollection;
+    typedef G4THitsCollection<EsbG4Hit<Data>> SuperFgdHitsCollection;
 
     template:
-    typedef G4THitsCollection<EsbCoreHit<Data>> EsbCoreHitsCollection;
+    typedef G4THitsCollection<EsbG4Hit<Data>> EsbG4HitsCollection;
 */
 
 template<class Data>
-extern G4ThreadLocal G4Allocator<EsbCoreHit<Data>> *EsbCoreHitAllocator;
+extern G4ThreadLocal G4Allocator<EsbG4Hit<Data>> *EsbG4HitAllocator;
 /*
     NOTE: Declare in the implementation file 
-    G4ThreadLocal G4Allocator<EsbCoreHit<Data>> *EsbCoreHitAllocator=0;
+    G4ThreadLocal G4Allocator<EsbG4Hit<Data>> *EsbG4HitAllocator=0;
 */
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 template<typename Data>
-inline void* EsbCoreHit<Data>::operator new(size_t)
+inline void* EsbG4Hit<Data>::operator new(size_t)
 {
-  if (!EsbCoreHitAllocator<Data>)
-    EsbCoreHitAllocator<Data> = new G4Allocator<EsbCoreHit>;
-  return (void*) EsbCoreHitAllocator<Data>->MallocSingle();  
+  if (!EsbG4HitAllocator)
+    EsbG4HitAllocator = new G4Allocator<EsbG4Hit<Data>>;
+
+  return (void*) EsbG4HitAllocator->MallocSingle();  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 template<typename Data>
-inline void EsbCoreHit<Data>::operator delete(void* aHit)
+inline void EsbG4Hit<Data>::operator delete(void* aHit)
 {
-  EsbCoreHitAllocator<Data>->FreeSingle((EsbCoreHit*) aHit);
+  EsbG4HitAllocator<Data>->FreeSingle((EsbG4Hit<Data>*) aHit);
 }
 
 } // namespace esbcore
