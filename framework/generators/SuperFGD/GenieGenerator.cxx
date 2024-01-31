@@ -20,6 +20,7 @@
 //~ using namespace esbroot::generators;
 namespace esbroot {
 namespace generators {
+namespace superfgd {
 
 /*static*/ GenieGenerator::GlobalState_t GenieGenerator::GlobalState;
 /*static*/ bool GenieGenerator::fGlobalStateInit = false;
@@ -181,5 +182,6 @@ void GenieGenerator::WriteToOutputFile(const genie::EventRecord* event, Bool_t f
    return new GenieGenerator(this->GetFluxI().get(), this->GetGeomI().get());
  }
 
-}
-}
+} // namespace superfgd
+} // namespace generators
+} // namespace esbroot

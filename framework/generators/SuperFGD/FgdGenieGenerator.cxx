@@ -1,7 +1,7 @@
-#include "EsbGenerators/EsbSuperFGD/FgdGenieGenerator.h"
-#include "EsbGenerators/EsbSuperFGD/GenieFluxDriver.h"
-#include "EsbGenerators/EsbSuperFGD/FgdGeomAnalyzer.h"
-#include "EsbGeometry/EsbSuperFGD/Names.h"
+#include "SuperFGD/FgdGenieGenerator.h"
+#include "SuperFGD/GenieFluxDriver.h"
+#include "SuperFGD/FgdGeomAnalyzer.h"
+#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 
 #include <Framework/Conventions/Units.h>
 #include "Framework/GHEP/GHepParticle.h"
@@ -11,6 +11,10 @@
 
 #include <Tools/Geometry/ROOTGeomAnalyzer.h>
 
+#include <fairlogger/Logger.h>
+
+#include <G4ParticleTable.hh>
+
 namespace esbroot {
 namespace generators {
 namespace superfgd {
@@ -18,10 +22,13 @@ namespace superfgd {
 FgdGenieGenerator::FgdGenieGenerator()
 	: GenieGenerator()
 {
+    fparticleGun = new G4GeneralParticleSource();
+    fg4ParticleTable = G4ParticleTable::GetParticleTable();
 }
 
 FgdGenieGenerator::~FgdGenieGenerator()
 {
+    delete fparticleGun;
 }
 
 FgdGenieGenerator::FgdGenieGenerator(const char* geoConfigFile
@@ -47,6 +54,8 @@ FgdGenieGenerator::FgdGenieGenerator(const char* geoConfigFile
 		, fUseUniformflux(uniformFlux)
 		, fKeepThrowingFluxNu(keepThrowingFluxNu)
 {
+    fparticleGun = new G4GeneralParticleSource();
+    fg4ParticleTable = G4ParticleTable::GetParticleTable();
 }
 
 
@@ -101,45 +110,86 @@ Bool_t FgdGenieGenerator::Configure()
 	return true;
 }
 
-/*
-Bool_t FgdGenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+// TODO: Legacy for reference only
+//Bool_t FgdGenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+//{
+//	if(fCurrentEvent < fGenieEvents.size())
+//	{
+//		genie::EventRecord& event = fGenieEvents[fCurrentEvent++];
+//	
+//		event.Print(std::cout);
+//		TLorentzVector* v = event.Vertex();
+//			
+//		// Fire other final state particles
+//		int nParticles = event.GetEntries();
+//		for (int i = 0; i < nParticles; i++) 
+//		{
+//			genie::GHepParticle *p = event.Particle(i);
+//			// kIStStableFinalState - Genie documentation: generator-level final state
+//			// particles to be tracked by the detector-level MC
+//			if ((p->Status() == genie::EGHepStatus::kIStStableFinalState)) 
+//			{
+//				if(IsPdgAllowed(p->Pdg()))
+//				{
+//					primGen->AddTrack(p->Pdg(), p->Px(), p->Py(), p->Pz(), v->X(), v->Y(), v->Z());
+//				}
+//			}
+//		}
+//
+//		if(!GlobalState.fOutputFileName.empty())
+//		{
+//			WriteToOutputFile(&event, false /* flaGkeepThrowing - check made in GenerateEvents*/);
+//		}
+//	}
+//	else
+//	{
+//		primGen->AddTrack(2112, 0, 0, 0.5, 0, 0, 5000); // just add a dummy track
+//	}
+//	
+//    return true;
+//}
+
+void FgdGenieGenerator::GeneratePrimaries(G4Event* anEvent)
 {
-	if(fCurrentEvent < fGenieEvents.size())
+    if(fparticleGun==nullptr || fg4ParticleTable == nullptr) return;
+
+    while(true)
 	{
-		genie::EventRecord& event = fGenieEvents[fCurrentEvent++];
-	
-		event.Print(std::cout);
-		TLorentzVector* v = event.Vertex();
-			
-		// Fire other final state particles
-		int nParticles = event.GetEntries();
-		for (int i = 0; i < nParticles; i++) 
+		genie::EventRecord* event = fmcj_driver->GenerateEvent();
+		if(event != nullptr)
 		{
-			genie::GHepParticle *p = event.Particle(i);
-			// kIStStableFinalState - Genie documentation: generator-level final state
-			// particles to be tracked by the detector-level MC
-			if ((p->Status() == genie::EGHepStatus::kIStStableFinalState)) 
+			PostProcessEvent(event); // TODO check vertex, currently 0,0,0?
+			int nParticles = event->GetEntries();
+			std::vector<genie::GHepParticle*> eventParticles;
+			for (int i = 0; i < nParticles; i++) 
 			{
-				if(IsPdgAllowed(p->Pdg()))
+				genie::GHepParticle *p = event->Particle(i);
+				// kIStStableFinalState - Genie documentation: generator-level final state
+				// particles to be tracked by the detector-level MC
+				if ((p->Status() == genie::EGHepStatus::kIStStableFinalState)) 
 				{
-					primGen->AddTrack(p->Pdg(), p->Px(), p->Py(), p->Pz(), v->X(), v->Y(), v->Z());
+					if(IsPdgAllowed(p->Pdg()))
+					{
+						eventParticles.push_back(p);
+					}
 				}
 			}
-		}
-
-		if(!GlobalState.fOutputFileName.empty())
-		{
-			WriteToOutputFile(&event, false /* flaGkeepThrowing - check made in GenerateEvents*/);
-		}
-	}
-	else
-	{
-		primGen->AddTrack(2112, 0, 0, 0.5, 0, 0, 5000); // just add a dummy track
-	}
-	
-    return true;
+			if(!KeepThrowing(eventParticles) && !eventParticles.empty())
+			{
+                for(genie::GHepParticle* par : eventParticles)
+                {
+                    G4ParticleDefinition * parDef = fg4ParticleTable->FindParticle(par->Pdg());
+                    fparticleGun->SetParticleDefinition(parDef);
+                    // TODO continue
+                }
+				delete event;
+				break;
+			}
+			delete event;
+        }
+    }
+    return;
 }
-*/
 
 void FgdGenieGenerator::GenerateEvents()
 {
@@ -226,7 +276,6 @@ void FgdGenieGenerator::WriteToOutputFile(const genie::EventRecord* event, Bool_
 					<< " " << procInfo.IsQuasiElastic()
 					<< " " << procInfo.IsDeepInelastic()
 					<< " " << procInfo.IsResonant()
-					<< " " << procInfo.IsCoherent()
 					<< " " << procInfo.IsMEC()
 					<< " " << procInfo.IsNuElectronElastic()
 					<< " " << procInfo.IsElectronScattering();

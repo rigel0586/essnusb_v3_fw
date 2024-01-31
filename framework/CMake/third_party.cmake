@@ -90,3 +90,8 @@ macro(LIBRARY_FOOTER target_name target_headers)
     GENERATE_LIBRARY(${target_name} ${target_headers})
 endmacro()
 
+macro(UT_libs target_name)
+    target_link_libraries(${target_name} PUBLIC ROOT)
+    target_link_libraries(${target_name} PUBLIC GTest)
+endmacro()
+

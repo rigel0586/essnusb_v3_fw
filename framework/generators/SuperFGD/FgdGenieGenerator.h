@@ -1,12 +1,22 @@
 #ifndef ESBROOT_GENERATOR_FGD_GENIE_GENERATOR_H
 #define ESBROOT_GENERATOR_FGD_GENIE_GENERATOR_H 1
 
-#include "GenieGenerator.hpp"
+#include "GenieGenerator.h"
 
 #include <cmath>
 
 #include "TGeoManager.h"
 #include <TGeoVolume.h>
+
+#include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4PhysicalConstants.hh"
+#include "G4GeneralParticleSource.hh"
+#include "G4ParticleTable.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4ThreeVector.hh"
+
+#include "G4SystemOfUnits.hh"
+#include "G4Event.hh"
 
 class TVector3;
 class TLorentzVector;
@@ -16,7 +26,7 @@ namespace generators {
 namespace superfgd {
 
 
-class FgdGenieGenerator : public GenieGenerator
+class FgdGenieGenerator : public GenieGenerator, public G4VUserPrimaryGeneratorAction
 {
 public:
 
@@ -43,13 +53,13 @@ public:
 	//! Post processes Genie events to choose vertex position
 	virtual void PostProcessEvent(/*IN OUT*/ genie::GHepRecord* event) override;
 
-	//! Overrides initial implementation, reads from pregenerated events
-	//virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) override;
-
 	virtual Bool_t Configure() override; 
 
 	void UseFixVertex(Bool_t fv) {fUseFixedVertex = fv;}
 	void SetVertexPos(const TVector3& vp ) {fvertexPos = vp;}
+
+    void GeneratePrimaries(G4Event* anEvent) override;
+    G4GeneralParticleSource* GetParticleGun(){return fparticleGun;} 
 
 protected:
 	virtual Bool_t KeepThrowing(std::vector<genie::GHepParticle*>& eventParticles ) override;
@@ -72,6 +82,8 @@ private:
 	std::vector<genie::EventRecord> fGenieEvents;//!<!
 	void GenerateEvents();
 
+    G4GeneralParticleSource* fparticleGun{nullptr};
+    G4ParticleTable * fg4ParticleTable{nullptr};
 	
 	
 	ClassDef(FgdGenieGenerator,3)

@@ -23,6 +23,8 @@ namespace esbroot {
 
 namespace generators {
 
+namespace superfgd {
+
 //! @brief Basic Genie generator class
 //!
 //! This class wraps Genie MC generator interface. It provides functionality to
@@ -97,7 +99,7 @@ public:
   virtual void PostProcessEvent(/*IN OUT*/ genie::GHepRecord *event){};
 
   /** Clone this object (used in MT mode only) */
-  // virtual FairGenerator *CloneGenerator() const;
+  virtual GenieGenerator *CloneGenerator() const;
 
   void AddPdgCode(int pdg) { fpdgCodesAllowed.push_back(pdg); }
   void AddPdgCode(std::vector<int> pdgCodes) {
@@ -160,6 +162,8 @@ protected:
 
   //ClassDef(GenieGenerator, 6)
 };
+
+} // namespace superfgd
 
 } // namespace generators
 
