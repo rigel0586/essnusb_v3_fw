@@ -1,7 +1,6 @@
 #include "SuperFGD/GenieGenerator.h"
 // #include "EsbTools/UtilityDefs.h"
 
-/* Fair Root headers */
 #include "TGeoManager.h" // for gGeoManager
 
 /* Genie framework classes and tools */
