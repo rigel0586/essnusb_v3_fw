@@ -6,10 +6,12 @@ set(core_headers
             detector/IDetector.hpp
             detector/EsbDetectorConstructor.hpp
             hit/EsbG4Hit.h
-            physicsList/ESSnusbPhysicsList.hpp)
+            physicsList/ESSnusbPhysicsList.hpp
+            io/EsbIO.hpp)
 
 target_sources(${core_Target} PUBLIC 
             physicsList/ESSnusbPhysicsList.cpp
-            detector/EsbDetectorConstructor.cpp)
+            detector/EsbDetectorConstructor.cpp
+            io/EsbIO.cpp)
 
 LIBRARY_FOOTER(${core_Target} ${core_headers})

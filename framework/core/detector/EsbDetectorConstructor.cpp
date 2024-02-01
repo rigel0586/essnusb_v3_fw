@@ -15,8 +15,10 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 {
     for(IDetector* d : fDetectors)
     {
-        // TODO
+        d->ConstructGeometry(); // Every detector constructs its volumes and add it to the Top volume
     }
+
+    // TODO add export import from GDML
 }
 
 void EsbDetectorConstructor::AddDetector(IDetector* d)
