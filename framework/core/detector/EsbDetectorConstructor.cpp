@@ -22,7 +22,7 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 void EsbDetectorConstructor::AddDetector(IDetector* d)
 {
     if(d != nullptr)
-        fDetectors.emplace_back(d):
+        fDetectors.emplace_back(d);
 }
 
 }

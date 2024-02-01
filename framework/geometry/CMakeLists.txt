@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 
 set(Geometry_Target essnusb_geometry)
 
-set(Geometry_Header #FgdDetector.h
+set(Geometry_Header SuperFGD/FgdDetector.h
                             SuperFGD/EsbSuperFGD/EsbCubeScintilatorConstructor.h
                             SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h
                             SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h
@@ -14,7 +14,7 @@ set(Geometry_Header #FgdDetector.h
 add_library(${Geometry_Target} SHARED)
 
 target_sources(${Geometry_Target} PUBLIC 
-            #FgdDetector.cxx
+            SuperFGD/FgdDetector.cxx
             SuperFGD/EsbSuperFGD/EsbCubeScintilatorConstructor.cxx
             SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.cxx
             SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.cxx

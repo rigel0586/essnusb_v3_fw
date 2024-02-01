@@ -6,15 +6,18 @@
 #include "TGeoVolume.h"
 #include <string>
 
+namespace esbroot {
+namespace esbcore {
+
 class IDetector
 {
     public:
         virtual ~IDetector() = default;
 
-        virtual TGeoVolume* getVolume() = 0;
-        virtual void getPosition(double& posX, double& posY, double& posZ) = 0;
-        virtual std::string& getName() = 0;
+        virtual void ConstructGeometry() = 0;
 };
 
+}
+}
 
 #endif

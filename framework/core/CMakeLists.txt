@@ -1,16 +1,15 @@
-#add_subdirectory(actions)
-#add_subdirectory(detectorConstruction)
-#add_subdirectory(physicsList)
-
 set(core_Target essnusb_root_core)
 
 add_library(${core_Target} SHARED)
 
 set(core_headers 
-            physicsList/ESSnusbPhysicsList.hpp
-            hit/EsbG4Hit.h)
+            detector/IDetector.hpp
+            detector/EsbDetectorConstructor.hpp
+            hit/EsbG4Hit.h
+            physicsList/ESSnusbPhysicsList.hpp)
 
 target_sources(${core_Target} PUBLIC 
-            physicsList/ESSnusbPhysicsList.cpp)
+            physicsList/ESSnusbPhysicsList.cpp
+            detector/EsbDetectorConstructor.cpp)
 
 LIBRARY_FOOTER(${core_Target} ${core_headers})
