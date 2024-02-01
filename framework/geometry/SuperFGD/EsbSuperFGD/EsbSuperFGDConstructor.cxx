@@ -72,7 +72,16 @@ TGeoVolume* SuperFGDConstructor::Construct()
   cube.Construct();
   fSensVol = cube.GetSensitiveVolume();
 
-  TGeoMedium *air = gGeoManager->GetMedium(esbroot::geometry::superfgd::materials::air);
+  // air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
+  TGeoElementTable *table = gGeoManager->GetElementTable();
+  TGeoMixture *airMix = new TGeoMixture(esbroot::geometry::superfgd::materials::air,3, 1.205e-3);
+  TGeoElement *nitrogen = table->GetElement(7);
+  TGeoElement *oxygen = table->GetElement(8);
+  TGeoElement *argon = table->GetElement(18);
+  airMix->AddElement(nitrogen, 0.755);
+  airMix->AddElement(oxygen, 0.231);
+  airMix->AddElement(argon, 0.014);
+  TGeoMedium* air = new TGeoMedium("airMedium", materials::GetNextIndex(), airMix);
   //========================================
   // Repeat the volume in X
   TGeoBBox* rowX = new TGeoBBox("rowX", TotWidth/2, fEdge/2, fEdge/2);
