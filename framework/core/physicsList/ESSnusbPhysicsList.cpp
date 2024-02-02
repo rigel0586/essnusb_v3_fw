@@ -7,9 +7,7 @@
 #include "G4MesonConstructor.hh"
 #include "G4ShortLivedConstructor.hh"
 
-namespace esbroot {
-namespace esbcore {
-namespace physicslist {
+namespace physicsList {
 
 ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
 {
@@ -60,6 +58,4 @@ void ESSnusbPhysicsList::SetCuts() {
   SetCutsWithDefault();
 }
 
-} // namespace physicslist
-} // namespace esbcore
-} // namespace esbroot
+} // namespace physicsList

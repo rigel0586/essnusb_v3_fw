@@ -1,7 +1,6 @@
 #include "EsbDetectorConstructor.hpp"
 
-namespace esbroot {
-namespace esbcore {
+namespace detector {
 
 EsbDetectorConstructor::EsbDetectorConstructor()
 {
@@ -27,6 +26,5 @@ void EsbDetectorConstructor::AddDetector(IDetector* d)
         fDetectors.emplace_back(d);
 }
 
-}
 }
 

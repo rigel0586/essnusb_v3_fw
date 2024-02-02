@@ -9,8 +9,7 @@
 #include "G4ThreeVector.hh"
 
 
-namespace esbroot {
-namespace esbcore {
+namespace hit {
 
 template<typename Data>
 class EsbG4Hit : public G4VHit
@@ -91,8 +90,7 @@ inline void EsbG4Hit<Data>::operator delete(void* aHit)
   EsbG4HitAllocator<Data>->FreeSingle((EsbG4Hit<Data>*) aHit);
 }
 
-} // namespace esbcore
-} // namespace esbroot
+} // namespace hit
 
 #endif
 

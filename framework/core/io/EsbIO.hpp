@@ -4,12 +4,12 @@
 #define EsbIO_hpp 1
 
 #include <string>
-#include "G4VPhysicalVolume.hh"
+//#include "G4VPhysicalVolume.hh"
+#include "TObject.h"
 
-namespace esbroot {
-namespace esbcore {
+//namespace io {
 
-class EsbIO
+class EsbIO : public TObject
 {
 public:
     EsbIO();
@@ -34,11 +34,10 @@ public:
     */
     static int ExportTGeoVolume(std::string path_to_file);
 
-    static G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
+    //static G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
 
-private:
+    ClassDef(EsbIO,2);
 };
 
-}
-}
+//}
 #endif

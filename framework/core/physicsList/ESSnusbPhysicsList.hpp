@@ -33,9 +33,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4LossTableManager.hh"
 
-namespace esbroot {
-namespace esbcore {
-namespace physicslist {
+namespace physicsList {
 
 class ESSnusbPhysicsList : public G4VModularPhysicsList {
 public:
@@ -49,8 +47,6 @@ public:
   // Sets a cut value for all particle types in the particle table.
 };
 
-} // namespace physicslist
-} // namespace esbcore
-} // namespace esbroot
+} // namespace physicsList
 
 #endif

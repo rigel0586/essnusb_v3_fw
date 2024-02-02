@@ -21,7 +21,7 @@
 namespace esbroot {
 
 namespace geometry {
-	class FgdDetector : public esbcore::IDetector
+	class FgdDetector : public detector::IDetector
 	{
 
 	  public:

@@ -6,8 +6,7 @@
 #include "TGeoVolume.h"
 #include <string>
 
-namespace esbroot {
-namespace esbcore {
+namespace detector {
 
 class IDetector
 {
@@ -17,7 +16,6 @@ class IDetector
         virtual void ConstructGeometry() = 0;
 };
 
-}
 }
 
 #endif
