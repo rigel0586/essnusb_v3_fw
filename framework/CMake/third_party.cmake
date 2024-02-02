@@ -77,17 +77,15 @@ macro(third_party_links project_to_link)
 endmacro()
 
 macro(GENERATE_LIBRARY target_name target_headers)
-    ROOT_GENERATE_DICTIONARY( G___${target_name} ${target_headers}
+    ROOT_GENERATE_DICTIONARY( G___${target_name} "${target_headers}"
                          LINKDEF 
                          MODULE ${target_name} )
 endmacro()
     
-macro(LIBRARY_FOOTER target_name target_headers)
+macro(LIBRARY_FOOTER target_name)
     third_party_links(${target_name})
-
     target_include_directories(${target_name} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR})
-
-    GENERATE_LIBRARY(${target_name} ${target_headers})
+    GENERATE_LIBRARY(${target_name} "${ARGN}")
 endmacro()
 
 macro(UT_libs target_name)

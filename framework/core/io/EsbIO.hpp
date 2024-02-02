@@ -1,9 +1,10 @@
 #pragma once
 
-#ifndef EsbGdml_hpp
-#define EsbGdml_hpp 1
+#ifndef EsbIO_hpp
+#define EsbIO_hpp 1
 
 #include <string>
+#include "G4VPhysicalVolume.hh"
 
 namespace esbroot {
 namespace esbcore {
@@ -31,7 +32,9 @@ public:
         ///    NOTE that to use this option, the PYTHONPATH must be defined like
         ///      export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/geom/gdml
     */
-    int ExportTGeoVolume(std::string path_to_file);
+    static int ExportTGeoVolume(std::string path_to_file);
+
+    static G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
 
 private:
 };
