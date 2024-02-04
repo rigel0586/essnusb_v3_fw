@@ -5,7 +5,7 @@
 
 #include <string>
 #include "TObject.h"
-//#include <G4VPhysicalVolume.hh>
+#include <G4VPhysicalVolume.hh>
 
 namespace esbroot {
 namespace core {
@@ -36,7 +36,7 @@ public:
     */
     int ExportTGeoVolume(std::string path_to_file);
 
-    //G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
+    G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
 
 private:
 

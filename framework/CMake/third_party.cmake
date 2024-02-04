@@ -65,6 +65,7 @@ macro(third_party_links project_to_link)
                                 ${pythia6_includes}
                                 ${genie_includes}
                                 ${PathFinder_INCLUDE_DIR}
+                                ${Geant4_INCLUDE_DIRS}
                                 ${ROOT_INCLUDE_DIRS})
 
     target_link_libraries(${project_to_link} ${scope_type}

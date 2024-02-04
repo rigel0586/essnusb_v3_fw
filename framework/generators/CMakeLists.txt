@@ -9,8 +9,11 @@ set(Generator_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/GenieGenerator.h
 
 add_library(${Generators_Target} SHARED)
 
+target_include_directories(${Generators_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 target_sources(${Generators_Target} PUBLIC 
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/GenieGenerator.cxx
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenieGenerator.cxx)
 
-LIBRARY_FOOTER(${Generators_Target} ${Generator_Header})
+
+LIBRARY_FOOTER(${Generators_Target} ${CMAKE_CURRENT_SOURCE_DIR}/GeneratorsLinkDef.h  "${Generator_Header}")
