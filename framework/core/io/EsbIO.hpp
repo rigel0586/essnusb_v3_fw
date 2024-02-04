@@ -4,10 +4,12 @@
 #define EsbIO_hpp 1
 
 #include <string>
-//#include "G4VPhysicalVolume.hh"
 #include "TObject.h"
+//#include <G4VPhysicalVolume.hh>
 
-//namespace io {
+namespace esbroot {
+namespace core {
+namespace io {
 
 class EsbIO : public TObject
 {
@@ -32,12 +34,16 @@ public:
         ///    NOTE that to use this option, the PYTHONPATH must be defined like
         ///      export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/geom/gdml
     */
-    static int ExportTGeoVolume(std::string path_to_file);
+    int ExportTGeoVolume(std::string path_to_file);
 
-    //static G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
+    //G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
 
-    ClassDef(EsbIO,2);
+private:
+
+    ClassDef(EsbIO, 2);
 };
 
-//}
+} // namespace io
+} // namespace core
+} // namespace esbroot
 #endif

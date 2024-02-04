@@ -13,6 +13,8 @@ set(GOOGLE_CONFIG "${FW_BASE}/googletest/install/lib/cmake/GTest/")
 set(FAIRROOT_CONFIG "${FW_BASE}/fairlogger/install/lib/cmake/FairLogger-1.11.1/")
 set(PATHFINDER_CONFIG "${FW_BASE}/pathfinder/install/")
 
+set(ROOT_ROOTCLING_DIR "${FW_BASE}/cern_root/install/lib")
+
 
 find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
 #add ROOT macros to have ROOT_GENERATE_DICTIONARY available
@@ -76,16 +78,25 @@ macro(third_party_links project_to_link)
                                     ${PathFinder_LIBRARIES})
 endmacro()
 
-macro(GENERATE_LIBRARY target_name target_headers)
+macro(GENERATE_LIBRARY target_name rootLinkdef target_headers)
     ROOT_GENERATE_DICTIONARY( G___${target_name} "${target_headers}"
-                         LINKDEF 
+                         LINKDEF ${rootLinkdef}
                          MODULE ${target_name} )
 endmacro()
     
-macro(LIBRARY_FOOTER target_name)
+macro(LIBRARY_FOOTER target_name rootLinkdef)
     third_party_links(${target_name})
-    target_include_directories(${target_name} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR})
-    GENERATE_LIBRARY(${target_name} "${ARGN}")
+
+    # Remove previous .pcm module files. This is done because once created the module is not deleted. Thus implementations are not updated
+    # The .pcm will be recreated when .C script is invoked with the wanted class from that library
+    get_filename_component(PCM_FILE ${ROOT_ROOTCLING_DIR}/${target_name}.pcm ABSOLUTE)
+   
+    if(EXISTS "${PCM_FILE}")
+            message(WARNING " Deleteing previous pcm file at: ${PCM_FILE} ")
+            file(REMOVE ${PCM_FILE})
+    endif()
+
+    GENERATE_LIBRARY(${target_name} "${rootLinkdef}" "${ARGN}")
 endmacro()
 
 macro(UT_libs target_name)

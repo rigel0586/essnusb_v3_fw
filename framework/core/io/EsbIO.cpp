@@ -1,9 +1,13 @@
 #include "EsbIO.hpp"
+ClassImp(esbroot::core::io::EsbIO)
+
 #include "TGeoManager.h"
 //#include "G4GDMLParser.hh"
 
+namespace esbroot {
+namespace core {
+namespace io {
 
-//namespace io {
 
 EsbIO::EsbIO()
 {
@@ -25,5 +29,6 @@ int EsbIO::ExportTGeoVolume(std::string path_to_file){
 //    return parser.GetWorldVolume();
 //}
 
-//}
-
+} // namespace io
+} // namespace core
+} // namespace esbroot
