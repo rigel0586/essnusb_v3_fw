@@ -17,11 +17,9 @@
 
 #include <set>
 
-
 namespace esbroot {
-
 namespace geometry {
-	class FgdDetector : public detector::IDetector
+	class FgdDetector : public esbroot::core::detector::IDetector
 	{
 
 	  public:

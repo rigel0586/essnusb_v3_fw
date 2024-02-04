@@ -33,9 +33,13 @@
 #include "G4SystemOfUnits.hh"
 #include "G4LossTableManager.hh"
 
+#include "TObject.h"
+
+namespace esbroot {
+namespace core {
 namespace physicsList {
 
-class ESSnusbPhysicsList : public G4VModularPhysicsList {
+class ESSnusbPhysicsList : public TObject, public G4VModularPhysicsList {
 public:
   ESSnusbPhysicsList();
   virtual ~ESSnusbPhysicsList();
@@ -45,8 +49,12 @@ public:
 
   virtual void SetCuts() override;
   // Sets a cut value for all particle types in the particle table.
+private:
+
+    ClassDef(ESSnusbPhysicsList, 2);
 };
 
 } // namespace physicsList
-
+} // namespace core
+} // namespace esbroot
 #endif

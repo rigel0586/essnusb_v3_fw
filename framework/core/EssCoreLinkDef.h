@@ -9,16 +9,12 @@
 #pragma link C++ namespace esbroot+;
 #pragma link C++ namespace esbroot::core+;
 #pragma link C++ namespace esbroot::core::io+;
+#pragma link C++ namespace esbroot::core::physicsList+;
+#pragma link C++ namespace esbroot::core::detector+;
 
 #pragma link C++ class esbroot::core::io::EsbIO+;
-
-//#pragma link C++ class io::EsbIO+;
-//#pragma link C++ class physicslist::ESSnusbPhysicsList+;
-//#pragma link C++ class detector::EsbDetectorConstructor+;
-//#pragma link C++ class detector::IDetector+;
-
-
-
+#pragma link C++ class esbroot::core::physicsList::ESSnusbPhysicsList+;
+#pragma link C++ class esbroot::core::detector::EsbDetectorConstructor+;
 
 #endif
 

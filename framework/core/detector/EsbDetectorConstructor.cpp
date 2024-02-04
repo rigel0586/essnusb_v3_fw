@@ -1,5 +1,8 @@
 #include "EsbDetectorConstructor.hpp"
+ClassImp(esbroot::core::detector::EsbDetectorConstructor)
 
+namespace esbroot {
+namespace core {
 namespace detector {
 
 EsbDetectorConstructor::EsbDetectorConstructor()
@@ -18,6 +21,7 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
     }
 
     // TODO add export import from GDML
+    return nullptr;
 }
 
 void EsbDetectorConstructor::AddDetector(IDetector* d)
@@ -26,5 +30,7 @@ void EsbDetectorConstructor::AddDetector(IDetector* d)
         fDetectors.emplace_back(d);
 }
 
-}
+} // namespace detector
+} // namespace core
+} // namespace esbroot
 

@@ -1,4 +1,5 @@
 #include "ESSnusbPhysicsList.hpp"
+ClassImp(esbroot::core::physicsList::ESSnusbPhysicsList)
 
 #include "G4BaryonConstructor.hh"
 #include "G4BosonConstructor.hh"
@@ -7,6 +8,8 @@
 #include "G4MesonConstructor.hh"
 #include "G4ShortLivedConstructor.hh"
 
+namespace esbroot {
+namespace core {
 namespace physicsList {
 
 ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
@@ -59,3 +62,5 @@ void ESSnusbPhysicsList::SetCuts() {
 }
 
 } // namespace physicsList
+} // namespace core
+} // namespace esbroot
