@@ -15,6 +15,8 @@
 #pragma link C++ namespace esbroot::geometry::superfgd::DP+;
 
 #pragma link C++ class esbroot::geometry::superfgd::CubeScintConstructor+;
+#pragma link C++ class esbroot::geometry::superfgd::ThreeVector+;
+#pragma link C++ class esbroot::geometry::superfgd::RotMatrix+;
 #pragma link C++ class esbroot::geometry::superfgd::FgdDetectorParameters+;
 #pragma link C++ class esbroot::geometry::superfgd::SuperFGDConstructor+;
 #pragma link C++ class esbroot::geometry::superfgd::SuperFGDDetectorConstruction+;

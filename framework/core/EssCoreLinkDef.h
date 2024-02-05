@@ -15,6 +15,7 @@
 #pragma link C++ class esbroot::core::io::EsbIO+;
 #pragma link C++ class esbroot::core::physicsList::ESSnusbPhysicsList+;
 #pragma link C++ class esbroot::core::detector::EsbDetectorConstructor+;
+#pragma link C++ class esbroot::core::detector::IDetector+;
 
 #endif
 

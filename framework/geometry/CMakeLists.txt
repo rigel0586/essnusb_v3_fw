@@ -24,8 +24,8 @@ target_sources(${Geometry_Target} PUBLIC
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD
-                                                ${CLHEP_INCLUDE_DIRS} 
-                                                ${FairLogger_INCDIR}
 )
 
-GENERATE_LIBRARY_WITH_DEPENDENCY(${Geometry_Target} "${CMAKE_CURRENT_SOURCE_DIR}/GeometryLinkDef.h" EsbCore "${Geometry_Header}")
+LIBRARY_FOOTER(${Geometry_Target} ${CMAKE_CURRENT_SOURCE_DIR}/GeometryLinkDef.h "${Geometry_Header}")
+#GENERATE_LIBRARY_WITH_DEPENDENCY(${Geometry_Target} "${CMAKE_CURRENT_SOURCE_DIR}/GeometryLinkDef.h" EsbCore "${Geometry_Header}")
+
