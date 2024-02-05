@@ -1,4 +1,4 @@
-set(core_Target EssCore)
+set(core_Target EsbCore)
 
 add_library(${core_Target} SHARED)
 

@@ -1,5 +1,7 @@
-#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "geometry/SuperFGD/EsbSuperFGD/Materials.h"
+#include "SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+ClassImp(esbroot::geometry::superfgd::FgdDetectorParameters)
+
+#include "SuperFGD/EsbSuperFGD/Materials.h"
 #include <exception>
 #include <fstream>
 

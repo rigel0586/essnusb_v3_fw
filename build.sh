@@ -163,6 +163,12 @@ cd ${fw_directory}
 cp -R ${dependencies_dir}/genie/log4cpp/install/lib ./log4cpp
 cp -R ${dependencies_dir}/genie/log4cpp/install/include ./log4cpp
 
+mkdir clhep
+cd ${fw_directory}
+cp -R ${dependencies_dir}/geant4/2.4.6.4/install/lib ./clhep
+cp -R ${dependencies_dir}/geant4/2.4.6.4/install/include ./clhep
+cp -R ${dependencies_dir}/geant4/2.4.6.4/install/bin ./clhep
+
 cd ${fw_directory}
 
 # Fairlogger

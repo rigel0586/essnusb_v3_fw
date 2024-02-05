@@ -1,9 +1,11 @@
-#include "geometry/SuperFGD/EsbSuperFGD/EsbCubeScintilatorConstructor.h"
-#include "geometry/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
+#include "SuperFGD/EsbSuperFGD/CubeScintConstructor.h"
+ClassImp(esbroot::geometry::superfgd::CubeScintConstructor)
 
-#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "geometry/SuperFGD/EsbSuperFGD/Materials.h"
-#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
+#include "SuperFGD/EsbSuperFGD/SuperFGDConstructor.h"
+
+#include "SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "SuperFGD/EsbSuperFGD/Materials.h"
+#include "SuperFGD/EsbSuperFGD/Names.h"
 
 #include "TGeoBBox.h"
 #include "TGeoCone.h"

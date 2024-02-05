@@ -18,7 +18,6 @@ namespace geometry {
 
 namespace superfgd {
 
-
 namespace DP
 {
     static const string  length_X = "length_X";

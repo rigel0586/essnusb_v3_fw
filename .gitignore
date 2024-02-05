@@ -7,4 +7,5 @@ log4cpp/
 pythia6/
 fairlogger/
 pathfinder/
+clhep/
 framework/build

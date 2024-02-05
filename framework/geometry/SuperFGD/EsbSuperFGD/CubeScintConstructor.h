@@ -29,20 +29,22 @@ namespace esbroot {
 namespace geometry {
 namespace superfgd {
 
- struct ThreeVector{
+struct ThreeVector : public TObject{
 
-   ThreeVector():X(0),Y(0),Z(0) {}
+      ThreeVector():X(0),Y(0),Z(0) {}
 
-   ThreeVector(double x, double y, double z):X(x),Y(y),Z(z) {}
+      ThreeVector(double x, double y, double z):X(x),Y(y),Z(z) {}
 
-   ~ThreeVector(){}
+      ~ThreeVector(){}
 
-   double X;
-   double Y;
-   double Z;
-   };
+      double X;
+      double Y;
+      double Z;
 
-struct RotMatrix{
+      ClassDef(ThreeVector, 3)
+};
+
+struct RotMatrix : public TObject {
 
    RotMatrix():rotateX(0),rotateY(0),rotateZ(0) {}
 
@@ -53,7 +55,9 @@ struct RotMatrix{
    double rotateX;
    double rotateY;
    double rotateZ;
-   };
+
+    ClassDef(RotMatrix, 3)
+};
 
 class CubeScintConstructor : public TObject
 {
@@ -295,7 +299,7 @@ private:
       //! pointer to the scintilator (sensitive) volume of the cube
       TGeoVolume* fcubeScntVol;
 
-      ClassDef(CubeScintConstructor,2)
+      ClassDef(CubeScintConstructor,3)
 };
 
 }   //superfgd

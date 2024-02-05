@@ -6,7 +6,9 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "geometry/SuperFGD/FgdDetector.h"
-#include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h" 
+ClassImp(esbroot::geometry::FgdDetector)
+
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h" 
 
 #include "TGeoManager.h"
 #include "TGraph.h"

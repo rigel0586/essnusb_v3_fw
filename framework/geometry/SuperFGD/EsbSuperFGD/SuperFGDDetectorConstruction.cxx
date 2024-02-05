@@ -1,6 +1,8 @@
-#include "geometry/SuperFGD/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "geometry/SuperFGD/EsbSuperFGD/EsbSuperFGDConstructor.h"
-#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
+#include "SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
+ClassImp(esbroot::geometry::superfgd::SuperFGDDetectorConstruction)
+
+#include "SuperFGD/EsbSuperFGD/SuperFGDConstructor.h"
+#include "SuperFGD/EsbSuperFGD/Names.h"
 
 #include <fairlogger/Logger.h>
 
