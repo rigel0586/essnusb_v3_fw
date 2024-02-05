@@ -15,6 +15,7 @@
 #include "TLorentzVector.h"
 #include "TRandom3.h"
 #include "TVector3.h"
+#include "TObject.h"
 
 #include "geometry/SuperFGD/EsbSuperFGD/EsbFgdDetectorParameters.h"
 

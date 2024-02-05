@@ -1,9 +1,10 @@
-#include "EsbGenerators/EsbSuperFGD/GenieFluxDriver.h"
+#include "generators/SuperFGD/GenieFluxDriver.h"
+ClassImp(esbroot::generators::superfgd::GenieFluxDriver)
 
 #include "Framework/ParticleData/PDGCodes.h"
-#include <Framework/Conventions/Units.h>
+#include "Framework/Conventions/Units.h"
 
-#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 #include <iostream>
 

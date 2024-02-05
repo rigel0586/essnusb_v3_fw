@@ -6,7 +6,8 @@
 #include <cmath>
 
 #include "TGeoManager.h"
-#include <TGeoVolume.h>
+#include "TGeoVolume.h"
+#include "TObject.h"
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4PhysicalConstants.hh"
@@ -26,7 +27,9 @@ namespace generators {
 namespace superfgd {
 
 
-class FgdGenieGenerator : public GenieGenerator, public G4VUserPrimaryGeneratorAction
+class FgdGenieGenerator : public GenieGenerator
+						, public G4VUserPrimaryGeneratorAction
+						, public TObject
 {
 public:
 

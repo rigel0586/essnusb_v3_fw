@@ -1,11 +1,13 @@
-#include "EsbGenerators/EsbSuperFGD/FgdGeomAnalyzer.h"
-#include "EsbGenerators/EsbSuperFGD/GenieFluxDriver.h"
-#include "EsbGeometry/EsbSuperFGD/Names.h"
+#include "generators/SuperFGD/FgdGeomAnalyzer.h"
+ClassImp(esbroot::generators::superfgd::FgdGeomAnalyzer)
+
+#include "generators/SuperFGD/GenieFluxDriver.h"
+#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 
 #include <TGeoNode.h>
 #include <TObjArray.h>
 
-#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 #include "Framework/ParticleData/PDGCodeList.h"
 #include "Framework/EventGen/GFluxI.h"

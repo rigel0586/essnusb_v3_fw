@@ -1,4 +1,6 @@
 #include "SuperFGD/FgdGenieGenerator.h"
+ClassImp(esbroot::generators::superfgd::FgdGenieGenerator)
+
 #include "SuperFGD/GenieFluxDriver.h"
 #include "SuperFGD/FgdGeomAnalyzer.h"
 #include "geometry/SuperFGD/EsbSuperFGD/Names.h"
@@ -109,45 +111,6 @@ Bool_t FgdGenieGenerator::Configure()
 
 	return true;
 }
-
-// TODO: Legacy for reference only
-//Bool_t FgdGenieGenerator::ReadEvent(FairPrimaryGenerator* primGen)
-//{
-//	if(fCurrentEvent < fGenieEvents.size())
-//	{
-//		genie::EventRecord& event = fGenieEvents[fCurrentEvent++];
-//	
-//		event.Print(std::cout);
-//		TLorentzVector* v = event.Vertex();
-//			
-//		// Fire other final state particles
-//		int nParticles = event.GetEntries();
-//		for (int i = 0; i < nParticles; i++) 
-//		{
-//			genie::GHepParticle *p = event.Particle(i);
-//			// kIStStableFinalState - Genie documentation: generator-level final state
-//			// particles to be tracked by the detector-level MC
-//			if ((p->Status() == genie::EGHepStatus::kIStStableFinalState)) 
-//			{
-//				if(IsPdgAllowed(p->Pdg()))
-//				{
-//					primGen->AddTrack(p->Pdg(), p->Px(), p->Py(), p->Pz(), v->X(), v->Y(), v->Z());
-//				}
-//			}
-//		}
-//
-//		if(!GlobalState.fOutputFileName.empty())
-//		{
-//			WriteToOutputFile(&event, false /* flaGkeepThrowing - check made in GenerateEvents*/);
-//		}
-//	}
-//	else
-//	{
-//		primGen->AddTrack(2112, 0, 0, 0.5, 0, 0, 5000); // just add a dummy track
-//	}
-//	
-//    return true;
-//}
 
 void FgdGenieGenerator::GeneratePrimaries(G4Event* anEvent)
 {

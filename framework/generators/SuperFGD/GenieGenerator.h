@@ -13,6 +13,7 @@
 #include "Tools/Geometry/ROOTGeomAnalyzer.h"
 
 #include <memory>
+#include "TObject.h"
 
 //~ using namespace std;
 //~ using namespace genie;
@@ -35,7 +36,7 @@ namespace superfgd {
 //! @authors Georgi Petkov
 //! @copyright ESSnuSB consortium. Released under GPLv3
 //! (<https://www.gnu.org/licenses/gpl-3.0.en.html>).
-class GenieGenerator {
+class GenieGenerator : public TObject {
 
 public:
   static struct GlobalState_t {
@@ -160,7 +161,7 @@ protected:
   virtual void WriteToOutputFile(const genie::EventRecord *event,
                                  Bool_t flaGkeepThrowing);
 
-  //ClassDef(GenieGenerator, 6)
+  ClassDef(GenieGenerator, 6)
 };
 
 } // namespace superfgd

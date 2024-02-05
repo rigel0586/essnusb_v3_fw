@@ -1,5 +1,5 @@
 #include "SuperFGD/GenieGenerator.h"
-// #include "EsbTools/UtilityDefs.h"
+ClassImp(esbroot::generators::superfgd::GenieGenerator)
 
 #include "TGeoManager.h" // for gGeoManager
 
