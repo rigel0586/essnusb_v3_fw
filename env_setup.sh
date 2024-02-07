@@ -35,6 +35,9 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${
 
 export PATH=$PATH:${ROOTSYS}/bin:${GENIE_install}/bin 
 
+export ESB_BASE_DIR=${fw_directory}/framework
+export WORKSPACE_DIR=${fw_directory}/framework/workspace
+
 #Preload Geant4 libs for ROOT scripting
 export LD_PRELOAD=${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so
 
