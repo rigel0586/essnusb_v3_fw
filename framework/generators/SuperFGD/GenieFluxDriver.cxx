@@ -90,6 +90,8 @@ GenieFluxDriver& GenieFluxDriver::operator=(const GenieFluxDriver& gf)
     this->fFlux = gf.fFlux;
     this->fmaxEvents = gf.fmaxEvents;
     this-> fUniformFlux = gf.fUniformFlux;
+
+    return *this;
 }
 
 bool GenieFluxDriver::GenerateNext(void)
