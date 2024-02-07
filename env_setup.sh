@@ -37,6 +37,7 @@ export PATH=$PATH:${ROOTSYS}/bin:${GENIE_install}/bin
 
 export ESB_BASE_DIR=${fw_directory}/framework
 export WORKSPACE_DIR=${fw_directory}/framework/workspace
+export GENIE_XCROSS=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-FNALsmall.xml
 
 #Preload Geant4 libs for ROOT scripting
 export LD_PRELOAD=${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so

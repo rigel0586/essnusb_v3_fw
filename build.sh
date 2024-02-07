@@ -25,7 +25,7 @@ genfit_dir=${base_directory}/${third_party_dir}/genfit
 genie_dir=${base_directory}/${third_party_dir}/genie
 googletest_dir=${base_directory}/${third_party_dir}/googletest
 fairlogger_dir=${base_directory}/${third_party_dir}/fairlogger
-framework_dir=${base_directory}/framework
+framework_dir=${fw_directory}/framework
 pathfinder_dir=${base_directory}/${third_party_dir}/PathFinder
 
 cd ${fw_directory}
@@ -153,6 +153,8 @@ gmake install
 genielib=${fw_directory}/genie/install/lib/libGFwAlg.so
 check_lib_exists ${genielib}
 
+cd ${fw_directory}
+
 mkdir pythia6
 cd ${fw_directory}
 cp -R ${dependencies_dir}/genie/pythia6/v6_428/lib ./pythia6
@@ -168,6 +170,16 @@ cd ${fw_directory}
 cp -R ${dependencies_dir}/geant4/2.4.6.4/install/lib ./clhep
 cp -R ${dependencies_dir}/geant4/2.4.6.4/install/include ./clhep
 cp -R ${dependencies_dir}/geant4/2.4.6.4/install/bin ./clhep
+
+cd ${fw_directory}
+
+cd ${framework_dir}/workspace
+mkdir genie
+cd genie
+mkdir download
+cd download
+curl -O https://scisoft.fnal.gov/scisoft/packages/genie_xsec/v3_04_00/genie_xsec-3.04.00-noarch-G1802a00000-k250-e1000.tar.bz2
+tar -xf genie_xsec-3.04.00-noarch-G1802a00000-k250-e1000.tar.bz2
 
 cd ${fw_directory}
 
