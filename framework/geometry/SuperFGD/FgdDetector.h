@@ -12,6 +12,7 @@
 #include "TLorentzVector.h"
 
 #include "core/detector/IDetector.hpp"
+#include "core/detector/ISDetector.hpp"
 #include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
 #include "data/SuperFGD/FgdDetectorPoint.h"
 
@@ -20,7 +21,8 @@
 namespace esbroot {
 namespace geometry {
 
-class FgdDetector : public esbroot::core::detector::IDetector
+class FgdDetector : public esbroot::core::detector::IDetector,
+					public esbroot::core::detector::ISDetector
 {
 public:
 	FgdDetector();
@@ -28,6 +30,8 @@ public:
 	virtual ~FgdDetector();
 
 	void ConstructGeometry() override;
+	void AddSensitiveDetector(G4VPhysicalVolume* topVolume) override;
+
 	void GetMagneticField(Double_t& Bx,Double_t& By, Double_t& Bz);
 	void GetMagneticFieldRegion(Double_t& xMin, Double_t& xMax,
 										Double_t& yMin, Double_t& yMax,
@@ -39,7 +43,7 @@ public:
 
 	TVector3 getDetectorPosition();
 
-	private:
+private:
 
 	// Detector position
 	double fposX;

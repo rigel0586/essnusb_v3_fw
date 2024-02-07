@@ -14,6 +14,8 @@ target_sources(${core_Target} PUBLIC
 set(core_headers ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbIO.hpp 
                  ${CMAKE_CURRENT_SOURCE_DIR}/physicsList/ESSnusbPhysicsList.hpp 
                  ${CMAKE_CURRENT_SOURCE_DIR}/detector/EsbDetectorConstructor.hpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/detector/IDetector.hpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/detector/ISDetector.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/simulation/EsbSimManager.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/simulation/EsbRunAction.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/simulation/EsbEventAction.hpp

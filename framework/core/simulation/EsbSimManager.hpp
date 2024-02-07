@@ -24,6 +24,8 @@ public:
     EsbSimManager();
     ~EsbSimManager();
 
+    detector::EsbDetectorConstructor* getDetectorConstructor(){return fDetectorConstructor;}
+
     void setNumberOfEvents(int n) {fEvents = n;}
     void setGenerator(G4VUserPrimaryGeneratorAction* g) {fGenerator = g;}
 

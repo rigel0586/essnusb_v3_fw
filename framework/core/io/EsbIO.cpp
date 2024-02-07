@@ -17,11 +17,11 @@ EsbIO::~EsbIO()
 {
 }
 
-int EsbIO::ExportTGeoVolume(std::string path_to_file){
+int EsbIO::ExportTGeoVolume(const std::string& path_to_file){
     return gGeoManager->Export(path_to_file.c_str());
 }
 
-G4VPhysicalVolume* EsbIO::readGdmlToGeant4(std::string gdml_file)
+G4VPhysicalVolume* EsbIO::readGdmlToGeant4(const std::string& gdml_file)
 {
     G4GDMLParser parser;
     parser.SetOverlapCheck(true);

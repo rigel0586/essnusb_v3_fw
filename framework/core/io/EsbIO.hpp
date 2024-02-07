@@ -34,9 +34,9 @@ public:
         ///    NOTE that to use this option, the PYTHONPATH must be defined like
         ///      export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/geom/gdml
     */
-    int ExportTGeoVolume(std::string path_to_file);
+    int ExportTGeoVolume(const std::string& path_to_file);
 
-    G4VPhysicalVolume* readGdmlToGeant4(std::string gdml_file);
+    G4VPhysicalVolume* readGdmlToGeant4(const std::string& gdml_file);
 
 private:
 

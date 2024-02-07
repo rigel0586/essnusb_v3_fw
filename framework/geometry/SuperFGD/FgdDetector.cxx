@@ -69,6 +69,11 @@ void FgdDetector::ConstructGeometry()
   top->AddNode(superFgdVol, 1, new TGeoTranslation(fposX, fposY, fposZ));
 }
 
+void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume)
+{
+    // TODO check for the sensitive volume
+}
+
 TVector3 FgdDetector::getDetectorPosition()
 {
     return  TVector3(fposX, fposY, fposZ);

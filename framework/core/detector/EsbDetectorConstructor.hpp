@@ -10,7 +10,10 @@
 #include "G4LogicalVolume.hh"
 #include "G4SDManager.hh"
 
+#include "EsbIO.hpp"
 #include "IDetector.hpp"
+#include "ISDetector.hpp"
+#include <string>
 
 namespace esbroot {
 namespace core {
@@ -26,9 +29,19 @@ public:
     G4VPhysicalVolume* Construct() override;
 
     void AddDetector(IDetector* d);
+    void AddSDetector(ISDetector* sd);
+
+    void setWorkingDir(const std::string& dirPath){fWorkDir = dirPath;}
+    void setGdmlFile(const std::string& fileName){fgdml = fileName;};
 
 private:
     std::vector<IDetector*> fDetectors;
+    std::vector<ISDetector*> fSDetectors;
+    
+    std::string fWorkDir{""};
+    std::string fgdml{"esbVolume.gdml"};
+
+    io::EsbIO fIo;
 
     ClassDef(EsbDetectorConstructor, 2);
 };
