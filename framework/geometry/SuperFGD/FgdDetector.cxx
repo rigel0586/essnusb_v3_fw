@@ -83,7 +83,6 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
     {
         G4VPhysicalVolume * daug = lv->GetDaughter(i);
         if(daug->GetName() == fCubeName){
-            G4SDManager::GetSDMpointer()->AddNewDetector(this);
             f_sd(daug->GetLogicalVolume(),this);
         }
         AddSensitiveDetector(daug, f_sd);

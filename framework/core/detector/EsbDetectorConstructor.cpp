@@ -40,6 +40,7 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 
 void EsbDetectorConstructor::SetSensitiveHandler(G4LogicalVolume* logVol, G4VSensitiveDetector* aSD)
 {
+    G4SDManager::GetSDMpointer()->AddNewDetector(aSD);
     G4VUserDetectorConstruction::SetSensitiveDetector(logVol, aSD);
 }
     
