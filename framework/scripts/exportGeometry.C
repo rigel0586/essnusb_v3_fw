@@ -1,4 +1,3 @@
-
 void exportGeometry(){
         esbroot::geometry::Cave* cave = new esbroot::geometry::Cave();
         gGeoManager->SetTopVolume(cave->getVolume());
@@ -19,5 +18,12 @@ void exportGeometry(){
 
         G4VPhysicalVolume* g4vol = tt->readGdmlToGeant4(path.c_str());
         std::cout << g4vol->GetName() << std::endl;
+
+        TGeoVolume* sens = fgd->GetSDVolume();
+        std::cout << "Sensitive volume name " << sens->GetName() << std::endl;
+
+        //tt->printG4Volume(g4vol);
 }
+
+
 

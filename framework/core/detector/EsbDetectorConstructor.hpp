@@ -34,6 +34,8 @@ public:
     void setWorkingDir(const std::string& dirPath){fWorkDir = dirPath;}
     void setGdmlFile(const std::string& fileName){fgdml = fileName;};
 
+    void SetSensitiveHandler(G4LogicalVolume* logVol, G4VSensitiveDetector* aSD);
+
 private:
     std::vector<IDetector*> fDetectors;
     std::vector<ISDetector*> fSDetectors;

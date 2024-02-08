@@ -38,6 +38,8 @@ public:
 
     G4VPhysicalVolume* readGdmlToGeant4(const std::string& gdml_file);
 
+    void printG4Volume(G4VPhysicalVolume* g4vol, int tabs = 1);
+
 private:
 
     ClassDef(EsbIO, 2);

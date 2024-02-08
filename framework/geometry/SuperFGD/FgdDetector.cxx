@@ -13,6 +13,8 @@ ClassImp(esbroot::geometry::FgdDetector)
 #include "TGeoManager.h"
 #include "TGraph.h"
 
+#include "G4SDManager.hh"
+
 #include <fairlogger/Logger.h>
 
 #include <iostream>
@@ -25,7 +27,7 @@ namespace geometry {
 
 //___________________________________________________________________
 FgdDetector::FgdDetector()
-  : fgdConstructor(""),
+  : G4VSensitiveDetector("FgdDetector") ,fgdConstructor(""),
     fposX(0),
     fposY(0),
     fposZ(0),
@@ -34,7 +36,7 @@ FgdDetector::FgdDetector()
 }
 
 FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, double posZ)
-  : fgdConstructor(geoConfigFile),
+  : G4VSensitiveDetector("FgdDetector"), fgdConstructor(geoConfigFile),
     fposX(posX),
     fposY(posY),
     fposZ(posZ),
@@ -61,6 +63,9 @@ void FgdDetector::ConstructGeometry()
     throw "SuperFGD was not constructed successfully!";
   }
 
+  fCubeName = cubeScnintilatorVol->GetName();
+  fCubeName+="_1"; // The export has added _1 to the name of the volume in question
+
   TGeoVolume *top = gGeoManager->GetTopVolume();
   if(!top)
   {
@@ -69,9 +74,20 @@ void FgdDetector::ConstructGeometry()
   top->AddNode(superFgdVol, 1, new TGeoTranslation(fposX, fposY, fposZ));
 }
 
-void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume)
+void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume, 
+                                        std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
 {
-    // TODO check for the sensitive volume
+    G4LogicalVolume* lv =	topVolume->GetLogicalVolume();
+    G4int limit = lv->GetNoDaughters();
+    for(int i = 0; i < limit; ++i)
+    {
+        G4VPhysicalVolume * daug = lv->GetDaughter(i);
+        if(daug->GetName() == fCubeName){
+            G4SDManager::GetSDMpointer()->AddNewDetector(this);
+            f_sd(daug->GetLogicalVolume(),this);
+        }
+        AddSensitiveDetector(daug, f_sd);
+    }
 }
 
 TVector3 FgdDetector::getDetectorPosition()
@@ -105,6 +121,22 @@ void FgdDetector::GetMagneticFieldRegion(Double_t& xMin, Double_t& xMax,
 
   zMin = fposZ - totalZ/2;
   zMax = fposZ + totalZ/2;
+}
+
+void FgdDetector::Initialize(G4HCofThisEvent*)
+{
+  // TODO
+}
+
+G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
+{
+  // TODO
+  return true;
+}
+
+void FgdDetector::EndOfEvent(G4HCofThisEvent*)
+{
+  // TODO
 }
 
 }

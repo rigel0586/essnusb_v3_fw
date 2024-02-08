@@ -16,13 +16,17 @@
 #include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
 #include "data/SuperFGD/FgdDetectorPoint.h"
 
+#include "G4VSensitiveDetector.hh"
+#include "G4VUserDetectorConstruction.hh"
+
 #include <set>
 
 namespace esbroot {
 namespace geometry {
 
 class FgdDetector : public esbroot::core::detector::IDetector,
-					public esbroot::core::detector::ISDetector
+					public esbroot::core::detector::ISDetector,
+					public G4VSensitiveDetector
 {
 public:
 	FgdDetector();
@@ -30,7 +34,8 @@ public:
 	virtual ~FgdDetector();
 
 	void ConstructGeometry() override;
-	void AddSensitiveDetector(G4VPhysicalVolume* topVolume) override;
+	void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
+								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
 
 	void GetMagneticField(Double_t& Bx,Double_t& By, Double_t& Bz);
 	void GetMagneticFieldRegion(Double_t& xMin, Double_t& xMax,
@@ -41,6 +46,12 @@ public:
 	TGeoVolume* GetVolume(){return fsuperFgdVol;}
 	TGeoVolume* GetSDVolume(){return fgdConstructor.GetSensitiveVolume();}
 
+	// G4VSensitiveDetector
+	void    Initialize(G4HCofThisEvent*);
+  	G4bool  ProcessHits(G4Step* astep,G4TouchableHistory* ROHist);
+  	void    EndOfEvent(G4HCofThisEvent*);
+	// ============================
+
 	TVector3 getDetectorPosition();
 
 private:
@@ -49,6 +60,8 @@ private:
 	double fposX;
 	double fposY;
 	double fposZ;
+
+	std::string fCubeName{""};
 
 	TGeoVolume* fsuperFgdVol;//!<!
 	esbroot::geometry::superfgd::SuperFGDDetectorConstruction    fgdConstructor;	   //! SuperFgd Detector Constructor

@@ -15,6 +15,8 @@ EsbDetectorConstructor::~EsbDetectorConstructor()
 
 G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 {
+    using namespace std::placeholders;
+
     for(IDetector* d : fDetectors)
     {
         d->ConstructGeometry(); // Every detector constructs its volumes and add it to the Top volume
@@ -25,13 +27,22 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 
     G4VPhysicalVolume* convertedWorld = fIo.readGdmlToGeant4(fileGdml);
 
+    std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)> f_sd = 
+                    std::bind(&EsbDetectorConstructor::SetSensitiveHandler, this, _1, _2);
+
     for(ISDetector* sd : fSDetectors)
     {
-        sd->AddSensitiveDetector(convertedWorld); // Every detector should find its sensitive volume
+        sd->AddSensitiveDetector(convertedWorld, f_sd); // Every detector should find its sensitive volume
     }
 
     return convertedWorld;
 }
+
+void EsbDetectorConstructor::SetSensitiveHandler(G4LogicalVolume* logVol, G4VSensitiveDetector* aSD)
+{
+    G4VUserDetectorConstruction::SetSensitiveDetector(logVol, aSD);
+}
+    
 
 void EsbDetectorConstructor::AddDetector(IDetector* d)
 {
