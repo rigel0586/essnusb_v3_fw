@@ -18,11 +18,11 @@ EsbSimManager::EsbSimManager()
 
 EsbSimManager::~EsbSimManager()
 {
-    if(fDetectorConstructor!=nullptr)
-        delete fDetectorConstructor;
+//     if(fDetectorConstructor!=nullptr)
+//         delete fDetectorConstructor;
 
-    if(fPhysicsList!=nullptr)
-        delete fPhysicsList;
+//     if(fPhysicsList!=nullptr)
+//         delete fPhysicsList;
 }
 
 void EsbSimManager::run()
@@ -55,7 +55,7 @@ void EsbSimManager::run()
     
     // job termination
     delete runManager;
-    delete actionInit;
+    // delete actionInit;
     return;
 }
 

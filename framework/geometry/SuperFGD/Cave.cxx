@@ -39,7 +39,12 @@ Cave::Cave()
     airMix->AddElement(argon, 0.014);
     TGeoMedium* air = new TGeoMedium("airCave", superfgd::materials::GetNextIndex(), airMix);
     
-    fCaveVol = new TGeoVolume("caveBox",caveBox, air);
+    fCaveVol = new TGeoVolume("caveVol",caveBox, air);
+}
+
+Cave::~Cave()
+{
+
 }
 
 } // namespace geometry

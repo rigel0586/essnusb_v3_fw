@@ -106,9 +106,8 @@ TGeoVolume* CubeScintConstructor::Construct()
   // Create fiber core volume
   // fiberCore        	-2  12.0107  1.008  6.  1.  1.05  9  10
   TGeoMixture *fiberCore= new TGeoMixture(materials::fiberCore ,3, 1.19);
-  fiberCladding->AddElement(carbon, 5);
-  fiberCladding->AddElement(hydrogen, 8);
-  fiberCladding->AddElement(oxygen, 2);
+  fiberCore->AddElement(carbon, 9);
+  fiberCore->AddElement(hydrogen, 10);
   TGeoMedium* fiberCoreMedium = new TGeoMedium("fiberCoreMedium", materials::GetNextIndex(), fiberCore);
   TGeoVolume* fiberXVolume = new TGeoVolume("fiberXVolume",fiberShapeX, fiberCoreMedium);
 
