@@ -30,7 +30,7 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
     std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)> f_sd = 
                     std::bind(&EsbDetectorConstructor::SetSensitiveHandler, this, _1, _2);
 
-    for(ISDetector* sd : fSDetectors)
+    for(IDetector* sd : fDetectors)
     {
         sd->AddSensitiveDetector(convertedWorld, f_sd); // Every detector should find its sensitive volume
     }
@@ -49,12 +49,6 @@ void EsbDetectorConstructor::AddDetector(IDetector* d)
 {
     if(d != nullptr)
         fDetectors.emplace_back(d);
-}
-
-void EsbDetectorConstructor::AddSDetector(ISDetector* sd)
-{
-    if(sd != nullptr)
-        fSDetectors.emplace_back(sd);
 }
 
 } // namespace detector

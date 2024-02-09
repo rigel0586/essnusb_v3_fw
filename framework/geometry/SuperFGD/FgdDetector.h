@@ -12,7 +12,6 @@
 #include "TLorentzVector.h"
 
 #include "core/detector/IDetector.hpp"
-#include "core/detector/ISDetector.hpp"
 #include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
 #include "data/SuperFGD/FgdDetectorPoint.h"
 
@@ -25,7 +24,6 @@ namespace esbroot {
 namespace geometry {
 
 class FgdDetector : public esbroot::core::detector::IDetector,
-					public esbroot::core::detector::ISDetector,
 					public G4VSensitiveDetector
 {
 public:

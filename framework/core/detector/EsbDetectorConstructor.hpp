@@ -12,7 +12,7 @@
 
 #include "EsbIO.hpp"
 #include "IDetector.hpp"
-#include "ISDetector.hpp"
+
 #include <string>
 
 namespace esbroot {
@@ -29,7 +29,6 @@ public:
     G4VPhysicalVolume* Construct() override;
 
     void AddDetector(IDetector* d);
-    void AddSDetector(ISDetector* sd);
 
     void setWorkingDir(const std::string& dirPath){fWorkDir = dirPath;}
     void setGdmlFile(const std::string& fileName){fgdml = fileName;};
@@ -38,7 +37,6 @@ public:
 
 private:
     std::vector<IDetector*> fDetectors;
-    std::vector<ISDetector*> fSDetectors;
     
     std::string fWorkDir{""};
     std::string fgdml{"esbVolume.gdml"};
