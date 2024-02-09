@@ -5,6 +5,7 @@
 
 #include <string>
 #include "TObject.h"
+#include "TGeoManager.h"
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4VPhysicalVolume.hh"
@@ -28,8 +29,9 @@ public:
 
     void setNumberOfEvents(int n) {fEvents = n;}
     void setGenerator(G4VUserPrimaryGeneratorAction* g) {fGenerator = g;}
-
+    void setTopVolume(TGeoVolume *vol);
     void setWorkingDir(const std::string& dirPath);
+
     void AddDetector(IDetector* d);
 
     void run();

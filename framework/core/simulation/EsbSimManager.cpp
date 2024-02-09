@@ -68,6 +68,11 @@ void EsbSimManager::setWorkingDir(const std::string& dirPath)
     fDetectorConstructor->setWorkingDir(dirPath);
 }
 
+void EsbSimManager::setTopVolume(TGeoVolume *vol)
+{
+    gGeoManager->SetTopVolume(vol);
+}
+
 void EsbSimManager::AddDetector(IDetector* d)
 {
     fDetectorConstructor->AddDetector(d);
