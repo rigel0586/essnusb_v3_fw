@@ -73,7 +73,7 @@ void EsbSimManager::setTopVolume(TGeoVolume *vol)
     gGeoManager->SetTopVolume(vol);
 }
 
-void EsbSimManager::AddDetector(IDetector* d)
+void EsbSimManager::AddDetector(detector::IDetector* d)
 {
     fDetectorConstructor->AddDetector(d);
 }
@@ -84,7 +84,7 @@ bool EsbSimManager::validate(){
         return false;
     }
 
-    if(fDetectorConstructor.getWorkingDir().empty()){
+    if(fDetectorConstructor->getWorkingDir().empty()){
         LOG(error) << "Working directory is not set";
         return false;
     }

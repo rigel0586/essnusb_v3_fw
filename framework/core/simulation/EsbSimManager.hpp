@@ -32,7 +32,7 @@ public:
     void setTopVolume(TGeoVolume *vol);
     void setWorkingDir(const std::string& dirPath);
 
-    void AddDetector(IDetector* d);
+    void AddDetector(detector::IDetector* d);
 
     void run();
 

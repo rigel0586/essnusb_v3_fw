@@ -130,6 +130,7 @@ void FgdDetector::Initialize(G4HCofThisEvent*)
 G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
 {
   // TODO
+  LOG(info) << "ProcessHits ";
   return true;
 }
 
