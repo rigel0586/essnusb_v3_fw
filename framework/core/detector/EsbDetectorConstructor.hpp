@@ -29,10 +29,11 @@ public:
     G4VPhysicalVolume* Construct() override;
 
     void AddDetector(IDetector* d);
-
     void setWorkingDir(const std::string& dirPath){fWorkDir = dirPath;}
-    void setGdmlFile(const std::string& fileName){fgdml = fileName;};
 
+    const std::string& getWorkingDir(){return fWorkDir;}
+
+    
     void SetSensitiveHandler(G4LogicalVolume* logVol, G4VSensitiveDetector* aSD);
 
 private:
@@ -42,6 +43,8 @@ private:
     std::string fgdml{"esbVolume.gdml"};
 
     io::EsbIO fIo;
+
+    void setGdmlFile(const std::string& fileName){fgdml = fileName;};
 
     ClassDef(EsbDetectorConstructor, 2);
 };

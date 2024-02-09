@@ -18,11 +18,12 @@ EsbSimManager::EsbSimManager()
 
 EsbSimManager::~EsbSimManager()
 {
-//     if(fDetectorConstructor!=nullptr)
-//         delete fDetectorConstructor;
+    // If added to geant4 manager, it will delete it
+    if(!isEsbDtrAdded && fDetectorConstructor!=nullptr)
+        delete fDetectorConstructor;
 
-//     if(fPhysicsList!=nullptr)
-//         delete fPhysicsList;
+    if(!isEsbPhListAdded && fPhysicsList!=nullptr)
+        delete fPhysicsList;
 }
 
 void EsbSimManager::run()
@@ -38,7 +39,10 @@ void EsbSimManager::run()
     try{
         // set mandatory initialization classes
         runManager->SetUserInitialization(fDetectorConstructor);
-        runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
+        isEsbDtrAdded = true;
+        
+        runManager->SetUserInitialization(fPhysicsList);
+        isEsbPhListAdded = true;
 
         actionInit = new EsbActionInitializer();
         actionInit->setGenerator(fGenerator);
@@ -59,9 +63,24 @@ void EsbSimManager::run()
     return;
 }
 
+void EsbSimManager::setWorkingDir(const std::string& dirPath)
+{
+    fDetectorConstructor->setWorkingDir(dirPath);
+}
+
+void EsbSimManager::AddDetector(IDetector* d)
+{
+    fDetectorConstructor->AddDetector(d);
+}
+
 bool EsbSimManager::validate(){
     if(fGenerator == nullptr){
         LOG(error) << "G4VUserPrimaryGeneratorAction is not set";
+        return false;
+    }
+
+    if(fDetectorConstructor.getWorkingDir().empty()){
+        LOG(error) << "Working directory is not set";
         return false;
     }
 

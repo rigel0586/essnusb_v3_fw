@@ -29,6 +29,9 @@ public:
     void setNumberOfEvents(int n) {fEvents = n;}
     void setGenerator(G4VUserPrimaryGeneratorAction* g) {fGenerator = g;}
 
+    void setWorkingDir(const std::string& dirPath);
+    void AddDetector(IDetector* d);
+
     void run();
 
 private:
@@ -38,7 +41,9 @@ private:
     int fEvents{0};
 
     detector::EsbDetectorConstructor* fDetectorConstructor{nullptr};
+    bool isEsbDtrAdded{false};
     physicsList::ESSnusbPhysicsList* fPhysicsList{nullptr};
+    bool isEsbPhListAdded{false};
 
     G4VUserPrimaryGeneratorAction* fGenerator{nullptr};
     
