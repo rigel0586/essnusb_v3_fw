@@ -26,6 +26,14 @@ EsbSimManager::~EsbSimManager()
         delete fPhysicsList;
 }
 
+
+void EsbSimManager::setLoggerSeverity(Severity sev){
+    // TODO fix severity
+    fair::Logger::SetConsoleSeverity(fair::Severity::info);
+    fair::Logger::SetConsoleColor(true);
+}
+
+
 void EsbSimManager::run()
 {
     if(!validate()){

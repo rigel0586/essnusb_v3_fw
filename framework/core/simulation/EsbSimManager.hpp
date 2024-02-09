@@ -19,13 +19,30 @@ namespace esbroot {
 namespace core {
 namespace simulation {
 
+enum class Severity : int
+{
+    nolog = 0,
+    trace = 1,
+    debug4 = 2,
+    debug3 = 3,
+    debug2 = 4,
+    debug1 = 5,
+    debug = 6,
+    detail = 7,
+    info = 8,
+    state = 9,
+    warn = 10,
+    important = 11,
+    alarm = 12,
+    error = 13,
+    fatal = 14,
+};
+
 class EsbSimManager : public TObject
 {
 public:
     EsbSimManager();
     ~EsbSimManager();
-
-    detector::EsbDetectorConstructor* getDetectorConstructor(){return fDetectorConstructor;}
 
     void setNumberOfEvents(int n) {fEvents = n;}
     void setGenerator(G4VUserPrimaryGeneratorAction* g) {fGenerator = g;}
@@ -33,6 +50,8 @@ public:
     void setWorkingDir(const std::string& dirPath);
 
     void AddDetector(detector::IDetector* d);
+
+    void setLoggerSeverity(Severity sev);
 
     void run();
 

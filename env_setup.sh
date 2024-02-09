@@ -39,6 +39,18 @@ export ESB_BASE_DIR=${fw_directory}/framework
 export WORKSPACE_DIR=${fw_directory}/framework/workspace
 export GENIE_XCROSS=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-FNALsmall.xml
 
+export G4NEUTRONHPDATA=${WORKSPACE_DIR}/geant4/download/G4NDL4.7
+export G4LEDATA=${WORKSPACE_DIR}/geant4/download/G4EMLOW8.5
+export G4LEVELGAMMADATA=${WORKSPACE_DIR}/geant4/download/PhotonEvaporation5.7
+export G4RADIOACTIVEDATA=${WORKSPACE_DIR}/geant4/download/RadioactiveDecay5.6
+export G4PARTICLEXSDATA=${WORKSPACE_DIR}/geant4/download/G4PARTICLEXS4.0
+export G4PIIDATA=${WORKSPACE_DIR}/geant4/download/G4PII1.3
+export G4REALSURFACEDATA=${WORKSPACE_DIR}/geant4/download/RealSurface2.2
+export G4SAIDXSDATA=${WORKSPACE_DIR}/geant4/download/G4SAIDDATA2.0
+export G4ABLADATA=${WORKSPACE_DIR}/geant4/download/G4ABLA3.3
+export G4INCLDATA=${WORKSPACE_DIR}/geant4/download/G4INCL1.2
+export G4ENSDFSTATEDATA=${WORKSPACE_DIR}/geant4/download/G4ENSDFSTATE2.3
+
 #Preload Geant4 libs for ROOT scripting
 export LD_PRELOAD=${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so
 
