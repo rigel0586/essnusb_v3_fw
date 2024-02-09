@@ -56,6 +56,9 @@ cd ${fw_directory}
 genielib=${fw_directory}/genie/install/lib/libGFwAlg.so
 check_lib_exists ${genielib}
 
+genie_xcross=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-FNALsmall.xml
+check_lib_exists ${genie_xcross}
+
 # Fairlogger
 fairlogger_lib=${fw_directory}/fairlogger/install/lib/libFairLogger.so
 check_lib_exists ${fairlogger_lib}
