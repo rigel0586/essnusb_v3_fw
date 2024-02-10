@@ -17,7 +17,7 @@ pathfinder_dir=${base_directory}/${third_party_dir}/PathFinder
 
 cd ${fw_directory}
 
-export GENIE=${fw_directory}/genie/build/genie
+export GENIE=${genie_dir}
 export GENIE_install=${fw_directory}/genie/install
 export ROOTSYS=${fw_directory}/cern_root/install
 export PATH=$PATH:${fw_directory}/cern_root/install/bin
