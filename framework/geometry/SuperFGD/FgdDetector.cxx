@@ -82,7 +82,8 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
 {
 
     std::vector<G4VPhysicalVolume*> sdVolumes;
-    utility::Utility::findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    utility::Utility ut;
+    ut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
 
     for(int i = 0; i < sdVolumes.size(); ++i)
     {

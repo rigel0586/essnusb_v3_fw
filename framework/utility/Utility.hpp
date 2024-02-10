@@ -32,7 +32,7 @@ class Utility : public TObject
   
   Utility();
   
-  static void findVolume(const std::string& searchName
+  void findVolume(const std::string& searchName
                     , G4VPhysicalVolume* topVolume
                     , std::vector<G4VPhysicalVolume*>& foundVols
                     , VolumeSearchType searchtype );

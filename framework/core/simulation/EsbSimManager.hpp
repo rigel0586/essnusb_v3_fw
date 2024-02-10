@@ -3,6 +3,9 @@
 #ifndef EsbSimManager_hpp
 #define EsbSimManager_hpp 1
 
+#include <vector>
+#include <string>
+
 #include <string>
 #include "TObject.h"
 #include "TGeoManager.h"
@@ -11,6 +14,7 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4RunManagerFactory.hh"
 #include "G4UImanager.hh"
+#include "G4RunManager.hh"
 
 #include "ESSnusbPhysicsList.hpp"
 #include "EsbDetectorConstructor.hpp"
@@ -58,15 +62,13 @@ public:
 private:
 
     bool validate();
-
     int fEvents{0};
-
-    detector::EsbDetectorConstructor* fDetectorConstructor{nullptr};
-    bool isEsbDtrAdded{false};
-    physicsList::ESSnusbPhysicsList* fPhysicsList{nullptr};
-    bool isEsbPhListAdded{false};
-
+    
+    std::vector<detector::IDetector*> fDetectors;
+    std::string fWorkindDir{""};
     G4VUserPrimaryGeneratorAction* fGenerator{nullptr};
+
+    G4RunManager* fRunManager{nullptr};
     
     ClassDef(EsbSimManager, 2);
 };

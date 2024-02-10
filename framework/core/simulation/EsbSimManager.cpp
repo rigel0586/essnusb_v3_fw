@@ -12,18 +12,17 @@ namespace simulation {
 
 EsbSimManager::EsbSimManager()
 {
-    fDetectorConstructor = new detector::EsbDetectorConstructor();
-    fPhysicsList = new physicsList::ESSnusbPhysicsList();
+    fRunManager = G4RunManagerFactory::CreateRunManager();
+    // set mandatory initialization classes
+    fRunManager->SetUserInitialization(new detector::EsbDetectorConstructor());
+    fRunManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
+
+    // set user actions
+    fRunManager->SetUserInitialization(new EsbActionInitializer());
 }
 
 EsbSimManager::~EsbSimManager()
 {
-    // If added to geant4 manager, it will delete it
-    if(!isEsbDtrAdded && fDetectorConstructor!=nullptr)
-        delete fDetectorConstructor;
-
-    if(!isEsbPhListAdded && fPhysicsList!=nullptr)
-        delete fPhysicsList;
 }
 
 
@@ -40,40 +39,40 @@ void EsbSimManager::run()
         return;
     }
 
-    EsbActionInitializer* actionInit = nullptr;
-    // construct the default run manager
-    auto runManager = G4RunManagerFactory::CreateRunManager();
-
     try{
-        // set mandatory initialization classes
-        runManager->SetUserInitialization(fDetectorConstructor);
-        isEsbDtrAdded = true;
-        
-        actionInit = new EsbActionInitializer();
-        actionInit->setGenerator(fGenerator);
-        runManager->SetUserInitialization(actionInit);
+        const G4VUserActionInitialization *  userAIL_const = fRunManager->GetUserActionInitialization();
+        G4VUserActionInitialization * userAIL = const_cast<G4VUserActionInitialization*>(userAIL_const);
+        EsbActionInitializer* esbAIL = static_cast<EsbActionInitializer*>(userAIL);
+        esbAIL->setGenerator(fGenerator);
 
-        runManager->SetUserInitialization(fPhysicsList);
-        isEsbPhListAdded = true;
+        const G4VUserDetectorConstruction *  detecCtr_const = fRunManager->GetUserDetectorConstruction();
+        G4VUserDetectorConstruction * detecCtr = const_cast<G4VUserDetectorConstruction*>(detecCtr_const);
+        detector::EsbDetectorConstructor* esbCtr = static_cast<detector::EsbDetectorConstructor*>(detecCtr);
+        esbCtr->setWorkingDir(fWorkindDir);
+        for(detector::IDetector* d : fDetectors){
+            esbCtr->AddDetector(d);
+        }
+
 
         // initialize G4 kernel
-        runManager->Initialize();
+        fRunManager->Initialize();
         // start a run
-        runManager->BeamOn(fEvents);
+        fRunManager->BeamOn(fEvents);
     }
     catch(...){
         LOG(error) << "runManager encountered an error";
     }
     
     // job termination
-    delete runManager;
+    delete fRunManager;
+    fRunManager = nullptr;
     // delete actionInit;
     return;
 }
 
 void EsbSimManager::setWorkingDir(const std::string& dirPath)
 {
-    fDetectorConstructor->setWorkingDir(dirPath);
+    fWorkindDir = dirPath;
 }
 
 void EsbSimManager::setTopVolume(TGeoVolume *vol)
@@ -83,7 +82,7 @@ void EsbSimManager::setTopVolume(TGeoVolume *vol)
 
 void EsbSimManager::AddDetector(detector::IDetector* d)
 {
-    fDetectorConstructor->AddDetector(d);
+    fDetectors.emplace_back(d);
 }
 
 bool EsbSimManager::validate(){
@@ -92,7 +91,7 @@ bool EsbSimManager::validate(){
         return false;
     }
 
-    if(fDetectorConstructor->getWorkingDir().empty()){
+    if(fWorkindDir.empty()){
         LOG(error) << "Working directory is not set";
         return false;
     }
