@@ -76,7 +76,7 @@ TGeoVolume* SuperFGDConstructor::Construct()
 
   // air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
   TGeoElementTable *table = gGeoManager->GetElementTable();
-  TGeoMixture *airMix = new TGeoMixture(esbroot::geometry::superfgd::materials::air,3, 1.205e-3);
+  TGeoMixture *airMix = new TGeoMixture("cubeAirMix",3, 1.205e-3);
   TGeoElement *nitrogen = table->GetElement(7);
   TGeoElement *oxygen = table->GetElement(8);
   TGeoElement *argon = table->GetElement(18);

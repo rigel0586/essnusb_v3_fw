@@ -21,7 +21,7 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
     RegisterPhysics( new G4EmStandardPhysics(ver) );
 //    RegisterPhysics( new G4EmLivermorePhysics(ver) );
 //    RegisterPhysics( new G4EmPenelopePhysics(ver) );
-    RegisterPhysics( new G4EmLowEPPhysics(ver) );
+    // RegisterPhysics( new G4EmLowEPPhysics(ver) );
 
     // Synchroton Radiation & GN Physics
     RegisterPhysics( new G4EmExtraPhysics(ver) );

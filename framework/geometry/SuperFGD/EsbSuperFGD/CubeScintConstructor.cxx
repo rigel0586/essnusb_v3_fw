@@ -73,7 +73,7 @@ TGeoVolume* CubeScintConstructor::Construct()
   //=======================================================================================
   // Create the fiber hole along X
   //-----------------------------------
-  TGeoCone* fiberHoleX = new TGeoCone("FX", GetBase()/2, 0, GetHoleRadius(),0 ,GetHoleRadius());
+  TGeoCone* fiberHoleX = new TGeoCone("FX", GetBase()/2, 0, GetHoleRadius() ,0 ,GetHoleRadius());
 
   TGeoRotation* rotX = new TGeoRotation("rotX", 
                             fHoleRotX.rotateX,
@@ -89,7 +89,7 @@ TGeoVolume* CubeScintConstructor::Construct()
   locationX->RegisterYourself();
 
   // Create the fiber shape - the fiber shape is the contained within the fiber coating
-  TGeoCone* fiberShapeX = new TGeoCone("fiberShapeX", GetBase()/2, 0, GetFiberRadius(),0 ,GetFiberRadius());
+  TGeoCone* fiberShapeX = new TGeoCone("fiberShapeX", GetBase()/2, 0, GetFiberRadius() - 0.0495 ,0 ,GetFiberRadius() - 0.0495);
 
   // Create the fiber coating-> this is the hole minus the fiber itself
   TGeoCompositeShape* fiberXShapeCoat = new TGeoCompositeShape("fiberXShapeCoat","FX - fiberShapeX");
@@ -136,7 +136,7 @@ TGeoVolume* CubeScintConstructor::Construct()
   locationY->RegisterYourself();
 
   // Create the fiber shape - the fiber shape is the contained within the fiber coating
-  TGeoCone* fiberShapeY = new TGeoCone("fiberShapeY", GetHeight()/2, 0, GetFiberRadius(),0 ,GetFiberRadius());
+  TGeoCone* fiberShapeY = new TGeoCone("fiberShapeY", GetHeight()/2, 0, GetFiberRadius() - 0.0495 ,0 ,GetFiberRadius() - 0.0495);
 
   // Create the fiber coating-> this is the hole minus the fiber itself
   TGeoCompositeShape* fiberYShapeCoat = new TGeoCompositeShape("fiberYShapeCoat","FY - fiberShapeY");
@@ -173,7 +173,7 @@ TGeoVolume* CubeScintConstructor::Construct()
 
 
   // Create the fiber shape - the fiber shape is the contained within the fiber coating
-  TGeoCone* fiberShapeZ = new TGeoCone("fiberShapeZ", GetLength()/2, 0, GetFiberRadius(),0 ,GetFiberRadius());
+  TGeoCone* fiberShapeZ = new TGeoCone("fiberShapeZ", GetLength()/2, 0, GetFiberRadius() - 0.0495 ,0 ,GetFiberRadius() - 0.0495);
 
   // Create the fiber coating-> this is the hole minus the fiber itself
   TGeoCompositeShape* fiberZShapeCoat = new TGeoCompositeShape("fiberZShapeCoat","FZ - fiberShapeZ");

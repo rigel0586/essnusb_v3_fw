@@ -25,7 +25,7 @@ G4VPhysicalVolume* EsbIO::readGdmlToGeant4(const std::string& gdml_file)
 {
     G4GDMLParser parser;
     parser.SetOverlapCheck(true);
-    parser.Read(gdml_file.c_str());
+    parser.Read(gdml_file.c_str(), false);
     return parser.GetWorldVolume();
 }
 

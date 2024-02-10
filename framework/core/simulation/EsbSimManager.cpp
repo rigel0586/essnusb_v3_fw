@@ -66,7 +66,7 @@ void EsbSimManager::run()
     // job termination
     delete fRunManager;
     fRunManager = nullptr;
-    // delete actionInit;
+
     return;
 }
 
