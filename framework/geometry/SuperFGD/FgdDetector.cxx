@@ -9,6 +9,7 @@
 ClassImp(esbroot::geometry::FgdDetector)
 
 #include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h" 
+#include "utility/Utility.hpp" 
 
 #include "TGeoManager.h"
 #include "TGraph.h"
@@ -18,6 +19,8 @@ ClassImp(esbroot::geometry::FgdDetector)
 #include <fairlogger/Logger.h>
 
 #include <iostream>
+#include <vector>
+
 using std::cout;
 using std::endl;
 
@@ -77,15 +80,14 @@ void FgdDetector::ConstructGeometry()
 void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume, 
                                         std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
 {
-    G4LogicalVolume* lv =	topVolume->GetLogicalVolume();
-    G4int limit = lv->GetNoDaughters();
-    for(int i = 0; i < limit; ++i)
+
+    std::vector<G4VPhysicalVolume*> sdVolumes;
+    utility::Utility::findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+
+    for(int i = 0; i < sdVolumes.size(); ++i)
     {
-        G4VPhysicalVolume * daug = lv->GetDaughter(i);
-        if(daug->GetName() == fCubeName){
-            f_sd(daug->GetLogicalVolume(),this);
-        }
-        AddSensitiveDetector(daug, f_sd);
+      G4VPhysicalVolume * daug = sdVolumes[i];
+      f_sd(daug->GetLogicalVolume(),this);
     }
 }
 

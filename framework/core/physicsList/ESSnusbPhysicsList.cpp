@@ -19,8 +19,8 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
 
     // EM Physics
     RegisterPhysics( new G4EmStandardPhysics(ver) );
-    RegisterPhysics( new G4EmLivermorePhysics(ver) );
-    RegisterPhysics( new G4EmPenelopePhysics(ver) );
+//    RegisterPhysics( new G4EmLivermorePhysics(ver) );
+//    RegisterPhysics( new G4EmPenelopePhysics(ver) );
     RegisterPhysics( new G4EmLowEPPhysics(ver) );
 
     // Synchroton Radiation & GN Physics
@@ -33,7 +33,7 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
     RegisterPhysics( new G4IonPhysics(ver) );
 
     // Hadron physics
-    RegisterPhysics( new G4HadronElasticPhysics(ver) );
+//    RegisterPhysics( new G4HadronElasticPhysics(ver) );
     
     // Optical
     RegisterPhysics( new G4OpticalPhysics(ver));

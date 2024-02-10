@@ -49,12 +49,12 @@ void EsbSimManager::run()
         runManager->SetUserInitialization(fDetectorConstructor);
         isEsbDtrAdded = true;
         
-        runManager->SetUserInitialization(fPhysicsList);
-        isEsbPhListAdded = true;
-
         actionInit = new EsbActionInitializer();
         actionInit->setGenerator(fGenerator);
         runManager->SetUserInitialization(actionInit);
+
+        runManager->SetUserInitialization(fPhysicsList);
+        isEsbPhListAdded = true;
 
         // initialize G4 kernel
         runManager->Initialize();
