@@ -41,6 +41,17 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     sflux << "/neutrino_flux/essnusb_v1/nuFlux";
     std::string neutrinoFluxPath = sflux.str();
 
+    generators::superfgd::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
+    //File with cross-section splines (see: http://scisoft.fnal.gov/scisoft/packages/genie_xsec/)
+    std::string genieXCrossPath = gSystem->Getenv("GENIE_XCROSS");
+    generators::superfgd::GenieGenerator::GlobalState.fXsecSplineFileName = genieXCrossPath; 
+    // File containing interaction data
+    std::stringstream seventsData;
+    seventsData << gSystem->Getenv("WORKSPACE_DIR");
+    seventsData << "/simulation/eventsData.dat";
+    std::string eventsDataPath = seventsData.str();
+    generators::superfgd::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
+
     generators::superfgd::FgdGenieGenerator* partGen = new generators::superfgd::FgdGenieGenerator(
 		    fgdconfig.c_str()  //File with detector configuration
 		    , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed

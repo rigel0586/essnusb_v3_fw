@@ -26,6 +26,7 @@ FgdGenieGenerator::FgdGenieGenerator()
 {
     fparticleGun = new G4ParticleGun();
     fg4ParticleTable = G4ParticleTable::GetParticleTable();
+	Init();
 }
 
 FgdGenieGenerator::~FgdGenieGenerator()
@@ -58,6 +59,7 @@ FgdGenieGenerator::FgdGenieGenerator(const char* geoConfigFile
 {
     fparticleGun = new G4ParticleGun();
     fg4ParticleTable = G4ParticleTable::GetParticleTable();
+	Init();
 }
 
 
