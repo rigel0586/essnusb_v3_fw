@@ -32,10 +32,10 @@ private:
           ~G4Generator() = default;
 
           void 	GeneratePrimaries (G4Event *anEvent) override {
-            return fgenerator->IGeneratePrimaries(anEvent);
+                    if(fgenerator != nullptr) fgenerator->IGeneratePrimaries(anEvent);
           }
       private:
-          generator::IGenerator* fgenerator;
+          generator::IGenerator* fgenerator{nullptr};
     };
 
     G4Generator* fGenerator{nullptr};

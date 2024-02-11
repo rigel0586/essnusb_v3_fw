@@ -24,7 +24,6 @@ namespace superfgd {
 FgdGenieGenerator::FgdGenieGenerator()
 	: GenieGenerator()
 {
-    fparticleGun = new G4ParticleGun();
 }
 
 FgdGenieGenerator::~FgdGenieGenerator()
@@ -55,7 +54,6 @@ FgdGenieGenerator::FgdGenieGenerator(const char* geoConfigFile
 		, fUseUniformflux(uniformFlux)
 		, fKeepThrowingFluxNu(keepThrowingFluxNu)
 {
-    fparticleGun = new G4ParticleGun();
 }
 
 
@@ -110,13 +108,14 @@ Bool_t FgdGenieGenerator::Configure()
 	return true;
 }
 
-void FgdGenieGenerator::setG4ParticleTable(G4ParticleTable* pt)
-{
-	fg4ParticleTable = nullptr;
-}
-
 void FgdGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 {
+	if(fg4ParticleTable == nullptr)
+		fg4ParticleTable = G4ParticleTable::GetParticleTable();
+
+	if(fparticleGun == nullptr)
+		fparticleGun = new G4ParticleGun();
+
     if(fparticleGun==nullptr || fg4ParticleTable == nullptr) return;
 
 	if(!IsConfigured()){

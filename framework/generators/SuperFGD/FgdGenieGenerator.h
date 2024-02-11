@@ -62,7 +62,6 @@ public:
 	void UseFixVertex(Bool_t fv) {fUseFixedVertex = fv;}
 	void SetVertexPos(const TVector3& vp ) {fvertexPos = vp;}
 
-	void setG4ParticleTable(G4ParticleTable* pt) override;
     void IGeneratePrimaries(G4Event* anEvent) override;
     G4ParticleGun* GetParticleGun(){return fparticleGun;} 
 

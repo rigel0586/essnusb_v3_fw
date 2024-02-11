@@ -15,10 +15,6 @@ void IGenerator::IGeneratePrimaries(G4Event* anEvent)
 {
 }
 
-void IGenerator::setG4ParticleTable(G4ParticleTable* pt)
-{
-}
-
 } // namespace generator
 } // namespace core
 } // namespace esbroot

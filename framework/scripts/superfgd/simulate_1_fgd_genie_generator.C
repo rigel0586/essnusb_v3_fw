@@ -64,6 +64,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
             , false // fkeepThrowingFluxNu -> flag to GMCJDriver indicating to continue throwing a neutrino until it interacts or to stop if no interaction has occured 
       );
 
+    
     partGen->UseFixVertex(true);
 
     TVector3 verPosition(fgdPosition.X() ,fgdPosition.Y(), fgdPosition.Z());

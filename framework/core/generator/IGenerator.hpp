@@ -19,7 +19,6 @@ class IGenerator : public TObject
         virtual ~IGenerator() = default;
 
         virtual void IGeneratePrimaries(G4Event* anEvent);
-        virtual void setG4ParticleTable(G4ParticleTable* pt);
 
 private:
     ClassDef(IGenerator, 2);

@@ -32,22 +32,19 @@ void EsbSimManager::run()
         return;
     }
 
-    auto runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::Serial);
+    auto runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::SerialOnly);
     try{
         //runManager->SetVerboseLevel(10);
 
         // set mandatory initialization classes
-        runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
-        //runManager->InitializePhysics();
-
         runManager->SetUserInitialization(new detector::EsbDetectorConstructor(fWorkindDir, fDetectors));
-        
+        runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
+
         // set user actions
         runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator)); 
         
         // initialize G4 kernel
         runManager->Initialize();
-        //fIGenerator->setG4ParticleTable(G4ParticleTable::GetParticleTable());
         // start a run
         runManager->BeamOn(fEvents);
     }
