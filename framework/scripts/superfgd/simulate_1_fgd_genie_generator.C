@@ -70,7 +70,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     partGen->SetVertexPos(verPosition);
 
     //Add to list of generators
-    esbSim->setGenerator(static_cast<G4VUserPrimaryGeneratorAction*>(partGen));
+    esbSim->setGenerator(static_cast<core::generator::IGenerator*>(partGen));
 
     esbSim->run();
 }

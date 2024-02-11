@@ -14,6 +14,7 @@
 #include "IDetector.hpp"
 
 #include <string>
+#include <vector>
 
 namespace esbroot {
 namespace core {
@@ -22,7 +23,7 @@ namespace detector{
 class EsbDetectorConstructor : public TObject, public G4VUserDetectorConstruction
 {
 public:
-    EsbDetectorConstructor();
+    EsbDetectorConstructor(const std::string& workDir, std::vector<IDetector*>& detectors);
     ~EsbDetectorConstructor();
 
     // G4VUserDetectorConstruction

@@ -2,6 +2,7 @@
 #define ESBROOT_GENERATOR_FGD_GENIE_GENERATOR_H 1
 
 #include "GenieGenerator.h"
+#include "core/generator/IGenerator.hpp"
 
 #include <cmath>
 
@@ -28,7 +29,7 @@ namespace superfgd {
 
 
 class FgdGenieGenerator : public GenieGenerator
-						, public G4VUserPrimaryGeneratorAction
+						, public core::generator::IGenerator
 						, public TObject
 {
 public:
@@ -61,7 +62,8 @@ public:
 	void UseFixVertex(Bool_t fv) {fUseFixedVertex = fv;}
 	void SetVertexPos(const TVector3& vp ) {fvertexPos = vp;}
 
-    void GeneratePrimaries(G4Event* anEvent) override;
+	void setG4ParticleTable(G4ParticleTable* pt) override;
+    void IGeneratePrimaries(G4Event* anEvent) override;
     G4ParticleGun* GetParticleGun(){return fparticleGun;} 
 
 protected:

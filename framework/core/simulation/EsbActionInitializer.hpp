@@ -1,6 +1,8 @@
 #ifndef EsbActionInitializer_h
 #define EsbActionInitializer_h 1
 
+#include "core/generator/IGenerator.hpp"
+
 #include "TObject.h"
 
 #include "G4VUserPrimaryGeneratorAction.hh"
@@ -15,16 +17,30 @@ class EsbActionInitializer : public TObject,
 {
 public:
 
-  EsbActionInitializer();
+  EsbActionInitializer(generator::IGenerator* generator);
   ~EsbActionInitializer();
   
-  void Build() const;
-  void BuildForMaster() const;
-
-  void setGenerator(G4VUserPrimaryGeneratorAction* f){fGenerator = f;}
+  void Build() const override;
+  void BuildForMaster() const override;
 
 private:
-  G4VUserPrimaryGeneratorAction* fGenerator{nullptr};
+
+    class G4Generator : public G4VUserPrimaryGeneratorAction
+    {
+      public:
+          G4Generator(generator::IGenerator* generator) : fgenerator(generator) {}
+          ~G4Generator() = default;
+
+          void 	GeneratePrimaries (G4Event *anEvent) override {
+            return fgenerator->IGeneratePrimaries(anEvent);
+          }
+      private:
+          generator::IGenerator* fgenerator;
+    };
+
+    G4Generator* fGenerator{nullptr};
+
+    ClassDef(EsbActionInitializer, 2);
 };
 
 } // namespace simulation

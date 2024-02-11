@@ -12,13 +12,6 @@ namespace simulation {
 
 EsbSimManager::EsbSimManager()
 {
-    fRunManager = G4RunManagerFactory::CreateRunManager();
-    // set mandatory initialization classes
-    fRunManager->SetUserInitialization(new detector::EsbDetectorConstructor());
-    fRunManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
-
-    // set user actions
-    fRunManager->SetUserInitialization(new EsbActionInitializer());
 }
 
 EsbSimManager::~EsbSimManager()
@@ -39,34 +32,31 @@ void EsbSimManager::run()
         return;
     }
 
+    auto runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::Serial);
     try{
-        const G4VUserActionInitialization *  userAIL_const = fRunManager->GetUserActionInitialization();
-        G4VUserActionInitialization * userAIL = const_cast<G4VUserActionInitialization*>(userAIL_const);
-        EsbActionInitializer* esbAIL = static_cast<EsbActionInitializer*>(userAIL);
-        esbAIL->setGenerator(fGenerator);
+        //runManager->SetVerboseLevel(10);
 
-        const G4VUserDetectorConstruction *  detecCtr_const = fRunManager->GetUserDetectorConstruction();
-        G4VUserDetectorConstruction * detecCtr = const_cast<G4VUserDetectorConstruction*>(detecCtr_const);
-        detector::EsbDetectorConstructor* esbCtr = static_cast<detector::EsbDetectorConstructor*>(detecCtr);
-        esbCtr->setWorkingDir(fWorkindDir);
-        for(detector::IDetector* d : fDetectors){
-            esbCtr->AddDetector(d);
-        }
+        // set mandatory initialization classes
+        runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
+        //runManager->InitializePhysics();
 
-
+        runManager->SetUserInitialization(new detector::EsbDetectorConstructor(fWorkindDir, fDetectors));
+        
+        // set user actions
+        runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator)); 
+        
         // initialize G4 kernel
-        fRunManager->Initialize();
+        runManager->Initialize();
+        //fIGenerator->setG4ParticleTable(G4ParticleTable::GetParticleTable());
         // start a run
-        fRunManager->BeamOn(fEvents);
+        runManager->BeamOn(fEvents);
     }
     catch(...){
         LOG(error) << "runManager encountered an error";
     }
-    
-    // job termination
-    delete fRunManager;
-    fRunManager = nullptr;
 
+    // job termination
+    delete runManager;
     return;
 }
 
@@ -86,7 +76,7 @@ void EsbSimManager::AddDetector(detector::IDetector* d)
 }
 
 bool EsbSimManager::validate(){
-    if(fGenerator == nullptr){
+    if(fIGenerator == nullptr){
         LOG(error) << "G4VUserPrimaryGeneratorAction is not set";
         return false;
     }

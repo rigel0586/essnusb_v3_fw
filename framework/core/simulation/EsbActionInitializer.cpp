@@ -9,13 +9,15 @@ ClassImp(esbroot::core::simulation::EsbActionInitializer)
 #include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "generators/SuperFGD/FgdGenieGenerator.h"
+
 
 namespace esbroot {
 namespace core {
 namespace simulation {
 
-EsbActionInitializer::EsbActionInitializer() :
-  G4VUserActionInitialization()
+EsbActionInitializer::EsbActionInitializer(generator::IGenerator* generator) 
+  : G4VUserActionInitialization(), fGenerator(new G4Generator(generator))
 {;}
 
 EsbActionInitializer::~EsbActionInitializer()

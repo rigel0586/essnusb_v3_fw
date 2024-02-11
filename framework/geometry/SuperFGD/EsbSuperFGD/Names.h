@@ -15,7 +15,7 @@ namespace superfgd {
 namespace fgdnames 
 {
     static const char* cubeName = "CubeWithCoatingWhole"; // The name of the hole Cube - with scintilator, coating, fibers
-    static const char* superFGDName = "Esb/SuperFGD"; // name of the constructed detector volume
+    static const char* superFGDName = "EsbSuperFGD"; // name of the constructed detector volume
     static const char* scintilatorVolume = "cubeScntVol"; // name of just the scintilator volume in the cube
     static const char* coatingVolume = "cubeCoatingVol"; // name of just the scintilator volume in the cube
 }   // fgdnames

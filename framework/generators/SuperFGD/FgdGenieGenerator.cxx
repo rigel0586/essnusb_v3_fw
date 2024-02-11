@@ -1,5 +1,5 @@
 #include "SuperFGD/FgdGenieGenerator.h"
-ClassImp(esbroot::generators::superfgd::FgdGenieGenerator)
+//ClassImp(esbroot::generators::superfgd::FgdGenieGenerator)
 
 #include "SuperFGD/GenieFluxDriver.h"
 #include "SuperFGD/FgdGeomAnalyzer.h"
@@ -25,8 +25,6 @@ FgdGenieGenerator::FgdGenieGenerator()
 	: GenieGenerator()
 {
     fparticleGun = new G4ParticleGun();
-    fg4ParticleTable = G4ParticleTable::GetParticleTable();
-	Init();
 }
 
 FgdGenieGenerator::~FgdGenieGenerator()
@@ -58,8 +56,6 @@ FgdGenieGenerator::FgdGenieGenerator(const char* geoConfigFile
 		, fKeepThrowingFluxNu(keepThrowingFluxNu)
 {
     fparticleGun = new G4ParticleGun();
-    fg4ParticleTable = G4ParticleTable::GetParticleTable();
-	Init();
 }
 
 
@@ -104,7 +100,7 @@ Bool_t FgdGenieGenerator::Configure()
 
 	GenieGenerator::Configure();
 	fmcj_driver->KeepOnThrowingFluxNeutrinos(fKeepThrowingFluxNu);
-	GenerateEvents();
+	// GenerateEvents();
 	
 	if(useDefaultFlux && geomAnalyzer!=nullptr)
 	{
@@ -114,9 +110,18 @@ Bool_t FgdGenieGenerator::Configure()
 	return true;
 }
 
-void FgdGenieGenerator::GeneratePrimaries(G4Event* anEvent)
+void FgdGenieGenerator::setG4ParticleTable(G4ParticleTable* pt)
+{
+	fg4ParticleTable = nullptr;
+}
+
+void FgdGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 {
     if(fparticleGun==nullptr || fg4ParticleTable == nullptr) return;
+
+	if(!IsConfigured()){
+		Configure();
+	}
 
     while(true)
 	{

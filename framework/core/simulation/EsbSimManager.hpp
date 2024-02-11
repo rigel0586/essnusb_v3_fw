@@ -18,6 +18,7 @@
 
 #include "ESSnusbPhysicsList.hpp"
 #include "EsbDetectorConstructor.hpp"
+#include "IGenerator.hpp"
 
 namespace esbroot {
 namespace core {
@@ -49,7 +50,7 @@ public:
     ~EsbSimManager();
 
     void setNumberOfEvents(int n) {fEvents = n;}
-    void setGenerator(G4VUserPrimaryGeneratorAction* g) {fGenerator = g;}
+    void setGenerator(generator::IGenerator* g) {fIGenerator = g;}
     void setTopVolume(TGeoVolume *vol);
     void setWorkingDir(const std::string& dirPath);
 
@@ -66,9 +67,7 @@ private:
     
     std::vector<detector::IDetector*> fDetectors;
     std::string fWorkindDir{""};
-    G4VUserPrimaryGeneratorAction* fGenerator{nullptr};
-
-    G4RunManager* fRunManager{nullptr};
+    generator::IGenerator* fIGenerator{nullptr};
     
     ClassDef(EsbSimManager, 2);
 };
