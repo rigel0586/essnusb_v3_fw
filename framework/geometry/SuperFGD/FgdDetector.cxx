@@ -85,11 +85,18 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
     utility::Utility ut;
     ut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
 
-    for(int i = 0; i < sdVolumes.size(); ++i)
-    {
-      G4VPhysicalVolume * daug = sdVolumes[i];
-      f_sd(daug->GetLogicalVolume(),this);
+    // Add just one, the rest are the same.
+    if(!sdVolumes.empty()){
+        G4VPhysicalVolume * daug = sdVolumes[0];
+        f_sd(daug->GetLogicalVolume(),this);
     }
+
+    // for(int i = 0; i < sdVolumes.size(); ++i)
+    // {
+    //   G4VPhysicalVolume * daug = sdVolumes[i];
+    //   f_sd(daug->GetLogicalVolume(),this);
+    //   break;
+    // }
 }
 
 TVector3 FgdDetector::getDetectorPosition()

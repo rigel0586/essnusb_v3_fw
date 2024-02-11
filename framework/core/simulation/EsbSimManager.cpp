@@ -32,7 +32,7 @@ void EsbSimManager::run()
         return;
     }
 
-    auto runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::SerialOnly);
+    auto runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::Serial);
     try{
         //runManager->SetVerboseLevel(10);
 
@@ -43,8 +43,10 @@ void EsbSimManager::run()
         // set user actions
         runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator)); 
         
+
         // initialize G4 kernel
         runManager->Initialize();
+
         // start a run
         runManager->BeamOn(fEvents);
     }

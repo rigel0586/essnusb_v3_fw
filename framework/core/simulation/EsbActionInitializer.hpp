@@ -32,6 +32,8 @@ private:
           ~G4Generator() = default;
 
           void 	GeneratePrimaries (G4Event *anEvent) override {
+                    std::cout << "GeneratePrimaries::Build " << std::endl;
+
                     if(fgenerator != nullptr) fgenerator->IGeneratePrimaries(anEvent);
           }
       private:

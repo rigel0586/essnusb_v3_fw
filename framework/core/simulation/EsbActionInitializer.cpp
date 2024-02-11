@@ -26,18 +26,19 @@ EsbActionInitializer::~EsbActionInitializer()
 
 void EsbActionInitializer::Build() const
 {
+  std::cout << "EsbActionInitializer::Build " << std::endl;
   // primary generator
   SetUserAction(fGenerator);
 
   //Thread-local RunAction: same class, but code controlled by IsMaster()
-  SetUserAction(new EsbRunAction());
-  SetUserAction(new EsbEventAction());
+  // SetUserAction(new EsbRunAction());
+  // SetUserAction(new EsbEventAction());
 }
 
 void EsbActionInitializer::BuildForMaster() const
 {
   //Thread-local RunAction: same class, but code controlled by IsMaster()
-  SetUserAction(new EsbRunAction());
+  // SetUserAction(new EsbRunAction());
 }
 
 } // namespace simulation

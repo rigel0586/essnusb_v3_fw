@@ -37,7 +37,7 @@ void Utility::findVolume(const std::string& searchName
             default:
                                                 break;
         }
-        findVolume(searchName, topVolume, foundVols, searchtype);
+        findVolume(searchName, daug, foundVols, searchtype);
     }
 }
 
