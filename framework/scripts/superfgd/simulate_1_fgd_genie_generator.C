@@ -38,7 +38,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
 
     std::stringstream sflux;
     sflux << gSystem->Getenv("ESB_BASE_DIR");
-    sflux << "/neutrino_flux/essnusb_v1/nuFlux";
+    sflux << "/neutrino_flux/essnusb_v1/nuFlux/nuFlux100km_250kAm.txt";
     std::string neutrinoFluxPath = sflux.str();
 
     generators::superfgd::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
@@ -65,7 +65,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
       );
 
     
-    partGen->UseFixVertex(true);
+    partGen->UseFixVertex(false);
 
     TVector3 verPosition(fgdPosition.X() ,fgdPosition.Y(), fgdPosition.Z());
     partGen->SetVertexPos(verPosition);
