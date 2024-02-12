@@ -297,6 +297,11 @@ check_lib_exists ${pathfinder_lib}
 
 cd ${fw_directory}
 
+cd ${framework_dir}/workspace
+mkdir simulation
+
+cd ${fw_directory}
+
 # Framework Essnusb v3
 cd ${framework_dir}
 #/bin/bash build.sh
