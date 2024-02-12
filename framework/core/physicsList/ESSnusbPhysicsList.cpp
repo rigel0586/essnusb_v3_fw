@@ -8,6 +8,7 @@ ClassImp(esbroot::core::physicsList::ESSnusbPhysicsList)
 #include "G4MesonConstructor.hh"
 #include "G4ShortLivedConstructor.hh"
 
+
 namespace esbroot {
 namespace core {
 namespace physicsList {
@@ -45,7 +46,29 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
 ESSnusbPhysicsList::~ESSnusbPhysicsList() {}
 
 void ESSnusbPhysicsList::ConstructParticle() {
-  
+    // Construct all bosons
+    G4BosonConstructor      bosons;
+    bosons.ConstructParticle();
+
+    // Construct all leptons
+    G4LeptonConstructor     leptons;
+    leptons.ConstructParticle();
+      
+    // Construct all mesons
+    G4MesonConstructor      mesons;
+    mesons.ConstructParticle();
+    
+    // Construct all baryons
+    G4BaryonConstructor     baryons;
+    baryons.ConstructParticle();
+    
+    // Construct all ions
+    G4IonConstructor        ions;
+    ions.ConstructParticle();
+
+    // Construct all short lived particles
+    G4ShortLivedConstructor shortLived;
+    shortLived.ConstructParticle();
 }
 
 void ESSnusbPhysicsList::ConstructProcess(){
