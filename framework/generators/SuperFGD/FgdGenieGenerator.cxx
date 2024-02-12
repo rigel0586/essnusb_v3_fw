@@ -136,6 +136,7 @@ void FgdGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 		if(event != nullptr)
 		{
 			PostProcessEvent(event);
+            event->Print(std::cout);
             TLorentzVector* v = event->Vertex();
 			int nParticles = event->GetEntries();
 			std::vector<genie::GHepParticle*> eventParticles;
