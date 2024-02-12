@@ -61,6 +61,20 @@ private:
 
 	std::string fCubeName{""};
 
+	/** Track information to be stored until the track leaves the
+	active volume.
+	*/
+	Int_t          fTrackID;           //!  track index
+	Int_t          fVolumeID;          //!  volume id
+	std::string    fVolumeName{""};          //!  volume id
+	TLorentzVector fPos;               //!  position at entrance
+	TLorentzVector fPosExit;           //!  position at exit
+	TLorentzVector fMom;               //!  momentum at entrance
+	TLorentzVector fMomExit;               //!  momentum at entrance
+	Double32_t     fTime;              //!  time
+	Double32_t     fLength;            //!  length
+	Double32_t     fELoss;             //!  energy loss
+
 	TGeoVolume* fsuperFgdVol;//!<!
 	esbroot::geometry::superfgd::SuperFGDDetectorConstruction    fgdConstructor;	   //! SuperFgd Detector Constructor
 

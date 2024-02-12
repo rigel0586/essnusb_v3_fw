@@ -20,6 +20,7 @@ ClassImp(esbroot::geometry::FgdDetector)
 #include "G4UniformMagField.hh"
 #include <G4TransportationManager.hh>
 #include <G4FieldManager.hh>
+#include <G4Track.hh>
 
 #include <fairlogger/Logger.h>
 
@@ -161,8 +162,67 @@ void FgdDetector::Initialize(G4HCofThisEvent*)
 
 G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
 {
-  // TODO
   LOG(info) << "ProcessHits ";
+  std::cout << "ProcessHits " << std::endl;
+  if ( astep->IsFirstStepInVolume ()) {
+    G4Track* track = astep->GetTrack();
+    fELoss  = 0.;
+    fLength = 0.;
+    // • Global time (time since the event was created)
+    // • Local time (time since the track was created)
+    // • Proper time (time in its rest frame since the track was created )
+    fTime   = track->GetGlobalTime();
+
+    const G4ThreeVector& trackPos =  track->GetPosition();
+    fPos.SetXYZT(trackPos.x(), trackPos.y(), trackPos.z(), 0);
+
+    const G4ThreeVector& trackMom = track->GetMomentum();
+    fMom.SetXYZT(trackMom.x(), trackMom.y(), trackMom.z(), 0);
+  }
+
+  // Sum energy loss for all steps in the active volume
+  fELoss += astep->GetTotalEnergyDeposit();
+  fLength += astep->GetStepLength();
+
+  // Create FairTutorialDet1Point at exit of active volume
+  if ( astep->IsLastStepInVolume() ) {
+
+    G4Track* track = astep->GetTrack();
+    fTrackID  = track->GetTrackID();
+
+    fVolumeID = (track->GetVolume())->GetCopyNo();
+    fVolumeName = (track->GetVolume())->GetName();
+
+    //~ if (fELoss == 0. ) { return kFALSE; }
+    const G4ThreeVector& trackPos =  track->GetPosition();
+    fPosExit.SetXYZT(trackPos.x(), trackPos.y(), trackPos.z(), 0);
+
+    const G4ThreeVector& trackMom = track->GetMomentum();
+    fMomExit.SetXYZT(trackMom.x(), trackMom.y(), trackMom.z(), 0);
+
+    // === Print info
+    G4ParticleDefinition* parDef = 	track->GetDefinition();
+
+    LOG(info) << "  TrackPid " << track->GetTrackID();
+    LOG(info) << "  TrackCharge " << parDef->GetPDGCharge();
+    LOG(info) << "  vol->getCopyNo() " << fVolumeID;
+    LOG(info) << "  vol->getVolumeId() " << fVolumeName;
+    LOG(info) << "  fPos.X() " << fPos.X();
+    LOG(info) << "  fPos.Y() " << fPos.Y();
+    LOG(info) << "  fPos.Z() " << fPos.Z();
+    LOG(info) << "  TrackLength " << track->GetTrackLength();
+    LOG(info) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
+
+    // AddHit(fTrackID, fVolumeID
+    //       ,TVector3(fposX,       fposY,       fposZ)
+    //       ,TVector3(fPos.X(),       fPos.Y(),       fPos.Z())
+    //       ,TVector3(fPosExit.X(),   fPosExit.Y(),   fPosExit.Z())
+    //       ,TVector3(fMom.Px(),      fMom.Py(),      fMom.Pz())
+    //       ,TVector3(fMomExit.Px(),      fMomExit.Py(),      fMomExit.Pz())
+    //       ,fTime, fELoss, fLength, TVirtualMC::GetMC()->TrackPid()
+    //       , TVirtualMC::GetMC()->TrackLength()); 
+  }    
+
   return true;
 }
 
