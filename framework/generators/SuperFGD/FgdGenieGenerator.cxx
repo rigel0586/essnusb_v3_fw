@@ -118,7 +118,6 @@ Bool_t FgdGenieGenerator::Configure()
 
 void FgdGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 {
-	std::cout << "IGeneratePrimaries " << std::endl;
 	if(fg4ParticleTable == nullptr)
 		fg4ParticleTable = G4ParticleTable::GetParticleTable();
 
