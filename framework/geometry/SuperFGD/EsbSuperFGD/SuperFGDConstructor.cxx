@@ -14,7 +14,6 @@ namespace esbroot {
 namespace geometry {
 namespace superfgd {
 
-
 const char* SuperFGDConstructor::SuperFgdName = fgdnames::superFGDName;
 
 SuperFGDConstructor::SuperFGDConstructor() :  fWidth(0.),fHeight(0.),fLength(0.),fIsVisible(false),fEdge(0.)

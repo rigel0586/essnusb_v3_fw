@@ -9,14 +9,21 @@
 ClassImp(esbroot::geometry::FgdDetector)
 
 #include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h" 
+#include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 #include "utility/Utility.hpp" 
 
 #include "TGeoManager.h"
 #include "TGraph.h"
 
 #include "G4SDManager.hh"
+#include "G4MagneticField.hh"
+#include "G4UniformMagField.hh"
+#include <G4TransportationManager.hh>
+#include <G4FieldManager.hh>
 
 #include <fairlogger/Logger.h>
+
+#include <CLHEP/Units/SystemOfUnits.h>
 
 #include <iostream>
 #include <vector>
@@ -91,12 +98,10 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
         f_sd(daug->GetLogicalVolume(),this);
     }
 
-    // for(int i = 0; i < sdVolumes.size(); ++i)
-    // {
-    //   G4VPhysicalVolume * daug = sdVolumes[i];
-    //   f_sd(daug->GetLogicalVolume(),this);
-    //   break;
-    // }
+    sdVolumes.clear();
+    ut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    if(!sdVolumes.empty())
+      AddMagneticField(sdVolumes[0]);
 }
 
 TVector3 FgdDetector::getDetectorPosition()
@@ -130,6 +135,23 @@ void FgdDetector::GetMagneticFieldRegion(Double_t& xMin, Double_t& xMax,
 
   zMin = fposZ - totalZ/2;
   zMax = fposZ + totalZ/2;
+}
+
+void FgdDetector::AddMagneticField(G4VPhysicalVolume* detectorPhVol){
+    TVector3 magVec = fgdConstructor.GetMagneticField();
+
+    G4MagneticField* magField = new G4UniformMagField(
+                                      G4ThreeVector(magVec.X() * kilogauss
+                                                    , magVec.Y() * kilogauss
+                                                    , magVec.Z() * kilogauss)
+                                                    );
+
+    G4FieldManager* localFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+    localFieldManager->SetDetectorField(magField);
+
+    G4bool allLocal = true;
+    G4LogicalVolume* lVol =  detectorPhVol->GetLogicalVolume();
+    lVol->SetFieldManager(localFieldManager, allLocal);
 }
 
 void FgdDetector::Initialize(G4HCofThisEvent*)
