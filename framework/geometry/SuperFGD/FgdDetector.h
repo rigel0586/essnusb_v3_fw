@@ -13,7 +13,7 @@
 
 #include "core/detector/IDetector.hpp"
 #include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
-#include "data/SuperFGD/FgdDetectorPoint.h"
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
 
 #include "G4VSensitiveDetector.hh"
 #include "G4VUserDetectorConstruction.hh"

@@ -5,7 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "data/SuperFGD/FgdHit.h"
+#include "data/SuperFGD/FgdHit.hpp"
+ClassImp(esbroot::data::superfgd::FgdHit)
 
 #include <cmath>
 

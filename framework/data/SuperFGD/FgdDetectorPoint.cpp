@@ -5,7 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "data/SuperFGD/FgdDetectorPoint.h"
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
+ClassImp(esbroot::data::superfgd::FgdDetectorPoint)
 
 #include <iostream>
 using std::cout;

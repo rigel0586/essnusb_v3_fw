@@ -10,7 +10,7 @@
 #pragma link C++ namespace esbroot::data+;
 #pragma link C++ namespace esbroot::data::superfgd+;
 
-#pragma link C++ class esbroot::data::FgdHit+;
+#pragma link C++ class esbroot::data::superfgd::FgdHit+;
 #pragma link C++ class esbroot::data::superfgd::FgdDetectorPoint+;
 
 #endif

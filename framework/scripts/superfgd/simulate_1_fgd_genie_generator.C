@@ -12,6 +12,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     esbSim->setTopVolume(cave->getVolume());
 
     TVector3 fgdPosition(0,0,-550);
+    //TVector3 fgdPosition(0,0,0);
 
     std::stringstream ss;
     ss << gSystem->Getenv("ESB_BASE_DIR");
