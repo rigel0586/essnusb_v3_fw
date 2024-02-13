@@ -3,6 +3,7 @@
 
 #include "GenieGenerator.h"
 #include "core/generator/IGenerator.hpp"
+#include "utility/Utility.hpp"
 
 #include <cmath>
 
@@ -89,6 +90,7 @@ private:
     G4ParticleGun* fparticleGun{nullptr};
     G4ParticleTable * fg4ParticleTable{nullptr};
 	
+	utility::Utility f_util;
 	
 	ClassDef(FgdGenieGenerator,3)
 };

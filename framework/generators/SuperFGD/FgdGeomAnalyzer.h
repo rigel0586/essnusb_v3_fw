@@ -33,10 +33,13 @@ public:
 
     virtual const genie::PathLengthList& ComputePathLengths(const TLorentzVector & x, const TLorentzVector & p) override;
 
+    virtual const TVector3 & GenerateVertex (const TLorentzVector &x, const TLorentzVector &p, int tgtpdg) override;
+
     void Reset();
 
 private:
     TGeoVolume* fTopVol;
+    TVector3 fposVec;
 
     ClassDef(FgdGeomAnalyzer,6)
 };

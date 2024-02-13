@@ -25,8 +25,9 @@ FgdGeomAnalyzer::FgdGeomAnalyzer(TGeoManager* gm)
     fTopVol = gm->GetTopVolume();
 
     // ROOTGeomAnalyzer::SetLengthUnits(genie::units::centimeter);
+    // ROOTGeomAnalyzer::SetLengthUnits(CLHEP::cm);
 	ROOTGeomAnalyzer::SetTopVolName((esbroot::geometry::superfgd::fgdnames::superFGDName));
-    // ROOTGeomAnalyzer::SetTopVolName("caveVol");
+    // ROOTGeomAnalyzer::SetTopVolName(fTopVol->GetName());
     
 }
 
@@ -48,6 +49,21 @@ void FgdGeomAnalyzer::Reset()
 const genie::PathLengthList & FgdGeomAnalyzer::ComputePathLengths(const TLorentzVector & x, const TLorentzVector & p)
 {
     return  ROOTGeomAnalyzer::ComputePathLengths(x, p);
+}
+
+const TVector3 & FgdGeomAnalyzer::GenerateVertex(const TLorentzVector &x, const TLorentzVector &p, int tgtpdg)
+{
+    fposVec = ROOTGeomAnalyzer::GenerateVertex(x, p, tgtpdg);
+    // LOG(info) << "FgdGeomAnalyzer::GenerateVertex " << " x " << fposVec.x() 
+    //                                             << " y " << fposVec.y() 
+    //                                             << " z " << fposVec.z();
+
+    // LOG(info) << "FgdGeomAnalyzer::GenerateVertex " << " x " << x.X() 
+    //                                             << " y " << x.Y() 
+    //                                             << " z " << x.Z();
+
+    // fposVec.SetXYZ(x.X(), x.Y(), x.Z());
+    return fposVec;
 }
 
 

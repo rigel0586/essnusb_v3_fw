@@ -12,6 +12,8 @@
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "CLHEP/Units/PhysicalConstants.h"
 
+#include "utility/Utility.hpp"
+
 #include "TLorentzVector.h"
 #include "TRandom3.h"
 #include "TVector3.h"
@@ -130,6 +132,8 @@ protected:
     std::string fnuFluXFile;
     std::vector<FLuxNeutrino> fFlux;//!<!
     Bool_t fUniformFlux; // Loops around all FluxNeutrinos in the fFlux vector. Thus providing equal probability
+    
+    utility::Utility f_util;
 
     ClassDef(GenieFluxDriver,6)
   };

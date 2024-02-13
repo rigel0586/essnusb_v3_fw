@@ -41,6 +41,18 @@ void Utility::findVolume(const std::string& searchName
     }
 }
 
+double Utility::rootToG4CoeffLength()
+{
+    return 1;
+    // return (G4_LENGTH/ROOT_LENGTH);
+}
+
+double Utility::rootToG4CoeffEnergy()
+{
+    return 1;
+    // return (G4_E/ROOT_E);
+}
+
 
 }
 }

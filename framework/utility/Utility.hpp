@@ -15,6 +15,8 @@
 
 #include <TObject.h>
 
+#include "CLHEP/Units/SystemOfUnits.h"
+
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
 
@@ -30,15 +32,24 @@ class Utility : public TObject
 {
  public:
   
-  Utility();
+    Utility();
+    ~Utility() = default;
   
-  void findVolume(const std::string& searchName
-                    , G4VPhysicalVolume* topVolume
-                    , std::vector<G4VPhysicalVolume*>& foundVols
-                    , VolumeSearchType searchtype );
-  
+    void findVolume(const std::string& searchName
+                      , G4VPhysicalVolume* topVolume
+                      , std::vector<G4VPhysicalVolume*>& foundVols
+                      , VolumeSearchType searchtype );
+
+    double rootToG4CoeffLength();
+    double rootToG4CoeffEnergy();
+    
   private:
   
+    constexpr static double ROOT_LENGTH = 1; // By default root inteprets length in [cm]
+    constexpr static double G4_LENGTH = 1 * CLHEP::m; // Geant uses 1 for [mm]
+
+    constexpr static double ROOT_E = 1; // We interpret Energy in GeV
+    constexpr static double G4_E = 1 * CLHEP::GeV; 
 
   ClassDef(Utility, 2);
 };
