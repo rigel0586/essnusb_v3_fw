@@ -11,8 +11,8 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     esbroot::geometry::Cave* cave = new esbroot::geometry::Cave();
     esbSim->setTopVolume(cave->getVolume());
 
-    TVector3 fgdPosition(0,0,-550);
-    //TVector3 fgdPosition(0,0,0);
+    //TVector3 fgdPosition(0,0,-550);
+    TVector3 fgdPosition(0,0,0);
 
     std::stringstream ss;
     ss << gSystem->Getenv("ESB_BASE_DIR");
@@ -24,12 +24,6 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
                                                                                         ,fgdPosition.Z());
 
     esbSim->AddDetector(fgdDetector);
-
-    double Bx(0), By(0), Bz(0);
-    ((geometry::FgdDetector*)fgdDetector)->GetMagneticField(Bx, By, Bz);
-    double xMin(0), xMax(0), yMin(0), yMax(0), zMin(0), zMax(0);
-    ((geometry::FgdDetector*)fgdDetector)->GetMagneticFieldRegion(xMin, xMax, yMin, yMax, zMin, zMax);
-    // TODO Add magnetic field
  
     unsigned int seed = 42;
 
