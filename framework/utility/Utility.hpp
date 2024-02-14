@@ -42,6 +42,9 @@ class Utility : public TObject
 
     double rootToG4CoeffLength();
     double rootToG4CoeffEnergy();
+
+    double g4ToRootCoeffLength();
+    double g4ToRootCoeffEnergy();
     
   private:
   

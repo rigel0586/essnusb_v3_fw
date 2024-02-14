@@ -212,6 +212,7 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     LOG(info) << "  fPos.Z() " << fPos.Z();
     LOG(info) << "  TrackLength " << track->GetTrackLength();
     LOG(info) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
+    LOG(info) << "  fELoss " << fELoss;
 
     // AddHit(fTrackID, fVolumeID
     //       ,TVector3(fposX,       fposY,       fposZ)

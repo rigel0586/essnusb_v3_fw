@@ -53,6 +53,16 @@ double Utility::rootToG4CoeffEnergy()
     // return (G4_E/ROOT_E);
 }
 
+double Utility::g4ToRootCoeffLength()
+{
+    return (1/rootToG4CoeffLength());
+}
+
+double Utility::g4ToRootCoeffEnergy()
+{
+    return (1/rootToG4CoeffEnergy());
+}
+
 
 }
 }
