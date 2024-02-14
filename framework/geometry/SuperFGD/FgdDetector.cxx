@@ -203,6 +203,8 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
 
     LOG(debug) << "  TrackPid " << track->GetTrackID();
     LOG(debug) << "  TrackCharge " << parDef->GetPDGCharge();
+    LOG(debug) << "  PDG " << parDef->GetPDGEncoding();
+    LOG(debug) << "  ParticleName " << parDef->GetParticleName();
     LOG(debug) << "  vol->getCopyNo() " << fVolumeID;
     LOG(debug) << "  vol->getVolumeId() " << fVolumeName;
     LOG(debug) << "  fPos.X() " << fPos.X();

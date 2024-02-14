@@ -9,8 +9,6 @@
 #define ESBROOT_FGDDETECTOR_POINT_H 1
 
 
-// #include "FairMCPoint.h"
-
 #include "TObject.h"
 #include "TVector3.h"
 
