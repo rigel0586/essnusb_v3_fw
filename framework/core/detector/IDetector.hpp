@@ -12,6 +12,8 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
 #include "G4VSensitiveDetector.hh"
+#include "G4Event.hh"
+#include "G4Run.hh"
 
 namespace esbroot {
 namespace core {
@@ -26,6 +28,12 @@ class IDetector : public TObject
 
         virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
                                             , std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) = 0;
+
+        virtual void BeginOfEventAction(const G4Event*) {}
+        virtual void EndOfEventAction(const G4Event*){}
+
+        virtual void BeginOfRunAction(const G4Run* aRun) {}
+        virtual void EndOfRunAction(const G4Run* aRun) {}
 
 private:
 

@@ -41,7 +41,7 @@ void EsbSimManager::run()
         runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
 
         // set user actions
-        runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator)); 
+        runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator, fDetectors)); 
         
 
         // initialize G4 kernel

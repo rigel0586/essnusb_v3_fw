@@ -6,7 +6,7 @@ namespace core {
 namespace detector {
 
 EsbDetectorConstructor::EsbDetectorConstructor(const std::string& workDir, std::vector<IDetector*>& detectors)
-    : fWorkDir(workDir), fDetectors(std::move(detectors))
+    : fWorkDir(workDir), fDetectors(detectors)
 {
 }
 

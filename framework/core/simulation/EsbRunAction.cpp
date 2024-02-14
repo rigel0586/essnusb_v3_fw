@@ -13,7 +13,8 @@ namespace esbroot {
 namespace core {
 namespace simulation {
 
-EsbRunAction::EsbRunAction()
+EsbRunAction::EsbRunAction(const std::vector<detector::IDetector*>& detectors)
+  : fDetectors(detectors)
 {
 }
 
@@ -23,13 +24,19 @@ EsbRunAction::~EsbRunAction()
 
 void EsbRunAction::BeginOfRunAction(const G4Run* aRun)
 {
-  // TODO decide if we need something
+  for(detector::IDetector* d : fDetectors)
+  {
+      d->BeginOfRunAction(aRun);
+  }
   return;
 }
 
 void EsbRunAction::EndOfRunAction(const G4Run* aRun)
 {
-  // TODO add export geometry etc. for archiving
+  for(detector::IDetector* d : fDetectors)
+  {
+      d->EndOfRunAction(aRun);
+  }
   return;
 }
 

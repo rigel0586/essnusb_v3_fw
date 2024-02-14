@@ -1,7 +1,11 @@
 #ifndef EsbEventAction_h
 #define EsbEventAction_h 1
 
+#include <vector>
+
 #include "TObject.h"
+
+#include "core/detector/IDetector.hpp"
 
 #include "G4UserEventAction.hh"
 #include "globals.hh"
@@ -15,7 +19,7 @@ class EsbEventAction : public TObject,
                         public G4UserEventAction
 {
   public:
-    EsbEventAction();
+    EsbEventAction(const std::vector<detector::IDetector*>& detectors);
    ~EsbEventAction();
 
   public:
@@ -23,6 +27,7 @@ class EsbEventAction : public TObject,
     void EndOfEventAction(const G4Event*);
 
   private:
+    const std::vector<detector::IDetector*> fDetectors;
  
     ClassDef(EsbEventAction, 2);
 };

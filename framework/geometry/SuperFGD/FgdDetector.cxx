@@ -227,6 +227,26 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
   return true;
 }
 
+void FgdDetector::BeginOfEventAction(const G4Event*)
+{
+  LOG(info) << "  FgdDetector::BeginOfEventAction ";
+}
+
+void FgdDetector::EndOfEventAction(const G4Event*)
+{
+  LOG(info) << "  FgdDetector::EndOfEventAction ";
+}
+
+void FgdDetector::BeginOfRunAction(const G4Run* aRun)
+{
+  LOG(info) << "  FgdDetector::BeginOfRunAction ";
+}
+
+void FgdDetector::EndOfRunAction(const G4Run* aRun)
+{
+  LOG(info) << "  FgdDetector::EndOfRunAction ";
+}
+
 void FgdDetector::EndOfEvent(G4HCofThisEvent*)
 {
   // TODO

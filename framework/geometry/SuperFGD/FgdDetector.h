@@ -31,9 +31,17 @@ public:
 	FgdDetector(const char* geoConfigFile, double posX, double posY, double posZ);
 	virtual ~FgdDetector();
 
+	// IDetector interface
 	void ConstructGeometry() override;
 	void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
+
+	void BeginOfEventAction(const G4Event*) override;
+	void EndOfEventAction(const G4Event*) override;
+
+	void BeginOfRunAction(const G4Run* aRun) override;
+    void EndOfRunAction(const G4Run* aRun) override;
+	//	============================
 
 	void GetMagneticField(Double_t& Bx,Double_t& By, Double_t& Bz);
 	void GetMagneticFieldRegion(Double_t& xMin, Double_t& xMax,

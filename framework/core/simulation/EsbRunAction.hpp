@@ -1,7 +1,11 @@
 #ifndef EsbRunAction_h
 #define EsbRunAction_h 1
 
+#include <vector>
+
 #include "TObject.h"
+
+#include "core/detector/IDetector.hpp"
 
 #include "globals.hh"
 #include "G4UserRunAction.hh"
@@ -18,7 +22,7 @@ class EsbRunAction : public TObject,
 {
   public:
 
-  EsbRunAction();
+  EsbRunAction(const std::vector<detector::IDetector*>& detectors);
   ~EsbRunAction();
   
 public:
@@ -27,6 +31,7 @@ public:
   void EndOfRunAction(const G4Run* aRun);  
 
 private:  
+  const std::vector<detector::IDetector*> fDetectors;
 
   ClassDef(EsbRunAction, 2);
 };

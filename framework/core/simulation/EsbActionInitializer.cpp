@@ -16,8 +16,8 @@ namespace esbroot {
 namespace core {
 namespace simulation {
 
-EsbActionInitializer::EsbActionInitializer(generator::IGenerator* generator) 
-  : G4VUserActionInitialization(), fGenerator(new G4Generator(generator))
+EsbActionInitializer::EsbActionInitializer(generator::IGenerator* generator, std::vector<detector::IDetector*>& detectors) 
+  : G4VUserActionInitialization(), fGenerator(new G4Generator(generator)), fDetectors(detectors)
 {;}
 
 EsbActionInitializer::~EsbActionInitializer()
@@ -31,14 +31,14 @@ void EsbActionInitializer::Build() const
   SetUserAction(fGenerator);
 
   //Thread-local RunAction: same class, but code controlled by IsMaster()
-  SetUserAction(new EsbRunAction());
-  SetUserAction(new EsbEventAction());
+  SetUserAction(new EsbRunAction(fDetectors));
+  SetUserAction(new EsbEventAction(fDetectors));
 }
 
 void EsbActionInitializer::BuildForMaster() const
 {
   //Thread-local RunAction: same class, but code controlled by IsMaster()
-  SetUserAction(new EsbRunAction());
+  SetUserAction(new EsbRunAction(fDetectors));
 }
 
 } // namespace simulation

@@ -1,7 +1,10 @@
 #ifndef EsbActionInitializer_h
 #define EsbActionInitializer_h 1
 
+#include <vector>
+
 #include "core/generator/IGenerator.hpp"
+#include "core/detector/IDetector.hpp"
 
 #include "TObject.h"
 
@@ -17,7 +20,7 @@ class EsbActionInitializer : public TObject,
 {
 public:
 
-  EsbActionInitializer(generator::IGenerator* generator);
+  EsbActionInitializer(generator::IGenerator* generator, std::vector<detector::IDetector*>& detectors);
   ~EsbActionInitializer();
   
   void Build() const override;
@@ -39,6 +42,7 @@ private:
     };
 
     G4Generator* fGenerator{nullptr};
+    const std::vector<detector::IDetector*> fDetectors;
 
     ClassDef(EsbActionInitializer, 2);
 };

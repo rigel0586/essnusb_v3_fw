@@ -7,7 +7,8 @@ namespace esbroot {
 namespace core {
 namespace simulation {
 
-EsbEventAction::EsbEventAction()
+EsbEventAction::EsbEventAction(const std::vector<detector::IDetector*>& detectors)
+  : fDetectors(detectors)
 {;}
 
 
@@ -15,12 +16,18 @@ EsbEventAction::~EsbEventAction(){;}
 
 void EsbEventAction::BeginOfEventAction(const G4Event* evt)
 {
-  // TODO decide what we need
+    for(detector::IDetector* d : fDetectors)
+    {
+        d->BeginOfEventAction(evt);
+    }
 }
 
 void EsbEventAction::EndOfEventAction(const G4Event* evt)
 {
-  // TODO decide what we need
+    for(detector::IDetector* d : fDetectors)
+    {
+        d->EndOfEventAction(evt);
+    }
 }
 
 } // namespace simulation
