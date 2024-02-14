@@ -158,8 +158,8 @@ void GenieFluxDriver::CalculateNext4position()
     // Used if rootgeaomanalyzer GenerateVertex
     // since it gives the starting position of neutrino in Z direction
     // and computes where it interacts along the way. Otherwise give out coordinates
-    // f4position.SetZ(fdetPos.Z() - f_total_Z/2 - 10); 
-    f4position.SetZ(rndm_Z);
+    f4position.SetZ(fdetPos.Z() - f_total_Z/2 - 10); 
+    // f4position.SetZ(rndm_Z);
 
     // f4position.SetX(x_det);
     // f4position.SetY(y_det);
