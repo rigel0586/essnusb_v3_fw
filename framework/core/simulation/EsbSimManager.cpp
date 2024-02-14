@@ -18,10 +18,58 @@ EsbSimManager::~EsbSimManager()
 {
 }
 
-
 void EsbSimManager::setLoggerSeverity(Severity sev){
-    // TODO fix severity
-    fair::Logger::SetConsoleSeverity(fair::Severity::info);
+    switch(sev)
+    {
+        case Severity::nolog: fair::Logger::SetConsoleSeverity(fair::Severity::nolog);
+                    break;
+
+        case Severity::trace: fair::Logger::SetConsoleSeverity(fair::Severity::trace);
+                    break;
+        
+        case Severity::debug4: fair::Logger::SetConsoleSeverity(fair::Severity::debug4);
+                    break;
+
+        case Severity::debug3: fair::Logger::SetConsoleSeverity(fair::Severity::debug3);
+                    break;
+
+        case Severity::debug2: fair::Logger::SetConsoleSeverity(fair::Severity::debug2);
+                    break;
+
+        case Severity::debug1: fair::Logger::SetConsoleSeverity(fair::Severity::debug1);
+                    break;
+
+        case Severity::debug: fair::Logger::SetConsoleSeverity(fair::Severity::debug);
+                    break;
+
+        case Severity::detail: fair::Logger::SetConsoleSeverity(fair::Severity::detail);
+                    break;
+
+        case Severity::info: fair::Logger::SetConsoleSeverity(fair::Severity::info);
+                    break;
+
+        case Severity::state: fair::Logger::SetConsoleSeverity(fair::Severity::state);
+                    break;
+
+        case Severity::warn: fair::Logger::SetConsoleSeverity(fair::Severity::warn);
+                    break;
+
+        case Severity::important: fair::Logger::SetConsoleSeverity(fair::Severity::important);
+                    break;
+
+        case Severity::alarm: fair::Logger::SetConsoleSeverity(fair::Severity::alarm);
+                    break;
+
+        case Severity::error: fair::Logger::SetConsoleSeverity(fair::Severity::error);
+                    break;
+
+        case Severity::fatal: fair::Logger::SetConsoleSeverity(fair::Severity::fatal);
+                    break;
+
+        default:    fair::Logger::SetConsoleSeverity(fair::Severity::nolog);
+                    break;
+    }
+
     fair::Logger::SetConsoleColor(true);
 }
 

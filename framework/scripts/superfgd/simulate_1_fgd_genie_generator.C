@@ -5,14 +5,16 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
 
     core::simulation::EsbSimManager* esbSim = new core::simulation::EsbSimManager();
 
+    //esbSim->setLoggerSeverity(core::simulation::Severity::info);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
 
     esbroot::geometry::Cave* cave = new esbroot::geometry::Cave();
     esbSim->setTopVolume(cave->getVolume());
 
-    //TVector3 fgdPosition(0,0,-550);
-    TVector3 fgdPosition(0,0,0);
+    TVector3 fgdPosition(0,0,-550);
+//    TVector3 fgdPosition(0,0,0);
+//    TVector3 fgdPosition(100,100,-400); 
 
     std::stringstream ss;
     ss << gSystem->Getenv("ESB_BASE_DIR");
