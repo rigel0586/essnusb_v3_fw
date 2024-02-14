@@ -29,6 +29,8 @@
 #include "G4OpticalPhysics.hh"
 #include "G4HadronElasticPhysics.hh"
 
+#include "G4VPhysicsConstructor.hh"
+
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4LossTableManager.hh"
@@ -41,15 +43,17 @@ namespace physicsList {
 
 class ESSnusbPhysicsList : public TObject, public G4VModularPhysicsList {
 public:
-  ESSnusbPhysicsList();
-  virtual ~ESSnusbPhysicsList();
+    ESSnusbPhysicsList();
+    virtual ~ESSnusbPhysicsList();
 
-  virtual void ConstructParticle() override;
-  virtual void ConstructProcess() override;
+    virtual void ConstructParticle() override;
+    virtual void ConstructProcess() override;
 
-  virtual void SetCuts() override;
-  // Sets a cut value for all particle types in the particle table.
+    virtual void SetCuts() override;
+    // Sets a cut value for all particle types in the particle table.
 private:
+    // Physics
+    std::vector<G4VPhysicsConstructor*> fProcesses;
 
     ClassDef(ESSnusbPhysicsList, 2);
 };

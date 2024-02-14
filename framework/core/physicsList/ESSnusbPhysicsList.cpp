@@ -19,28 +19,49 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
     SetVerboseLevel(ver);
 
     // EM Physics
-    RegisterPhysics( new G4EmStandardPhysics(ver) );
-//    RegisterPhysics( new G4EmLivermorePhysics(ver) );
-//    RegisterPhysics( new G4EmPenelopePhysics(ver) );
-    // RegisterPhysics( new G4EmLowEPPhysics(ver) );
+    G4EmStandardPhysics* emStad = new G4EmStandardPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(emStad));
+    RegisterPhysics( emStad );
+
+    // G4EmLivermorePhysics* emLp = new G4EmLivermorePhysics(ver);
+    // fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(emLp));
+    // RegisterPhysics( emLp );
+
+    // G4EmPenelopePhysics* emPP = new G4EmPenelopePhysics(ver);
+    // fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(emPP));
+    // RegisterPhysics( emPP );
+
+    // G4EmLowEPPhysics* emLEP = new G4EmLowEPPhysics(ver);
+    // fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(emLEP));
+    // RegisterPhysics( emLEP );
 
     // Synchroton Radiation & GN Physics
-    RegisterPhysics( new G4EmExtraPhysics(ver) );
+    G4EmExtraPhysics* emEP = new G4EmExtraPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(emEP));
+    RegisterPhysics( emEP );
 
     // Decays
-    RegisterPhysics( new G4DecayPhysics(ver) );
+    G4DecayPhysics* decP = new G4DecayPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(decP));
+    RegisterPhysics( decP );
 
     // Ions
-    RegisterPhysics( new G4IonPhysics(ver) );
+    G4IonPhysics* ionP = new G4IonPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(ionP));
+    RegisterPhysics( ionP );
 
     // Hadron physics
 //    RegisterPhysics( new G4HadronElasticPhysics(ver) );
     
     // Optical
-    RegisterPhysics( new G4OpticalPhysics(ver));
+    G4OpticalPhysics* optP = new G4OpticalPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(optP));
+    RegisterPhysics( optP );
 
     // Other
-    RegisterPhysics( new G4StoppingPhysics(ver) );
+    G4StoppingPhysics* stopP = new G4StoppingPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(stopP));
+    RegisterPhysics( stopP );
 }
 
 ESSnusbPhysicsList::~ESSnusbPhysicsList() {}
@@ -69,10 +90,20 @@ void ESSnusbPhysicsList::ConstructParticle() {
     // Construct all short lived particles
     G4ShortLivedConstructor shortLived;
     shortLived.ConstructParticle();
+
+    for(G4VPhysicsConstructor* pr : fProcesses)
+    {
+        pr->ConstructParticle();
+    }
 }
 
 void ESSnusbPhysicsList::ConstructProcess(){
     AddTransportation();
+
+    for(G4VPhysicsConstructor* pr : fProcesses)
+    {
+        pr->ConstructProcess();
+    }
 }
 
 void ESSnusbPhysicsList::SetCuts() {

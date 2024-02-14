@@ -162,8 +162,6 @@ void FgdDetector::Initialize(G4HCofThisEvent*)
 
 G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
 {
-  LOG(info) << "ProcessHits ";
-  std::cout << "ProcessHits " << std::endl;
   if ( astep->IsFirstStepInVolume ()) {
     G4Track* track = astep->GetTrack();
     fELoss  = 0.;
@@ -203,16 +201,16 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     // === Print info
     G4ParticleDefinition* parDef = 	track->GetDefinition();
 
-    LOG(info) << "  TrackPid " << track->GetTrackID();
-    LOG(info) << "  TrackCharge " << parDef->GetPDGCharge();
-    LOG(info) << "  vol->getCopyNo() " << fVolumeID;
-    LOG(info) << "  vol->getVolumeId() " << fVolumeName;
-    LOG(info) << "  fPos.X() " << fPos.X();
-    LOG(info) << "  fPos.Y() " << fPos.Y();
-    LOG(info) << "  fPos.Z() " << fPos.Z();
-    LOG(info) << "  TrackLength " << track->GetTrackLength();
-    LOG(info) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
-    LOG(info) << "  fELoss " << fELoss;
+    LOG(debug) << "  TrackPid " << track->GetTrackID();
+    LOG(debug) << "  TrackCharge " << parDef->GetPDGCharge();
+    LOG(debug) << "  vol->getCopyNo() " << fVolumeID;
+    LOG(debug) << "  vol->getVolumeId() " << fVolumeName;
+    LOG(debug) << "  fPos.X() " << fPos.X();
+    LOG(debug) << "  fPos.Y() " << fPos.Y();
+    LOG(debug) << "  fPos.Z() " << fPos.Z();
+    LOG(debug) << "  TrackLength " << track->GetTrackLength();
+    LOG(debug) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
+    LOG(debug) << "  fELoss " << fELoss;
 
     // AddHit(fTrackID, fVolumeID
     //       ,TVector3(fposX,       fposY,       fposZ)
