@@ -111,10 +111,10 @@ Bool_t FgdGenieGenerator::Configure()
 	fmcj_driver->KeepOnThrowingFluxNeutrinos(fKeepThrowingFluxNu);
 	// GenerateEvents();
 	
-	if(useDefaultFlux && geomAnalyzer!=nullptr)
-	{
-		geomAnalyzer->Reset();	// Revert initial Top Volume Geometry
-	}
+	// if(useDefaultFlux && geomAnalyzer!=nullptr)
+	// {
+	// 	geomAnalyzer->Reset();	// Revert initial Top Volume Geometry
+	// }
 
 	return true;
 }
