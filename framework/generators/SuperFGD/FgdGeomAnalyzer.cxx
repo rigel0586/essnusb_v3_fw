@@ -53,7 +53,7 @@ const genie::PathLengthList & FgdGeomAnalyzer::ComputePathLengths(const TLorentz
 
 const TVector3 & FgdGeomAnalyzer::GenerateVertex(const TLorentzVector &x, const TLorentzVector &p, int tgtpdg)
 {
-    fposVec = ROOTGeomAnalyzer::GenerateVertex(x, p, tgtpdg);
+    // fposVec = ROOTGeomAnalyzer::GenerateVertex(x, p, tgtpdg);
     // LOG(info) << "FgdGeomAnalyzer::GenerateVertex " << " x " << fposVec.x() 
     //                                             << " y " << fposVec.y() 
     //                                             << " z " << fposVec.z();
@@ -62,7 +62,9 @@ const TVector3 & FgdGeomAnalyzer::GenerateVertex(const TLorentzVector &x, const 
     //                                             << " y " << x.Y() 
     //                                             << " z " << x.Z();
 
-    // fposVec.SetXYZ(x.X(), x.Y(), x.Z());
+    fposVec.SetXYZ( x.X() * f_util.rootToG4CoeffLength()
+                        , x.Y() * f_util.rootToG4CoeffLength()
+                        , x.Z() * f_util.rootToG4CoeffLength());
     return fposVec;
 }
 

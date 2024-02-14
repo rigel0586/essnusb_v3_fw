@@ -4,6 +4,8 @@
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "CLHEP/Units/PhysicalConstants.h"
 
+#include "utility/Utility.hpp"
+
 #include <Tools/Geometry/ROOTGeomAnalyzer.h>
 #include <Framework/EventGen/PathLengthList.h>
 #include <Framework/Conventions/Units.h>
@@ -40,6 +42,8 @@ public:
 private:
     TGeoVolume* fTopVol;
     TVector3 fposVec;
+
+    utility::Utility f_util;
 
     ClassDef(FgdGeomAnalyzer,6)
 };

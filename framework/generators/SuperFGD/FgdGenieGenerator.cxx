@@ -61,7 +61,10 @@ void FgdGenieGenerator::PostProcessEvent(/*IN OUT*/ genie::GHepRecord* event)
 {
 	if(fUseFixedVertex)
 	{
-		event->SetVertex(fvertexPos.X(), fvertexPos.Y(), fvertexPos.Z(),0);
+		event->SetVertex(fvertexPos.X() * f_util.rootToG4CoeffLength()
+							, fvertexPos.Y() * f_util.rootToG4CoeffLength()
+							, fvertexPos.Z() * f_util.rootToG4CoeffLength()
+							,0);
 	}
 }
 

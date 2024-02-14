@@ -46,7 +46,7 @@ class Utility : public TObject
   private:
   
     constexpr static double ROOT_LENGTH = 1; // By default root inteprets length in [cm]
-    constexpr static double G4_LENGTH = 1 * CLHEP::m; // Geant uses 1 for [mm]
+    constexpr static double G4_LENGTH = 1 * CLHEP::cm; // Geant uses 1 for [mm]
 
     constexpr static double ROOT_E = 1; // We interpret Energy in GeV
     constexpr static double G4_E = 1 * CLHEP::GeV; 
