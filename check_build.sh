@@ -78,7 +78,7 @@ G4ENSDFSTATE_var=${fw_directory}/framework/workspace/geant4/download/G4ENSDFSTAT
 check_lib_exists ${G4ENSDFSTATE_var}
 
 G4TENDL_var=${fw_directory}/framework/workspace/geant4/download/G4TENDL1.4/README
-check_lib_exists ${G4TENDL}
+check_lib_exists ${G4TENDL_var}
 
 cd ${fw_directory}
 
