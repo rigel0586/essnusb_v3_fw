@@ -8,6 +8,7 @@
 #ifndef ESBROOT_GEOMETRY_FGDDETECTOR_H
 #define ESBROOT_GEOMETRY_FGDDETECTOR_H
 
+#include "TClonesArray.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
@@ -60,6 +61,14 @@ public:
 
 	TVector3 getDetectorPosition();
 
+	/**      This method is an example of how to add your own point
+	*        of type FgdDetectorPoint to the clones array
+	*/
+	data::superfgd::FgdDetectorPoint* AddHit(Int_t trackID, Int_t detID,
+								TVector3 detectorPos,
+								TVector3 pos, TVector3 posExit, TVector3 mom, TVector3 momExit,
+								Double32_t time, Double32_t edep, Double32_t trackLength, Int_t pdg
+								,Double32_t trackLengthFromOrigin );
 private:
 
 	// Detector position
@@ -83,6 +92,7 @@ private:
 	Double32_t     fLength;            //!  length
 	Double32_t     fELoss;             //!  energy loss
 
+	TClonesArray*  fFgdDetectorPointCollection;  //! 
 	TGeoVolume* fsuperFgdVol;//!<!
 	esbroot::geometry::superfgd::SuperFGDDetectorConstruction    fgdConstructor;	   //! SuperFgd Detector Constructor
 

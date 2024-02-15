@@ -10,6 +10,8 @@ ClassImp(esbroot::geometry::FgdDetector)
 
 #include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h" 
 #include "geometry/SuperFGD/EsbSuperFGD/Names.h"
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
+#include "core/io/EsbWriterPersistency.hpp"
 #include "utility/Utility.hpp" 
 
 #include "TGeoManager.h"
@@ -42,7 +44,8 @@ FgdDetector::FgdDetector()
     fposX(0),
     fposY(0),
     fposZ(0),
-    fsuperFgdVol(nullptr)
+    fsuperFgdVol(nullptr),
+    fFgdDetectorPointCollection{nullptr}
 {
 }
 
@@ -51,12 +54,21 @@ FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, do
     fposX(posX),
     fposY(posY),
     fposZ(posZ),
-    fsuperFgdVol(nullptr)
+    fsuperFgdVol(nullptr),
+    fFgdDetectorPointCollection{nullptr}
 {
+    // esbroot::data::superfgd::FgdDetectorPoint point;
+    // point.Class();
+    // TClass* tCl = esbroot::data::superfgd::FgdDetectorPoint::Class();
+    // fFgdDetectorPointCollection = core::io::EsbWriterPersistency::Instance().Register("SimulationFgd", "fgdPoints", tCl);
 }
 
 FgdDetector::~FgdDetector()
 {
+  if (fFgdDetectorPointCollection) {
+    fFgdDetectorPointCollection->Delete();
+    delete fFgdDetectorPointCollection;
+  }
 }
 
 void FgdDetector::ConstructGeometry()
@@ -214,17 +226,40 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     LOG(debug) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
     LOG(debug) << "  fELoss " << fELoss;
 
-    // AddHit(fTrackID, fVolumeID
-    //       ,TVector3(fposX,       fposY,       fposZ)
-    //       ,TVector3(fPos.X(),       fPos.Y(),       fPos.Z())
-    //       ,TVector3(fPosExit.X(),   fPosExit.Y(),   fPosExit.Z())
-    //       ,TVector3(fMom.Px(),      fMom.Py(),      fMom.Pz())
-    //       ,TVector3(fMomExit.Px(),      fMomExit.Py(),      fMomExit.Pz())
-    //       ,fTime, fELoss, fLength, TVirtualMC::GetMC()->TrackPid()
-    //       , TVirtualMC::GetMC()->TrackLength()); 
+    AddHit(fTrackID, fVolumeID
+          ,TVector3(fposX,       fposY,       fposZ)
+          ,TVector3(fPos.X(),       fPos.Y(),       fPos.Z())
+          ,TVector3(fPosExit.X(),   fPosExit.Y(),   fPosExit.Z())
+          ,TVector3(fMom.Px(),      fMom.Py(),      fMom.Pz())
+          ,TVector3(fMomExit.Px(),      fMomExit.Py(),      fMomExit.Pz())
+          , fTime, fELoss, fLength, track->GetTrackID()
+          , track->GetTrackLength()); 
   }    
 
   return true;
+}
+
+data::superfgd::FgdDetectorPoint* FgdDetector::AddHit(Int_t trackID, Int_t detID, 
+					  TVector3 detectorPos, TVector3 pos , TVector3 posExit, TVector3 mom,
+					  TVector3 momExit , Double32_t time, Double32_t edep, Double32_t trackLength, Int_t pdg
+            , Double32_t trackLengthFromOrigin )
+{
+    LOG(debug) << "FgdDetector::AddHit";
+    LOG(debug) << "trackID " << trackID;
+    LOG(debug) << "detID " << detID;
+    LOG(debug) << "pos.X() " << pos.X() << "; pos.Y() " << pos.Y()<< "; pos.Z() " << pos.Z();
+    LOG(debug) << "mom.Px() " << mom.Px() << "; mom.Py() " << mom.Py() << "; mom.Pz() " << mom.Pz();
+    LOG(debug) << "time " << time;
+    LOG(debug) << "edep " << edep;
+    LOG(debug) << "pdg " << pdg;
+
+  if(fFgdDetectorPointCollection == nullptr) return nullptr;
+
+  TClonesArray& clref = *fFgdDetectorPointCollection;
+  Int_t size = clref.GetEntriesFast();
+
+  return new(clref[size]) data::superfgd::FgdDetectorPoint(trackID, detID, detectorPos, pos, posExit, mom, 
+					     momExit, time, edep, trackLength, pdg, trackLengthFromOrigin);
 }
 
 void FgdDetector::BeginOfEventAction(const G4Event*)
@@ -235,6 +270,8 @@ void FgdDetector::BeginOfEventAction(const G4Event*)
 void FgdDetector::EndOfEventAction(const G4Event*)
 {
   LOG(info) << "  FgdDetector::EndOfEventAction ";
+  if(fFgdDetectorPointCollection != nullptr)
+    fFgdDetectorPointCollection->Clear();
 }
 
 void FgdDetector::BeginOfRunAction(const G4Run* aRun)

@@ -5,6 +5,8 @@ ClassImp(esbroot::core::simulation::EsbSimManager)
 #include "EsbActionInitializer.hpp"
 #include "ESSnusbPhysicsList.hpp"
 
+#include "EsbWriterPersistency.hpp"
+
 namespace esbroot {
 namespace core {
 namespace simulation {
@@ -134,6 +136,11 @@ bool EsbSimManager::validate(){
     }
 
     return true;
+}
+
+void EsbSimManager::setOutputFile(const std::string& outPath)
+{
+    io::EsbWriterPersistency::Instance().setOutFile(outPath);
 }
 
 } // namespace simulation

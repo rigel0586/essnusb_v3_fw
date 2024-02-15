@@ -57,6 +57,7 @@ public:
     void AddDetector(detector::IDetector* d);
 
     void setLoggerSeverity(Severity sev);
+    void setOutputFile(const std::string& outPath);
 
     void run();
 

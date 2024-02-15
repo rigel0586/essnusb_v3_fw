@@ -15,6 +15,8 @@
 #pragma link C++ namespace esbroot::core::simulation+;
 
 #pragma link C++ class esbroot::core::io::EsbIO+;
+#pragma link C++ class esbroot::core::io::EsbWriterPersistency+;
+#pragma link C++ class esbroot::core::io::EsbReaderPersistency+;
 #pragma link C++ class esbroot::core::physicsList::ESSnusbPhysicsList+;
 #pragma link C++ class esbroot::core::detector::EsbDetectorConstructor+;
 #pragma link C++ class esbroot::core::detector::IDetector+;

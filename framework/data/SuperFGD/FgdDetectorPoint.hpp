@@ -104,6 +104,7 @@ class FgdDetectorPoint : public TObject
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
+    ClassDef(FgdDetectorPoint,1)
   private:
     /** Copy constructor **/
     FgdDetectorPoint(const FgdDetectorPoint& point);
@@ -124,8 +125,6 @@ class FgdDetectorPoint : public TObject
     Double_t fELoss;            ///< Energy loss at this point [GeV]
     Int_t fDetectorID;          ///< Detector unique identifier
     Double_t fX, fY, fZ;        ///< Position of hit [cm]
-
-    ClassDef(FgdDetectorPoint,2)
 };
 
 inline void FgdDetectorPoint::SetMomentum(const TVector3& mom)
