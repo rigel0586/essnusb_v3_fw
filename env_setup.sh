@@ -31,7 +31,7 @@ export GEANT4_LIB=${fw_directory}/geant4/install/lib/
 export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/geom/gdml
 
 framework_build_dir=${fw_directory}/framework/build
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${LHAPDF6_LIB}:${LHAPDF5_LIB}/.libs:/usr/local/lib:${GENIE_install}/lib:${ROOTSYS}/lib:${PYTHIA6}:${framework_build_dir}/utility/:${framework_build_dir}/generators/:${framework_build_dir}/geometry/:${framework_build_dir}/core/:${framework_build_dir}/data/:${fw_directory}/pathfinder/install/lib:${dependencies_dir}/geant4/xerces-c-3.2.5/install/lib:${fw_directory}/clhep/lib
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${LHAPDF6_LIB}:${LHAPDF5_LIB}/.libs:/usr/local/lib:${GENIE_install}/lib:${ROOTSYS}/lib:${PYTHIA6}:${framework_build_dir}/utility/:${framework_build_dir}/generators/:${framework_build_dir}/data/:${framework_build_dir}/geometry/:${framework_build_dir}/core/:${fw_directory}/pathfinder/install/lib:${dependencies_dir}/geant4/xerces-c-3.2.5/install/lib:${fw_directory}/clhep/lib
 
 export PATH=$PATH:${ROOTSYS}/bin:${GENIE_install}/bin 
 
@@ -53,7 +53,7 @@ export G4INCLDATA=${WORKSPACE_DIR}/geant4/download/G4INCL1.2
 export G4ENSDFSTATEDATA=${WORKSPACE_DIR}/geant4/download/G4ENSDFSTATE2.3
 
 #Preload Geant4 libs for ROOT scripting
-export LD_PRELOAD=${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so
+export LD_PRELOAD=${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so:${framework_build_dir}/data/libessnusb_data.so
 
 
 
