@@ -104,6 +104,7 @@ void EsbSimManager::run()
         LOG(error) << "runManager encountered an error";
     }
 
+    io::EsbWriterPersistency::Instance().writeData();
     // job termination
     delete runManager;
     return;

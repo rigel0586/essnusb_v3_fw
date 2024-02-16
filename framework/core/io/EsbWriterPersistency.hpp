@@ -42,6 +42,7 @@ public:
     static EsbWriterPersistency& Instance();
 
     void setOutFile(const std::string& path);
+    void writeData();
 
     WriterInfo Register(const char* treeName, const char* branchName, TClass* CollObj);
     void Clear();

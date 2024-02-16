@@ -14,14 +14,6 @@ EsbWriterPersistency::EsbWriterPersistency()
 
 EsbWriterPersistency::~EsbWriterPersistency()
 {
-    for(RegisterItem it : fItems)
-    {
-        if(fOutTFile != nullptr && it.fTree != nullptr)
-        {
-            fOutTFile->WriteTObject(it.fTree);
-        }
-    }
-    fOutTFile->Close();
     Clear();
 }
 
@@ -30,6 +22,22 @@ EsbWriterPersistency& EsbWriterPersistency::Instance()
     static EsbWriterPersistency fpersistency;
     return fpersistency;
 }
+
+
+void EsbWriterPersistency::writeData()
+{
+    if(fOutTFile == nullptr) return;
+    
+    for(RegisterItem it : fItems)
+    {
+        if(fOutTFile != nullptr && it.fTree != nullptr)
+        {
+            fOutTFile->WriteTObject(it.fTree);
+        }
+    }
+    fOutTFile->Close();
+}
+
 
 void EsbWriterPersistency::setOutFile(const std::string& path) 
 { 
