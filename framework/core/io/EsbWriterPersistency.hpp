@@ -17,6 +17,12 @@ namespace esbroot {
 namespace core {
 namespace io {
 
+struct WriterInfo
+{
+    TTree* ftree{nullptr};
+    TClonesArray* fdata{nullptr};
+};
+
 class EsbWriterPersistency : public TObject
 {
 public:
@@ -29,6 +35,7 @@ public:
             std::string fTreeName{""};
             std::string fBranchName{""};
             std::string tNamedObj{""};
+            TTree * fTree{nullptr};
             TClonesArray* fColl{nullptr};
     };
 
@@ -36,7 +43,7 @@ public:
 
     void setOutFile(const std::string& path);
 
-    TClonesArray* Register(const char* treeName, const char* branchName, TClass* CollObj);
+    WriterInfo Register(const char* treeName, const char* branchName, TClass* CollObj);
     void Clear();
 
 private:

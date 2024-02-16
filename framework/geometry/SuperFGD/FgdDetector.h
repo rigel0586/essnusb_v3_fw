@@ -15,6 +15,7 @@
 #include "core/detector/IDetector.hpp"
 #include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
 #include "data/SuperFGD/FgdDetectorPoint.hpp"
+#include "core/io/EsbWriterPersistency.hpp"
 
 #include "G4VSensitiveDetector.hh"
 #include "G4VUserDetectorConstruction.hh"
@@ -94,7 +95,7 @@ private:
 	Double32_t     fLength;            //!  length
 	Double32_t     fELoss;             //!  energy loss
 
-	TClonesArray*  fFgdDetectorPointCollection;  //! 
+	core::io::WriterInfo  fFgdDetectorPointCollection;  //! 
 	TGeoVolume* fsuperFgdVol;//!<!
 	esbroot::geometry::superfgd::SuperFGDDetectorConstruction    fgdConstructor;	   //! SuperFgd Detector Constructor
 

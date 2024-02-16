@@ -11,7 +11,6 @@ ClassImp(esbroot::geometry::FgdDetector)
 #include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h" 
 #include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 #include "data/SuperFGD/FgdDetectorPoint.hpp"
-#include "core/io/EsbWriterPersistency.hpp"
 
 #include "TGeoManager.h"
 #include "TGraph.h"
@@ -44,7 +43,7 @@ FgdDetector::FgdDetector()
     fposY(0),
     fposZ(0),
     fsuperFgdVol(nullptr),
-    fFgdDetectorPointCollection{nullptr}
+    fFgdDetectorPointCollection()
 {
 }
 
@@ -54,7 +53,7 @@ FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, do
     fposY(posY),
     fposZ(posZ),
     fsuperFgdVol(nullptr),
-    fFgdDetectorPointCollection{nullptr}
+    fFgdDetectorPointCollection()
 {
     TClass* tCl = esbroot::data::superfgd::FgdDetectorPoint::Class();
     fFgdDetectorPointCollection = core::io::EsbWriterPersistency::Instance().Register("SimulationFgd", "fgdPoints", tCl);
@@ -62,9 +61,9 @@ FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, do
 
 FgdDetector::~FgdDetector()
 {
-  if (fFgdDetectorPointCollection) {
-    fFgdDetectorPointCollection->Delete();
-    delete fFgdDetectorPointCollection;
+  if (fFgdDetectorPointCollection.fdata) {
+    fFgdDetectorPointCollection.fdata->Delete();
+    delete fFgdDetectorPointCollection.fdata;
   }
 }
 
@@ -250,9 +249,9 @@ data::superfgd::FgdDetectorPoint* FgdDetector::AddHit(Int_t trackID, Int_t detID
     LOG(debug) << "edep " << edep;
     LOG(debug) << "pdg " << pdg;
 
-  if(fFgdDetectorPointCollection == nullptr) return nullptr;
+  if(fFgdDetectorPointCollection.fdata == nullptr) return nullptr;
 
-  TClonesArray& clref = *fFgdDetectorPointCollection;
+  TClonesArray& clref = *fFgdDetectorPointCollection.fdata;
   Int_t size = clref.GetEntriesFast();
 
   return new(clref[size]) data::superfgd::FgdDetectorPoint(trackID, detID, detectorPos, pos, posExit, mom, 
@@ -267,8 +266,11 @@ void FgdDetector::BeginOfEventAction(const G4Event*)
 void FgdDetector::EndOfEventAction(const G4Event*)
 {
   LOG(info) << "  FgdDetector::EndOfEventAction ";
-  if(fFgdDetectorPointCollection != nullptr)
-    fFgdDetectorPointCollection->Clear();
+  if(fFgdDetectorPointCollection.ftree != nullptr)
+    fFgdDetectorPointCollection.ftree->Fill();
+
+  if(fFgdDetectorPointCollection.fdata != nullptr)
+    fFgdDetectorPointCollection.fdata->Clear();
 }
 
 void FgdDetector::BeginOfRunAction(const G4Run* aRun)

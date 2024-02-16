@@ -14,6 +14,14 @@ EsbWriterPersistency::EsbWriterPersistency()
 
 EsbWriterPersistency::~EsbWriterPersistency()
 {
+    for(RegisterItem it : fItems)
+    {
+        if(fOutTFile != nullptr && it.fTree != nullptr)
+        {
+            fOutTFile->WriteTObject(it.fTree);
+        }
+    }
+    fOutTFile->Close();
     Clear();
 }
 
@@ -44,15 +52,19 @@ void EsbWriterPersistency::Clear()
     }
 }
 
-TClonesArray* EsbWriterPersistency::Register(const char* treeName, const char* branchName, TClass* CollObj)
+WriterInfo EsbWriterPersistency::Register(const char* treeName, const char* branchName, TClass* CollObj)
 {
+    
     for(RegisterItem it : fItems)
     {
         if(it.fTreeName == std::string(treeName) 
             && it.fBranchName == std::string(branchName) 
             && it.tNamedObj == std::string(CollObj->GetName()) )
         {
-            return it.fColl;
+            WriterInfo info;
+            info.ftree = it.fTree;
+            info.fdata = it.fColl;
+            return info;
         }
 
         if(it.fTreeName == std::string(treeName) 
@@ -60,7 +72,7 @@ TClonesArray* EsbWriterPersistency::Register(const char* treeName, const char* b
             && it.tNamedObj != std::string(CollObj->GetName()) )
         {
             LOG(warning) << " Attempting to create a new clonessarray for existing branch with different type";
-            return nullptr;
+            return WriterInfo{};
         }
     }
 
@@ -72,10 +84,14 @@ TClonesArray* EsbWriterPersistency::Register(const char* treeName, const char* b
     TTree *ttree = new TTree(treeName, treeName);
     TClonesArray* tCA = new TClonesArray(CollObj);
     item.fColl = tCA;
+    item.fTree = ttree;
     ttree->Branch(branchName,&tCA);
     fItems.emplace_back(item);
 
-    return tCA;
+    WriterInfo info;
+    info.ftree = item.fTree;
+    info.fdata = item.fColl;
+    return info;
 }
 
 } // namespace io
