@@ -19,6 +19,8 @@
 #include "G4VSensitiveDetector.hh"
 #include "G4VUserDetectorConstruction.hh"
 
+#include "utility/Utility.hpp" 
+
 #include <set>
 
 namespace esbroot {
@@ -95,6 +97,8 @@ private:
 	TClonesArray*  fFgdDetectorPointCollection;  //! 
 	TGeoVolume* fsuperFgdVol;//!<!
 	esbroot::geometry::superfgd::SuperFGDDetectorConstruction    fgdConstructor;	   //! SuperFgd Detector Constructor
+
+    utility::Utility fut;
 
 	FgdDetector(const FgdDetector&);
 	FgdDetector& operator=(const FgdDetector&);		

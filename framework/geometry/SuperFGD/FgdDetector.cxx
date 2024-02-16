@@ -12,7 +12,6 @@ ClassImp(esbroot::geometry::FgdDetector)
 #include "geometry/SuperFGD/EsbSuperFGD/Names.h"
 #include "data/SuperFGD/FgdDetectorPoint.hpp"
 #include "core/io/EsbWriterPersistency.hpp"
-#include "utility/Utility.hpp" 
 
 #include "TGeoManager.h"
 #include "TGraph.h"
@@ -57,10 +56,8 @@ FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, do
     fsuperFgdVol(nullptr),
     fFgdDetectorPointCollection{nullptr}
 {
-    // esbroot::data::superfgd::FgdDetectorPoint point;
-    // point.Class();
-    // TClass* tCl = esbroot::data::superfgd::FgdDetectorPoint::Class();
-    // fFgdDetectorPointCollection = core::io::EsbWriterPersistency::Instance().Register("SimulationFgd", "fgdPoints", tCl);
+    TClass* tCl = esbroot::data::superfgd::FgdDetectorPoint::Class();
+    fFgdDetectorPointCollection = core::io::EsbWriterPersistency::Instance().Register("SimulationFgd", "fgdPoints", tCl);
 }
 
 FgdDetector::~FgdDetector()
@@ -102,8 +99,7 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
 {
 
     std::vector<G4VPhysicalVolume*> sdVolumes;
-    utility::Utility ut;
-    ut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    fut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
 
     // Add just one, the rest are the same.
     if(!sdVolumes.empty()){
@@ -112,7 +108,7 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
     }
 
     sdVolumes.clear();
-    ut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
     if(!sdVolumes.empty())
       AddMagneticField(sdVolumes[0]);
 }
@@ -226,12 +222,13 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     LOG(debug) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
     LOG(debug) << "  fELoss " << fELoss;
 
+    double g4toRootCoeff = fut.g4ToRootCoeffLength();
     AddHit(fTrackID, fVolumeID
           ,TVector3(fposX,       fposY,       fposZ)
-          ,TVector3(fPos.X(),       fPos.Y(),       fPos.Z())
+          ,TVector3(fPos.X() * g4toRootCoeff,       fPos.Y() * g4toRootCoeff,       fPos.Z() * g4toRootCoeff)
           ,TVector3(fPosExit.X(),   fPosExit.Y(),   fPosExit.Z())
           ,TVector3(fMom.Px(),      fMom.Py(),      fMom.Pz())
-          ,TVector3(fMomExit.Px(),      fMomExit.Py(),      fMomExit.Pz())
+          ,TVector3(fMomExit.Px() * g4toRootCoeff,  fMomExit.Py() * g4toRootCoeff,  fMomExit.Pz() * g4toRootCoeff)
           , fTime, fELoss, fLength, track->GetTrackID()
           , track->GetTrackLength()); 
   }    
