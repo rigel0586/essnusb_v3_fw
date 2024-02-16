@@ -88,12 +88,17 @@ void EsbTaskManager::run()
 
     beforeRun();
 
-    for(int event = 0; event < fEvents; ++event){
+    bool rc{true};
+    for(int event = 0; rc && (event < fEvents); ++event){
         fReadItem.fTree->GetEntry(event);
-        for(int i = 0; i < fTasks.size(); ++i){
+        for(int i = 0; rc && (i < fTasks.size()); ++i){
             fTasks[i]->beforeEvent();
-            fTasks[i]->Exec(fReadItem.fColl);
+            rc = fTasks[i]->Exec(fReadItem.fColl);
             fTasks[i]->afterEvent();
+
+            if(!rc){
+                LOG(fatal) << "Task  " << fTasks[i]->getName() << " failed to Execute successfully";
+            }
         }
     }
     
@@ -136,6 +141,7 @@ void EsbTaskManager::afterRun()
     for(int i = 0; i < fTasks.size(); ++i){
         fTasks[i]->afterRun();
     }
+    io::EsbWriterPersistency::Instance().writeData();
 }
 
 void EsbTaskManager::setOutputFile(const std::string& outPath)

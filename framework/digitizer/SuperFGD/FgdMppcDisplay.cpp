@@ -1,5 +1,7 @@
-#include "EsbDigitizer/EsbSuperFGD/FgdMppcDisplay.h"
-#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
+#include "FgdMppcDisplay.hpp"
+ClassImp(esbroot::digitizer::superfgd::FgdMppcDisplay)
+
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
 
 #include <TClonesArray.h>
 #include <TSpline.h>
@@ -7,12 +9,7 @@
 #include <TH2F.h>
 #include <TH1F.h>
 
-#include <FairRootManager.h>
-#include "FairLogger.h"
-
-#include "EsbData/WCDetectorPoint.h"
-#include "EsbGeometry/PMTube.h"
-#include "EsbData/PMTubeHit.h"
+#include <fairlogger/Logger.h>
 
 #include <iostream>
 #include <sstream>
@@ -25,7 +22,7 @@ namespace superfgd {
 
 // -----   Default constructor   -------------------------------------------
 FgdMppcDisplay::FgdMppcDisplay() :
-  FairTask(), fX(0), fY(0), fZ(0),fevNum(0),
+  ITask("FgdMppcDisplay"), fX(0), fY(0), fZ(0),fevNum(0),
   f_xy_hist(nullptr), f_yz_hist(nullptr), f_xz_hist(nullptr), fHitArray(nullptr)
   , f_photo_ave(0.),f_photo_count(0)
 { 
@@ -37,7 +34,7 @@ FgdMppcDisplay::FgdMppcDisplay(const char* name
                           ,const char* geoConfigFile
                           ,double x, double y, double z
                           , Int_t verbose) :
-  FairTask(name, verbose), fX(x), fY(y), fZ(z),fevNum(0),
+  ITask("FgdMppcDisplay"), fX(x), fY(y), fZ(z),fevNum(0),
   f_xy_hist(nullptr), f_yz_hist(nullptr), f_xz_hist(nullptr), fHitArray(nullptr)
   , f_photo_ave(0.), f_photo_count(0)
 { 
@@ -60,7 +57,7 @@ FgdMppcDisplay::~FgdMppcDisplay()
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdMppcDisplay::Init() 
+bool FgdMppcDisplay::Init() 
 {   
   flunit = fParams.GetLenghtUnit(); // [cm]
 
@@ -76,20 +73,6 @@ InitStatus FgdMppcDisplay::Init()
   f_total_Y = f_step_Y * f_bin_Y;
   f_total_Z = f_step_Z * f_bin_Z;
 
-  // Get RootManager
-  FairRootManager* manager = FairRootManager::Instance();
-  if ( !manager ) {
-    LOG(error) << "-E- FgdDigitizer::Init: " << "FairRootManager not instantised!";
-    return kFATAL;
-  }
-
-  fHitArray = (TClonesArray*) manager->GetObject(geometry::superfgd::DP::FGD_HIT.c_str());
-  if (!fHitArray) 
-  {
-      LOG(fatal) << "Exec", "No fgd hits array";
-      return kFATAL;
-  }
-
   fcanvas = new TCanvas();
   f_xy_hist = new TH2F("hist_xy","XY histogram",f_bin_X,0,f_bin_X,f_bin_Y,0,f_bin_Y);
   f_yz_hist = new TH2F("hist_yz","YZ histogram",f_bin_Y,0,f_bin_Y,f_bin_Z,0,f_bin_Z);
@@ -99,7 +82,7 @@ InitStatus FgdMppcDisplay::Init()
   f_ph_hist_total = new TH1F("hist_ph_total","Total Photons histogram",100,0,30000);
   f_time_hist  = new TH1F("hist_time","Total Photons histogram",100,0,2);
 
-  return kSUCCESS;
+  return true;
 }
 
 
@@ -108,7 +91,7 @@ InitStatus FgdMppcDisplay::Init()
 
 
 // -----   Public methods   --------------------------------------------
-void FgdMppcDisplay::FinishEvent()
+void FgdMppcDisplay::afterEvent()
 {
   if(f_xy_hist)
   {
@@ -174,7 +157,7 @@ void FgdMppcDisplay::FinishEvent()
   fevNum++;
 }
 
-void FgdMppcDisplay::FinishTask()
+void FgdMppcDisplay::afterRun()
 {
   if(f_ph_hist_total)
   {
@@ -185,8 +168,9 @@ void FgdMppcDisplay::FinishTask()
 }
 
 
-void FgdMppcDisplay::Exec(Option_t* opt) 
+bool FgdMppcDisplay::Exec(TClonesArray* data) 
 {
+  fHitArray = data;
   const Int_t hits = fHitArray->GetEntries();
   float max(0);
   float sum(0);
@@ -212,6 +196,8 @@ void FgdMppcDisplay::Exec(Option_t* opt)
   cout  << "sum photons are " << sum << endl;
   cout  << endl;
   cout  << endl;
+
+  return true;
 }
 // -------------------------------------------------------------------------
   

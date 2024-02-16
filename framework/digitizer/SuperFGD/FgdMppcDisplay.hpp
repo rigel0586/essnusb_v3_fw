@@ -1,20 +1,20 @@
 #ifndef ESBROOT_ESBDIGITIZER_FGD_MPPC_DISPLAY_H
 #define ESBROOT_ESBDIGITIZER_FGD_MPPC_DISPLAY_H
 
-#include <FairTask.h>
 #include <TClonesArray.h>
 #include "TRandom3.h"
 #include <TCanvas.h>
 
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbData/EsbSuperFGD/FgdHit.h"
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "data/SuperFGD/FgdHit.hpp"
+#include "core/task/ITask.hpp"
 
 namespace esbroot {
 namespace digitizer {
 namespace superfgd {
 
 
-class FgdMppcDisplay : public FairTask
+class FgdMppcDisplay : public core::task::ITask 
 {
 
  public:
@@ -40,14 +40,14 @@ class FgdMppcDisplay : public FairTask
 
 
   /** Virtual method Init **/
-  virtual InitStatus Init();
-  virtual void FinishEvent() override;
-  virtual void FinishTask() override;
+  virtual bool Init() override;
+
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
 
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
-
+  virtual bool Exec(TClonesArray* data) override;
 
 private:
 

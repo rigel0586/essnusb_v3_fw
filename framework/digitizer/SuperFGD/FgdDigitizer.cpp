@@ -1,16 +1,10 @@
-#include "EsbDigitizer/EsbSuperFGD/FgdDigitizer.h"
-#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
+#include "FgdDigitizer.hpp"
+ClassImp(esbroot::digitizer::superfgd::FgdDigitizer)
 
-#include <TClonesArray.h>
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
+
 #include <TSpline.h>
 #include <TRandom.h>
-
-#include <FairRootManager.h>
-#include "FairLogger.h"
-
-#include "EsbData/WCDetectorPoint.h"
-#include "EsbGeometry/PMTube.h"
-#include "EsbData/PMTubeHit.h"
 
 #include <iostream>
 using std::cout;
@@ -24,7 +18,7 @@ const double FgdDigitizer::ESB_NORMALIZARTION = 0.1; // In ESB we work in cm, th
 
 // -----   Default constructor   -------------------------------------------
 FgdDigitizer::FgdDigitizer() :
-  FairTask(), fX(0), fY(0), fZ(0), fdPoints(nullptr), fHitArray(nullptr)
+  ITask("FgdDigitizer"), fX(0), fY(0), fZ(0), fdPoints(nullptr), fHitArray(nullptr)
 { 
 }
 // -------------------------------------------------------------------------
@@ -34,7 +28,7 @@ FgdDigitizer::FgdDigitizer(const char* name
                           ,const char* geoConfigFile
                           ,double x, double y, double z
                           , Int_t verbose) :
-  FairTask(name, verbose), fX(x), fY(y), fZ(z),
+  ITask("FgdDigitizer"), fX(x), fY(y), fZ(z),
   fdPoints(nullptr), fHitArray(nullptr)
 { 
   fParams.LoadPartParams(geoConfigFile);
@@ -56,7 +50,7 @@ FgdDigitizer::~FgdDigitizer()
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdDigitizer::Init() 
+bool FgdDigitizer::Init() 
 {   
   flunit = fParams.GetLenghtUnit(); // [cm]
 
@@ -72,40 +66,29 @@ InitStatus FgdDigitizer::Init()
   f_total_Y = f_step_Y * f_bin_Y;
   f_total_Z = f_step_Z * f_bin_Z;
 
-  // Get RootManager
-  FairRootManager* manager = FairRootManager::Instance();
-  if ( !manager ) {
-    LOG(error) << "-E- FgdDigitizer::Init: " << "FairRootManager not instantised!";
-    return kFATAL;
-  }
-
-  fdPoints = (TClonesArray*) manager->GetObject(geometry::superfgd::DP::FGD_BRANCH.c_str());
-  if (!fdPoints) 
-  {
-      LOG(fatal) << "Exec", "No fgd points array";
-      return kFATAL;
-  }
-
   // Create and register output array
-  fHitArray = new TClonesArray(data::superfgd::FgdHit::Class(), 1000);
-  manager->Register(geometry::superfgd::DP::FGD_HIT.c_str()
-                    , geometry::superfgd::DP::FGD_DETECTOR_NAME.c_str()
-                    , fHitArray, kTRUE);
-
-  return kSUCCESS;
+  fWriterInfo = core::io::EsbWriterPersistency::Instance().Register(geometry::superfgd::DP::FGD_DETECTOR_NAME.c_str()
+                                                        , geometry::superfgd::DP::FGD_HIT.c_str()
+                                                        , data::superfgd::FgdHit::Class());
+  fHitArray = fWriterInfo.fdata;
+  return true;
 }
 
-
+void FgdDigitizer::afterEvent()
+{
+  if(fWriterInfo.ftree != nullptr)
+    fWriterInfo.ftree->Fill();
+}
 // -------------------------------------------------------------------------
 
 
 
 // -----   Public method Exec   --------------------------------------------
-void FgdDigitizer::Exec(Option_t* opt) 
+bool FgdDigitizer::Exec(TClonesArray* data) 
 {
   // Reset output array
   fHitArray->Delete();
-  
+  fdPoints = data;
   const Int_t points = fdPoints->GetEntries();
   int nextPoint(0);
   for(Int_t i =0; i < points; i++)
@@ -210,6 +193,8 @@ void FgdDigitizer::Exec(Option_t* opt)
                                                             , point->GetPdg(), point->GetTrackID()
                                                             , point->GetEnergyLoss()
                                                             , pe);
+
+      return true;
     }
   }
 }

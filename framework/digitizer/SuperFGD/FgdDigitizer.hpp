@@ -1,19 +1,21 @@
 #ifndef ESBROOT_ESBDIGITIZER_FGD_DIGITIZER_H
 #define ESBROOT_ESBDIGITIZER_FGD_DIGITIZER_H
 
-#include <FairTask.h>
 #include <TClonesArray.h>
 #include "TRandom3.h"
 
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbData/EsbSuperFGD/FgdHit.h"
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "core/io/EsbWriterPersistency.hpp"
+#include "data/SuperFGD/FgdHit.hpp"
+
+#include "core/task/ITask.hpp"
 
 namespace esbroot {
 namespace digitizer {
 namespace superfgd {
 
 
-class FgdDigitizer : public FairTask
+class FgdDigitizer : public core::task::ITask 
 {
 
  public:
@@ -39,11 +41,12 @@ class FgdDigitizer : public FairTask
 
 
   /** Virtual method Init **/
-  virtual InitStatus Init();
+  virtual bool Init() override;
 
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
+  virtual bool Exec(TClonesArray* data) override;
+  virtual void afterEvent() override;
 
   /** Methods to calculate the revert response from detector physical characteristics **/
   static double RevertScintiResponse(double edep, double trackLength, double charge, double pe);
@@ -55,6 +58,7 @@ class FgdDigitizer : public FairTask
 
 private:
 
+  core::io::WriterInfo fWriterInfo;
   /** Constants used when digitalizing the energy loss in the detector to photons **/
   static const double CBIRKS;
   static const double EdepToPhotConv_FGD;
