@@ -7,6 +7,7 @@
 #include <string>
 
 #include "ITask.hpp"
+#include "EsbReaderPersistency.hpp"
 
 namespace esbroot {
 namespace core {
@@ -34,7 +35,9 @@ enum class Severity : int
 class EsbTaskManager : public TObject
 {
 public:
-    EsbTaskManager(const std::string& inputFile);
+    EsbTaskManager(const std::string& inputFile
+                    , const std::string& tree
+                    , const std::string& branch);
     ~EsbTaskManager();
 
     void setLoggerSeverity(Severity sev);
@@ -50,6 +53,10 @@ private:
     
     std::vector<ITask*> fTasks;
     const std::string finputFile;
+    const std::string fTree;
+    const std::string fBranch;
+
+    io::EsbReaderPersistency::ReadItem fReadItem;
 
     bool Init();
 

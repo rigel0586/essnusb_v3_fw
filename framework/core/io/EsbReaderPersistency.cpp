@@ -44,19 +44,23 @@ void EsbReaderPersistency::Clear()
     }
 }
 
-TClonesArray* EsbReaderPersistency::Register(const char* treeName, const char* branchName)
+EsbReaderPersistency::ReadItem EsbReaderPersistency::Register(const char* treeName, const char* branchName)
 {
+    ReadItem item;
     if(fInTFile != nullptr)
     {
         TTree *tree = (TTree*)fInTFile->Get(treeName);
-        if(tree == nullptr) return nullptr;
+        if(tree == nullptr) return item;
 
-        TClonesArray* arr = nullptr;
-        tree->SetBranchAddress(branchName,&arr);
-        return arr;
+        item.fTreeName = treeName;
+        item.fBranchName = branchName;
+        item.fTree = tree;
+        item.fEntries = tree->GetEntriesFast();
+
+        tree->SetBranchAddress(branchName,&item.fColl);
     }
 
-    return nullptr;
+    return item;
 }
 
 } // namespace io

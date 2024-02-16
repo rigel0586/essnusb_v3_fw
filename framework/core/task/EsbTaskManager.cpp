@@ -2,7 +2,6 @@
 ClassImp(esbroot::core::task::EsbTaskManager)
 
 #include <fairlogger/Logger.h>
-#include "EsbReaderPersistency.hpp"
 #include "EsbWriterPersistency.hpp"
 
 namespace esbroot {
@@ -10,9 +9,15 @@ namespace core {
 namespace task {
 
 
-EsbTaskManager::EsbTaskManager(const std::string& inputFile) : finputFile(inputFile)
+EsbTaskManager::EsbTaskManager(const std::string& inputFile
+                    , const std::string& tree
+                    , const std::string& branch) 
+    : finputFile(inputFile),
+        fTree(tree),
+        fBranch(branch)
 {
     io::EsbReaderPersistency::Instance().setInFile(finputFile);
+    fReadItem = io::EsbReaderPersistency::Instance().Register(fTree.c_str(), fBranch.c_str());
 }
 
 EsbTaskManager::~EsbTaskManager()
@@ -83,11 +88,15 @@ void EsbTaskManager::run()
 
     beforeRun();
 
-    for(int i = 0; i < fTasks.size(); ++i){
-        fTasks[i]->beforeEvent();
-        fTasks[i]->Exec();
-        fTasks[i]->afterEvent();
+    for(int event = 0; event < fEvents; ++event){
+        fReadItem.fTree->GetEntry(event);
+        for(int i = 0; i < fTasks.size(); ++i){
+            fTasks[i]->beforeEvent();
+            fTasks[i]->Exec(fReadItem.fColl);
+            fTasks[i]->afterEvent();
+        }
     }
+    
     afterRun();
 }
 
@@ -98,6 +107,12 @@ void EsbTaskManager::addTask(ITask* task)
 
 bool EsbTaskManager::Init()
 {
+    if(fReadItem.fEntries < fEvents){
+        LOG(fatal) << "Input file  " << finputFile << " has fewer entries than requested" 
+                    << "[ Requested " << fEvents << " , available " << fReadItem.fEntries;
+        return false;
+    }
+
     bool rc{true};
     for(int i = 0; rc && (i < fTasks.size()); ++i)
     {

@@ -23,11 +23,21 @@ public:
     EsbReaderPersistency();
     ~EsbReaderPersistency();
 
+    class ReadItem
+    {
+        public:
+            std::string fTreeName{""};
+            std::string fBranchName{""};
+            int fEntries{0};
+            TTree * fTree{nullptr};
+            TClonesArray* fColl{nullptr};
+    };
+
     static EsbReaderPersistency& Instance();
 
     void setInFile(const std::string& path);
 
-    TClonesArray* Register(const char* treeName, const char* branchName);
+    EsbReaderPersistency::ReadItem Register(const char* treeName, const char* branchName);
     void Clear();
 
 private:
