@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 
-#include <string>
 #include "TObject.h"
 #include "TGeoManager.h"
 
