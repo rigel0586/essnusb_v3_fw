@@ -27,7 +27,5 @@ target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD
 )
 
-add_dependencies(${Geometry_Target} essnusb_data)
-
 LIBRARY_FOOTER(${Geometry_Target} ${CMAKE_CURRENT_SOURCE_DIR}/GeometryLinkDef.h "${Geometry_Header}")
 
