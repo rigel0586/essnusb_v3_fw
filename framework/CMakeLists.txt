@@ -6,6 +6,8 @@ include(./CMake/third_party.cmake)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+set(PROJECT_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
 set(ESSNUSB_PROJECT_NAME fw_essnusb)
 
 #message(WARNING ${ROOT_CXX_FLAGS})
