@@ -8,6 +8,7 @@ ClassImp(esbroot::core::simulation::EsbRunAction)
 #include <ctime>
 #include "Randomize.hh"
 
+#include "EsbWriterPersistency.hpp"
 
 namespace esbroot {
 namespace core {
@@ -37,6 +38,7 @@ void EsbRunAction::EndOfRunAction(const G4Run* aRun)
   {
       d->EndOfRunAction(aRun);
   }
+  io::EsbWriterPersistency::Instance().writeData();
   return;
 }
 
