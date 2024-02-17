@@ -2,19 +2,18 @@
 #define ESBROOT_ESB_GRAPH_RECONSTRUCTION_FGD_GENFIT_H
 
 // EsbRoot headers
-#include "EsbData/EsbSuperFGD/FgdHit.h"
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbGeometry/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconHit.h"
-#include "EsbReconstruction/EsbSuperFGD/PdgFromMomentumLoss.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdTMVAEventRecord.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
+#include "data/SuperFGD/FgdHit.hpp"
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
+#include "reconstruction/SuperFGD/FgdReconHit.hpp"
+#include "reconstruction/SuperFGD/PdgFromMomentumLoss.hpp"
+#include "reconstruction/SuperFGD/FgdTMVAEventRecord.hpp"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
 
-// FairRoot headers
-#include <FairTask.h>
+#include "core/task/ITask.hpp"
 
 // ROOT headers
-#include <include/EventDisplay.h>
+#include "EventDisplay.h"
 
 // Pathfinder headers
 #include "basicHit.h"
@@ -24,7 +23,7 @@ namespace esbroot {
 namespace reconstruction {
 namespace superfgd {
 
-class FgdGraphGenFitRecon : public FairTask
+class FgdGraphGenFitRecon : public core::task::ITask
 {
 
  public:
@@ -44,7 +43,6 @@ class FgdGraphGenFitRecon : public FairTask
    *@param name       Name of task
    *@param geoConfigFile  - Configuration file detector
    *@param graphConfig  - Configuration file for graph algorithm
-   *@param mediaFile  - Configuration file for the used mediums
    *@param eventData  - events data file (generated from fgd generator)
    *@param outputRootFile - full path to the output root file
    *@param verbose  - Verbosity level
@@ -55,7 +53,6 @@ class FgdGraphGenFitRecon : public FairTask
   FgdGraphGenFitRecon(const char* name
               , const char* geoConfigFile
               , const char* graphConfig
-              , const char* mediaFile
               , const char* eventData
               , const char* outputRootFile
               , Int_t verbose = 1
@@ -72,15 +69,14 @@ class FgdGraphGenFitRecon : public FairTask
   void AddPdgMomLoss(Int_t pdg, Double_t momLoss, Double_t allowDiff){ fpdgFromMomLoss.emplace_back(pdg, momLoss, allowDiff);}
   void SetSmoothCoor(bool val){fuseSmoothPos = val;}
 
-  /** Virtual method Init **/
-  virtual InitStatus Init() override;
-  virtual void OutputFileInit(FairRootManager* manager); // Create virtual method for output file creation
-  virtual void FinishEvent() override;
-  virtual void FinishTask() override;
+   /** Virtual method Init **/
+  virtual bool Init() override;
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
 
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
 protected:
 
@@ -177,7 +173,6 @@ protected:
   Int_t fminHits;
 
   /** Are materials already defined **/
-  bool isDefinedMaterials;
   bool fuseSmoothPos;
 
   /** local Members for genfit visualization  **/

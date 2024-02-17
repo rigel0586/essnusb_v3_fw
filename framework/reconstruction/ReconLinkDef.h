@@ -17,8 +17,8 @@
 #pragma link C++ namespace esbroot::reconstruction+;
 #pragma link C++ namespace esbroot::reconstruction::superfgd+;
 
-// #pragma link C++ class esbroot::reconstruction::superfgd::FgdGenFitRecon+;
-// #pragma link C++ class esbroot::reconstruction::superfgd::FgdGraphGenFitRecon+;
+#pragma link C++ class esbroot::reconstruction::superfgd::FgdGenFitRecon+;
+#pragma link C++ class esbroot::reconstruction::superfgd::FgdGraphGenFitRecon+;
 // #pragma link C++ class esbroot::reconstruction::superfgd::FgdMCGenFitRecon+;
 // #pragma link C++ class esbroot::reconstruction::superfgd::FgdMCLeptonStats+;
 #pragma link C++ class esbroot::reconstruction::superfgd::FgdMCEventRecord+;

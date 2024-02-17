@@ -11,6 +11,7 @@ set(Reconstruction_Header   ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/PdgFromMomentum
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCEventRecord.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphRecord.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenFitRecon.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphGenFitRecon.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdCalorimetric.hpp)
 
 add_library(${Reconstruction_Target} SHARED)
@@ -25,6 +26,7 @@ target_sources(${Reconstruction_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdExitParticle.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphRecord.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenFitRecon.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphGenFitRecon.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdCalorimetric.cpp)
 
 target_include_directories(${Reconstruction_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
