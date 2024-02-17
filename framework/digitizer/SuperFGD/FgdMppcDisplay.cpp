@@ -32,9 +32,10 @@ FgdMppcDisplay::FgdMppcDisplay() :
 // -----   Constructor   -------------------------------------------
 FgdMppcDisplay::FgdMppcDisplay(const char* name
                           ,const char* geoConfigFile
+                          ,const char* outPath
                           ,double x, double y, double z
                           , Int_t verbose) :
-  ITask("FgdMppcDisplay"), fX(x), fY(y), fZ(z),fevNum(0),
+  ITask("FgdMppcDisplay"), fOutPath(outPath) ,fX(x), fY(y), fZ(z),fevNum(0),
   f_xy_hist(nullptr), f_yz_hist(nullptr), f_xz_hist(nullptr), fHitArray(nullptr)
   , f_photo_ave(0.), f_photo_count(0)
 { 
@@ -208,7 +209,8 @@ void FgdMppcDisplay::WriteCanvas(string hist)
     fcanvas->Draw();
     fcanvas->Write();
     std::ostringstream strb;
-    strb<< "hist_" << hist << fevNum << ".png";
+    strb<< fOutPath;
+    strb<< "/hist_" << hist << fevNum << ".png";
     fcanvas->SaveAs((strb.str()).c_str());
     fcanvas->ResetDrawn();
 }

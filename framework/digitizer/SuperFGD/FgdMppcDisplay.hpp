@@ -32,6 +32,7 @@ class FgdMppcDisplay : public core::task::ITask
   **/  
   FgdMppcDisplay(const char* name
               ,const char* geoConfigFile
+              ,const char* outPath
               ,double x, double y, double z
               ,Int_t verbose = 1);
 
@@ -53,6 +54,8 @@ private:
 
   /** Class to hold the Detector parameters read from external file **/
   esbroot::geometry::superfgd::FgdDetectorParameters fParams;
+
+  std::string fOutPath{""};
 
   /** Coordinates of the detector **/
   double fX;

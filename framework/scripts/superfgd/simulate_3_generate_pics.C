@@ -30,13 +30,20 @@ void simulate_3_generate_pics(Int_t nEvents = 4)
   ssOut << "/simulation/pics_output.root";
   std::string outputFile = ssOut.str();
   fRun->setOutputFile(outputFile);
+
+  ssOut.str(std::string());
+  ssOut.clear();
+
+  ssOut << gSystem->Getenv("WORKSPACE_DIR");
+  ssOut << "/simulation";
+  std::string outpics_path = ssOut.str();
  
   // Set Tasks 
   std::stringstream ssConf;
   ssConf << gSystem->Getenv("ESB_BASE_DIR");
   ssConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
   std::string fgdConfig = ssConf.str();
-  core::task::ITask* mppcDisplayTask = new digitizer::superfgd::FgdMppcDisplay("Granular Task", fgdConfig.c_str(),0,0,0);
+  core::task::ITask* mppcDisplayTask = new digitizer::superfgd::FgdMppcDisplay("Granular Task", fgdConfig.c_str(), outpics_path.c_str(),0,0,0);
   fRun->addTask(mppcDisplayTask);   
   fRun->run();
 }
