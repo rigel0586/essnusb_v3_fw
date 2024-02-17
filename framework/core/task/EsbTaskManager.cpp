@@ -17,7 +17,7 @@ EsbTaskManager::EsbTaskManager(const std::string& inputFile
         fBranch(branch)
 {
     io::EsbReaderPersistency::Instance().setInFile(finputFile);
-    fReadItem = io::EsbReaderPersistency::Instance().Register(fTree.c_str(), fBranch.c_str());
+    io::EsbReaderPersistency::Instance().Register(fTree.c_str(), fBranch.c_str(), &fReadItem);
 }
 
 EsbTaskManager::~EsbTaskManager()
@@ -90,7 +90,8 @@ void EsbTaskManager::run()
 
     bool rc{true};
     for(int event = 0; rc && (event < fEvents); ++event){
-        fReadItem.fTree->GetEntry(event);
+        TTree* ptr_tree = fReadItem.fTree;
+        ptr_tree->GetEntry(event);
         for(int i = 0; rc && (i < fTasks.size()); ++i){
             fTasks[i]->beforeEvent();
             rc = fTasks[i]->Exec(fReadItem.fColl);

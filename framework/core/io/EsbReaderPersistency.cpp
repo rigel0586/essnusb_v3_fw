@@ -44,23 +44,22 @@ void EsbReaderPersistency::Clear()
     }
 }
 
-EsbReaderPersistency::ReadItem EsbReaderPersistency::Register(const char* treeName, const char* branchName)
+void EsbReaderPersistency::Register(const char* treeName
+                , const char* branchName
+                , EsbReaderPersistency::ReadItem* outItem)
 {
-    ReadItem item;
     if(fInTFile != nullptr)
     {
+        
         TTree *tree = (TTree*)fInTFile->Get(treeName);
-        if(tree == nullptr) return item;
+        if(tree == nullptr) return;
 
-        item.fTreeName = treeName;
-        item.fBranchName = branchName;
-        item.fTree = tree;
-        item.fEntries = tree->GetEntriesFast();
-
-        tree->SetBranchAddress(branchName,&item.fColl);
+        outItem->fTreeName = treeName;
+        outItem->fBranchName = branchName;
+        outItem->fTree = tree;
+        outItem->fEntries = tree->GetEntriesFast();
+        tree->SetBranchAddress(branchName,&outItem->fColl);
     }
-
-    return item;
 }
 
 } // namespace io

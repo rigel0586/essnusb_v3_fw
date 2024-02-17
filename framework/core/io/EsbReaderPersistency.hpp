@@ -37,12 +37,13 @@ public:
 
     void setInFile(const std::string& path);
 
-    EsbReaderPersistency::ReadItem Register(const char* treeName, const char* branchName);
+    void Register(const char* treeName
+                                , const char* branchName
+                                , EsbReaderPersistency::ReadItem* outItem);
     void Clear();
 
 private:
     std::string fInpath{""};
-
     TFile* fInTFile{nullptr};
 
     ClassDef(EsbReaderPersistency, 2);
