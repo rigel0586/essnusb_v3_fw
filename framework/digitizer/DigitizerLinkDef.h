@@ -10,8 +10,8 @@
 #pragma link C++ namespace esbroot::digitizer+;
 #pragma link C++ namespace esbroot::digitizer::superfgd+;
 
-#pragma link C++ class esbroot::data::superfgd::FgdDigitizer+;
-#pragma link C++ class esbroot::data::superfgd::FgdMppcDisplay+;
+#pragma link C++ class esbroot::digitizer::superfgd::FgdDigitizer+;
+#pragma link C++ class esbroot::digitizer::superfgd::FgdMppcDisplay+;
 
 #endif
 

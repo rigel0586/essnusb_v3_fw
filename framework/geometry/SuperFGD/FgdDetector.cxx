@@ -56,7 +56,11 @@ FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, do
     fFgdDetectorPointCollection()
 {
     TClass* tCl = esbroot::data::superfgd::FgdDetectorPoint::Class();
-    fFgdDetectorPointCollection = core::io::EsbWriterPersistency::Instance().Register("SimulationFgd", "fgdPoints", tCl);
+    fFgdDetectorPointCollection 
+        = core::io::EsbWriterPersistency::Instance().Register(
+              superfgd::DP::FGD_DETECTOR_NAME.c_str()
+            , superfgd::DP::FGD_BRANCH.c_str()
+            , tCl);
 }
 
 FgdDetector::~FgdDetector()

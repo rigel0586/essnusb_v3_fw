@@ -41,7 +41,6 @@
     printf("\n %s \n", generators_pcm.c_str());
     gSystem->Load(generators_pcm.c_str());
 
-
     ss.str(std::string());
     ss.clear();
 
@@ -51,4 +50,14 @@
     std::string core_pcm = ss.str();
     printf("\n %s \n", core_pcm.c_str());
     gSystem->Load(core_pcm.c_str());
+
+    ss.str(std::string());
+    ss.clear();
+
+    // 6. Load giditazation
+    ss << gSystem->Getenv("ESB_BASE_DIR");
+    ss << "/build/digitizer/libessnusb_digitizer.so";
+    std::string digitizer_pcm = ss.str();
+    printf("\n %s \n", digitizer_pcm.c_str());
+    gSystem->Load(digitizer_pcm.c_str());
 }

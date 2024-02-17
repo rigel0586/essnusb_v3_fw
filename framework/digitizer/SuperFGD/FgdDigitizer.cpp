@@ -193,9 +193,9 @@ bool FgdDigitizer::Exec(TClonesArray* data)
                                                             , point->GetPdg(), point->GetTrackID()
                                                             , point->GetEnergyLoss()
                                                             , pe);
-
-      return true;
     }
+
+    return true;
   }
 }
 // -------------------------------------------------------------------------
