@@ -2,8 +2,8 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_TMVA_DATA2_STATS_H
 
 // EsbRoot headers
-#include "EsbReconstruction/EsbSuperFGD/FgdMCGenFitRecon.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdTMVAEventRecord.h"
+#include "reconstruction/SuperFGD/FgdMCGenFitRecon.h"
+#include "reconstruction/SuperFGD/FgdTMVAEventRecord.h"
 
 namespace esbroot {
 namespace reconstruction {

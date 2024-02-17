@@ -1,5 +1,5 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdGraphRecord.h"
-
+#include "reconstruction/SuperFGD/FgdGraphRecord.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdGraphRecord)
 
 
 namespace esbroot {

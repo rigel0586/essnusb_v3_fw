@@ -49,8 +49,8 @@ double Utility::rootToG4CoeffLength()
 
 double Utility::rootToG4CoeffEnergy()
 {
-    return 1;
-    // return (G4_E/ROOT_E);
+    // return 1;
+    return (G4_E/ROOT_E);
 }
 
 double Utility::g4ToRootCoeffLength()

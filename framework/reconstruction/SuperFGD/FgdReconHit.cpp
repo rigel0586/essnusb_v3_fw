@@ -1,5 +1,5 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdReconHit.h"
-
+#include "reconstruction/SuperFGD/FgdReconHit.hpp"
+ClassImp(esbroot::reconstruction::superfgd::ReconHit)
 
 
 namespace esbroot {

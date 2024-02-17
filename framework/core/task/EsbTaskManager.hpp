@@ -42,6 +42,7 @@ public:
 
     void setLoggerSeverity(Severity sev);
     void setNumberOfEvents(int n) {fEvents = n;}
+    void setStartOfEvents(int n) {fStartEvents = n;}
     void addTask(ITask* task);
 
     void setOutputFile(const std::string& outPath);
@@ -50,6 +51,7 @@ public:
 private:
 
     int fEvents{0};
+    int fStartEvents{0};
     
     std::vector<ITask*> fTasks;
     const std::string finputFile;

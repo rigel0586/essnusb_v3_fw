@@ -22,7 +22,7 @@ class ITask : public TObject
         virtual void beforeEvent(){};
         virtual void afterEvent(){};
 
-        virtual bool Exec(TClonesArray* data) = 0;
+        virtual bool Exec(int eventId, TClonesArray* data) = 0;
 
         virtual void beforeRun(){};
         virtual void afterRun(){};

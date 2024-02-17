@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "EsbReconstruction/EsbSuperFGD/FgdExitParticle.h"
+#include "reconstruction/SuperFGD/FgdExitParticle.hpp"
 
 namespace esbroot {
 namespace reconstruction {

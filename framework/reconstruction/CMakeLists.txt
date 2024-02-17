@@ -1,111 +1,33 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libEsbRecon" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+cmake_minimum_required(VERSION 3.22)
 
-FIND_PACKAGE(Eigen3 REQUIRED)
+set(Reconstruction_Target essnusb_reconstruction)
 
-set(INCLUDE_DIRECTORIES
-	${BASE_INCLUDE_DIRECTORIES}
-	#put here all directories where header files are located
-	${CMAKE_SOURCE_DIR}
-	${CLHEP_INCLUDE_DIR}
-    $ENV{GENIE}/src
-	${GENFIT_INCLUDE}
-	${GENFIT_INCLUDE}/include
-	${PATHFINDER_INC}
-	SYSTEM ${EIGEN3_INCLUDE_DIR}
-)
+set(Reconstruction_Header   ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/PdgFromMomentumLoss.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdTMVAEventRecord.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdReconTemplate.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdReconHit.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdExitData.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdExitParticle.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCEventRecord.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphRecord.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenFitRecon.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdCalorimetric.hpp)
 
-set( $ENV{ROOT_INCLUDE_PATH} ${EIGEN3_INCLUDE_DIR} )
+add_library(${Reconstruction_Target} SHARED)
 
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
+target_sources(${Reconstruction_Target} PUBLIC 
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/PdgFromMomentumLoss.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdTMVAEventRecord.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdReconTemplate.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdReconHit.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdExitData.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCEventRecord.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdExitParticle.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphRecord.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenFitRecon.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdCalorimetric.cpp)
 
-set(LINK_DIRECTORIES
-	${ROOT_LIBRARY_DIR}
-	${FAIRROOT_LIBRARY_DIR}
-	${CLHEP_LIB_DIR}
-    $ENV{GENIE}/lib
-	${GENFIT_LIBRARY}
-	${GENFIT_LIBRARY}/lib
-	${PATHFINDER_LIB}
-) 
+target_include_directories(${Reconstruction_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
+                                                            ${PROJECT_BASE_DIR}/geometry)
 
-link_directories( ${LINK_DIRECTORIES})
-
-set(SRCS
-	EsbSuperFGD/FgdGenFitRecon.cxx
-	EsbSuperFGD/FgdGraphGenFitRecon.cxx
-	EsbSuperFGD/FgdMCGenFitRecon.cxx
-	EsbSuperFGD/FgdMCLeptonStats.cxx
-	EsbSuperFGD/FgdMCEventRecord.cxx
-	EsbSuperFGD/FgdGraphStats.cxx
-	EsbSuperFGD/FgdReconHit.cxx
-	EsbSuperFGD/FgdReconTemplate.cxx
-	EsbSuperFGD/PdgFromMomentumLoss.cxx
-	EsbSuperFGD/FgdMuonRecon.cxx
-	EsbSuperFGD/FgdTMVAEventRecord.cxx
-	EsbSuperFGD/FgdTMVAData.cxx
-	EsbSuperFGD/FgdTMVAData2.cxx
-	EsbSuperFGD/FgdEdepAnalyzer.cxx
-	EsbSuperFGD/FgdCalorimetric.cxx
-	EsbSuperFGD/FgdExitData.cxx
-	EsbSuperFGD/FgdExitParticle.cxx
-	EsbSuperFGD/FgdGraphRecord.cxx
-)
-
-Set(HEADERS 
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdGenFitRecon.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdGraphGenFitRecon.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdMCGenFitRecon.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdMCLeptonStats.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdMCEventRecord.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdGraphStats.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdReconHit.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/PdgFromMomentumLoss.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdMuonRecon.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdTMVAEventRecord.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdTMVAData.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdTMVAData2.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdEdepAnalyzer.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdCalorimetric.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdExitData.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdExitParticle.h
-	${CMAKE_SOURCE_DIR}/EsbReconstruction/EsbSuperFGD/FgdGraphRecord.h
-)
-
-Set(LINKDEF ${CMAKE_SOURCE_DIR}/EsbReconstruction/ReconLinkDef.h)
-Set(LIBRARY_NAME EsbReconstruction)
-Set(DEPENDENCIES
-    Base EsbData EsbGeometry EsbDigitizer
-)
-
-file(GLOB genfit_libs ${GENFIT_LIBRARY}/lib/*.so)
-
-#Add shared library to be run in root interpreter (macro files)
-FOREACH(glib ${genfit_libs})
-	#message("Adding genfit libs as dependency: ${glib}")
-	list(APPEND DEPENDENCIES
-    	${glib}
-	)
-ENDFOREACH()
-
-file(GLOB pathfind_libs ${PATHFINDER_LIB}/*)
-
-#Add shared library to be run in root interpreter (macro files)
-FOREACH(pflib ${pathfind_libs})
-	#message("Adding pathfinder libs as dependency: ${pflib}")
-	list(APPEND DEPENDENCIES
-    	${pflib}
-	)
-ENDFOREACH()
-
-GENERATE_LIBRARY()
+LIBRARY_FOOTER(${Reconstruction_Target} ${CMAKE_CURRENT_SOURCE_DIR}/ReconLinkDef.h "${Reconstruction_Header}")

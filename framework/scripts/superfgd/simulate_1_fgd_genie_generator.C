@@ -5,7 +5,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
 
     core::simulation::EsbSimManager* esbSim = new core::simulation::EsbSimManager();
 
-    esbSim->setLoggerSeverity(core::simulation::Severity::debug);
+    esbSim->setLoggerSeverity(core::simulation::Severity::debug2);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
     std::stringstream ssOut;

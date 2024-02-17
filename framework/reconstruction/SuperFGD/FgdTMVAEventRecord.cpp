@@ -1,7 +1,8 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdTMVAEventRecord.h"
+#include "reconstruction/SuperFGD/FgdTMVAEventRecord.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdTMVAEventRecord)
 
 #include "Framework/ParticleData/PDGCodes.h"
-#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 #include <vector>
 #include <set>

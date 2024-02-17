@@ -2,10 +2,10 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_RECON_TEMPLATE_H
 
 // Essnusb
-#include "EsbReconstruction/EsbSuperFGD/FgdReconHit.h"
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbGeometry/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdGraphRecord.h"
+#include "reconstruction/SuperFGD/FgdReconHit.hpp"
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
+#include "reconstruction/SuperFGD/FgdGraphRecord.hpp"
 
 // Root
 #include "TObject.h"

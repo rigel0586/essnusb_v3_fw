@@ -89,12 +89,12 @@ void EsbTaskManager::run()
     beforeRun();
 
     bool rc{true};
-    for(int event = 0; rc && (event < fEvents); ++event){
+    for(int event = fStartEvents; rc && (event < fEvents); ++event){
         TTree* ptr_tree = fReadItem.fTree;
         ptr_tree->GetEntry(event);
         for(int i = 0; rc && (i < fTasks.size()); ++i){
             fTasks[i]->beforeEvent();
-            rc = fTasks[i]->Exec(fReadItem.fColl);
+            rc = fTasks[i]->Exec(event, fReadItem.fColl);
             fTasks[i]->afterEvent();
 
             if(!rc){

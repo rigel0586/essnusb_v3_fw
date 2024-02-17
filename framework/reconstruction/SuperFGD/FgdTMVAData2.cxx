@@ -1,16 +1,9 @@
 #include "EsbReconstruction/EsbSuperFGD/FgdTMVAData2.h"
+ClassImp(esbroot::reconstruction::superfgd::FgdTMVAData2)
+
 #include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
 //#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
 #include "EsbDigitizer/EsbSuperFGD/FgdDigitizer.h"
-
-// FairRoot headers
-#include "FairGeoBuilder.h"
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
-#include "FairGeoMedia.h"
-#include "FairLogger.h"
-#include <FairRootManager.h>
-#include "FairVolume.h"
 
 
 // Root headers
@@ -153,11 +146,6 @@ InitStatus FgdTMVAData2::Init()
                                 ,esbroot::geometry::superfgd::DP::FGD_TMVA_DATA_ROOT_FILE.c_str());
 
     return kSUCCESS;
-}
-
-void FgdTMVAData2::OutputFileInit(FairRootManager* manager)
-{
-    FgdMCGenFitRecon::OutputFileInit(manager);
 }
 
 // -------------------------------------------------------------------------

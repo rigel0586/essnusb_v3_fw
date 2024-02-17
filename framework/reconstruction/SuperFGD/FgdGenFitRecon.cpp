@@ -1,16 +1,8 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdGenFitRecon.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
-#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
+#include "reconstruction/SuperFGD/FgdGenFitRecon.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdGenFitRecon)
 
-// FairRoot headers
-#include "FairGeoBuilder.h"
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
-#include "FairGeoMedia.h"
-#include "FairLogger.h"
-#include <FairRootManager.h>
-#include "FairVolume.h"
-
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
 
 // Root headers
 #include <TClonesArray.h>
@@ -19,6 +11,7 @@
 #include <TGeoManager.h>
 #include <TFile.h>
 
+#include <fairlogger/Logger.h>
 
 // Genfit headers
 #include "AbsBField.h"
@@ -66,13 +59,12 @@ namespace superfgd {
 
 // -----   Default constructor   -------------------------------------------
 FgdGenFitRecon::FgdGenFitRecon() :
-  FairTask(), fsuperFgdVol(nullptr)
+  ITask("FgdGenFitRecon")
+  , fsuperFgdVol(nullptr)
   , fgdConstructor("")
   , fHitArray(nullptr)
   , isDefinedMaterials(false)
   , fDebuglvl_genfit(0)
-  , fmediaFile("")
-  , fTracksArray(nullptr)
   , fdisplay(nullptr)
   , isGenFitVisualization(false)
   , fGenFitVisOption("")
@@ -88,19 +80,16 @@ FgdGenFitRecon::FgdGenFitRecon() :
 FgdGenFitRecon::FgdGenFitRecon(const char* name
                           , const char* geoConfigFile
                           , const char* graphConfig
-                          , const char* mediaFile
                           , Int_t verbose
                           , double debugLlv
                           , bool visualize
                           , std::string visOption) :
-  FairTask(name, verbose)
+  ITask("FgdGenFitRecon")                                                        
   , fsuperFgdVol(nullptr)
   , fgdConstructor(geoConfigFile)
   , fHitArray(nullptr)
   , isDefinedMaterials(false)
   , fDebuglvl_genfit(debugLlv)
-  , fmediaFile(mediaFile)
-  , fTracksArray(nullptr)
   , fdisplay(nullptr)
   , isGenFitVisualization(visualize)
   , fGenFitVisOption(visOption)
@@ -123,21 +112,14 @@ FgdGenFitRecon::~FgdGenFitRecon()
     fHitArray->Delete();
     delete fHitArray;
   }
-
-  if(fTracksArray) {
-    fTracksArray->Delete();
-    delete fTracksArray;
-  }
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdGenFitRecon::Init() 
+bool FgdGenFitRecon::Init() 
 {   
-  // Create the real Fgd geometry
-  DefineMaterials();
   fsuperFgdVol = fgdConstructor.Construct();
   gGeoManager->SetTopVolume(fsuperFgdVol); 
 
@@ -156,22 +138,6 @@ InitStatus FgdGenFitRecon::Init()
   f_total_Y = f_step_Y * f_bin_Y;
   f_total_Z = f_step_Z * f_bin_Z;
 
-  // Get RootManager
-  FairRootManager* manager = FairRootManager::Instance();
-  if ( !manager ) {
-    LOG(fatal) << "-E- FgdGenFitRecon::Init: " << "FairRootManager not instantised!";
-    return kFATAL;
-  }
-
-  fHitArray = (TClonesArray*) manager->GetObject(geometry::superfgd::DP::FGD_HIT.c_str());
-  if (!fHitArray) 
-  {
-      LOG(fatal) << "Exec", "No fgd hits array";
-      return kFATAL;
-  }
-
-  OutputFileInit(manager);
-
   if(isGenFitVisualization)
   {
     fdisplay = genfit::EventDisplay::getInstance();
@@ -183,16 +149,7 @@ InitStatus FgdGenFitRecon::Init()
   }
   
 
-  return kSUCCESS;
-}
-
-void FgdGenFitRecon::OutputFileInit(FairRootManager* manager)
-{
-  // Create and register output array
-  fTracksArray = new TClonesArray(genfit::Track::Class(), 1000);
-  manager->Register(geometry::superfgd::DP::FGD_FIT_TRACK.c_str()
-                    , geometry::superfgd::DP::FGD_BRANCH_FIT.c_str()
-                    , fTracksArray, kTRUE);
+  return true;
 }
 
 
@@ -201,12 +158,12 @@ void FgdGenFitRecon::OutputFileInit(FairRootManager* manager)
 
 
 // -----   Public methods   --------------------------------------------
-void FgdGenFitRecon::FinishEvent()
+void FgdGenFitRecon::afterEvent()
 {
   
 }
 
-void FgdGenFitRecon::FinishTask()
+void FgdGenFitRecon::afterRun()
 {
   if(isGenFitVisualization)
   {
@@ -214,10 +171,11 @@ void FgdGenFitRecon::FinishTask()
   }
 }
 
-void FgdGenFitRecon::Exec(Option_t* opt) 
+bool FgdGenFitRecon::Exec(int eventId, TClonesArray* data)
 {  
   try
   {
+    fHitArray = data;
     std::vector<ReconHit> allhits;
     std::vector<std::vector<TVector3>> foundTracks;
     std::vector<std::vector<ReconHit*>> reconTracks;
@@ -261,12 +219,15 @@ void FgdGenFitRecon::Exec(Option_t* opt)
     {
       LOG(error) << " Could not find clean hits or tracks! ";
     }
+
+    return rc;
   }
   catch(genfit::Exception& e)
   {
       LOG(fatal) << "Exception, when tryng to fit track";
       LOG(fatal) << e.what();
   }
+  return false;
 }
 // -------------------------------------------------------------------------
 
@@ -1037,8 +998,6 @@ Int_t FgdGenFitRecon::GetPdgCode(const TVector3& momentum, const TVector3& momen
 
 void FgdGenFitRecon::FitTracks(std::vector<std::vector<TVector3>>& foundTracks)
 {
-    fTracksArray->Delete();
-    
     // init geometry and mag. field
     TVector3 magField = fgdConstructor.GetMagneticField(); // values are in kGauss
     genfit::FieldManager::getInstance()->init(new genfit::ConstField(magField.X(),magField.Y(), magField.Z())); 
@@ -1220,95 +1179,6 @@ void FgdGenFitRecon::FitTracks(std::vector<std::vector<TVector3>>& foundTracks)
     {
       fdisplay->addEvent(genTracks);
     }
-}
-
-void FgdGenFitRecon::DefineMaterials() 
-{
-  if(isDefinedMaterials) return; // Define materials only once
-
-  isDefinedMaterials = true;
-
-  new FairGeoLoader("TGeo","Geo Loader");
-  FairGeoLoader *geoLoad = FairGeoLoader::Instance();
-  if(geoLoad==nullptr)
-  {
-    LOG(error)<< "geoLoad is null";
-    std::cout << "geoLoad is null" << endl;
-    throw;
-  }
-
-	FairGeoInterface *geoFace = geoLoad->getGeoInterface();
-
-  geoFace->setMediaFile(fmediaFile.c_str());
-  geoFace->readMedia();
-
-	FairGeoMedia *geoMedia = geoFace->getMedia();
-	FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  // FairGeoMedium* brass = geoMedia->getMedium(esbroot::geometry::superfgd::materials::brass);
-	// geoBuild->createMedium(brass);
-
-  // FairGeoMedium* bronze = geoMedia->getMedium(esbroot::geometry::superfgd::materials::bronze);
-	// geoBuild->createMedium(bronze);
-
-  // FairGeoMedium* stainlessSteel = geoMedia->getMedium(esbroot::geometry::superfgd::materials::stainlessSteel);
-	// geoBuild->createMedium(stainlessSteel);
-
-  // FairGeoMedium* methane = geoMedia->getMedium(esbroot::geometry::superfgd::materials::methane);
-	// geoBuild->createMedium(methane);
-
-  // FairGeoMedium* carbonDioxide = geoMedia->getMedium(esbroot::geometry::superfgd::materials::carbonDioxide);
-	// geoBuild->createMedium(carbonDioxide);
-
-  // FairGeoMedium* carbontetraFloride = geoMedia->getMedium(esbroot::geometry::superfgd::materials::carbontetraFloride);
-	// geoBuild->createMedium(carbontetraFloride);
-
-  // FairGeoMedium* titaniumDioxide = geoMedia->getMedium(esbroot::geometry::superfgd::materials::titaniumDioxide);
-	// geoBuild->createMedium(titaniumDioxide);
-
-  // FairGeoMedium* polystyrene = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polystyrene);
-	// geoBuild->createMedium(polystyrene);
-
-  FairGeoMedium* scintillator = geoMedia->getMedium(esbroot::geometry::superfgd::materials::scintillator);
-  scintillator->setMediumIndex(esbroot::geometry::superfgd::materials::GetNextIndex());
-	geoBuild->createMedium(scintillator);
-  scintillator->Print();
-
-  FairGeoMedium* paraterphnyl = geoMedia->getMedium(esbroot::geometry::superfgd::materials::paraterphnyl);
-	geoBuild->createMedium(paraterphnyl);
-
-  // FairGeoMedium* podscintillator = geoMedia->getMedium(esbroot::geometry::superfgd::materials::podscintillator);
-	// geoBuild->createMedium(podscintillator);
-
-  // FairGeoMedium* polyethylene = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polyethylene);
-	// geoBuild->createMedium(polyethylene);
-
-  // FairGeoMedium* poduleEpoxy = geoMedia->getMedium(esbroot::geometry::superfgd::materials::poduleEpoxy);
-	// geoBuild->createMedium(poduleEpoxy);
-
-  // FairGeoMedium* polycarbonate = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polycarbonate);
-	// geoBuild->createMedium(polycarbonate);
-
-  // FairGeoMedium* carbonFiber = geoMedia->getMedium(esbroot::geometry::superfgd::materials::carbonFiber);
-	// geoBuild->createMedium(carbonFiber);
-
-  FairGeoMedium* fiberCore = geoMedia->getMedium(esbroot::geometry::superfgd::materials::fiberCore);
-	geoBuild->createMedium(fiberCore);
-
-  FairGeoMedium* fiberCladding = geoMedia->getMedium(esbroot::geometry::superfgd::materials::fiberCladding);
-	geoBuild->createMedium(fiberCladding);
-
-  FairGeoMedium* fairTiO2 = geoMedia->getMedium(esbroot::geometry::superfgd::materials::titaniumDioxide);
-  geoBuild->createMedium(fairTiO2);
-
-  FairGeoMedium* fairPolystyrene = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polystyrene);
-  geoBuild->createMedium(fairPolystyrene);
-
-  FairGeoMedium* fairAir = geoMedia->getMedium(esbroot::geometry::superfgd::materials::air);
-  geoBuild->createMedium(fairAir);
-
-  FairGeoMedium* vacuum = geoMedia->getMedium(esbroot::geometry::superfgd::materials::vacuum);
-  geoBuild->createMedium(vacuum);
 }
 
 void FgdGenFitRecon::PrintFitTrack(genfit::Track& fitTrack)

@@ -1,5 +1,5 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdExitParticle.h"
-
+#include "reconstruction/SuperFGD/FgdExitParticle.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdExitParticle)
 
 
 namespace esbroot {

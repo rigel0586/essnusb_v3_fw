@@ -1,7 +1,7 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdReconTemplate)
 
-// FairRoot
-#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 #include <fstream>
 #include <iostream>

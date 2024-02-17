@@ -18,4 +18,5 @@ add_subdirectory(generators)
 add_subdirectory(geometry)
 add_subdirectory(utility)
 add_subdirectory(digitizer)
+add_subdirectory(reconstruction)
 

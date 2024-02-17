@@ -60,4 +60,14 @@
     std::string digitizer_pcm = ss.str();
     printf("\n %s \n", digitizer_pcm.c_str());
     gSystem->Load(digitizer_pcm.c_str());
+
+    ss.str(std::string());
+    ss.clear();
+
+    // 7. Load reconsctruction
+    ss << gSystem->Getenv("ESB_BASE_DIR");
+    ss << "/build/reconstruction/libessnusb_reconstruction.so";
+    std::string reconstruction_pcm = ss.str();
+    printf("\n %s \n", reconstruction_pcm.c_str());
+    gSystem->Load(reconstruction_pcm.c_str());
 }

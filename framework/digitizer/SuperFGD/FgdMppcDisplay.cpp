@@ -169,7 +169,7 @@ void FgdMppcDisplay::afterRun()
 }
 
 
-bool FgdMppcDisplay::Exec(TClonesArray* data) 
+bool FgdMppcDisplay::Exec(int eventId, TClonesArray* data) 
 {
   fHitArray = data;
   const Int_t hits = fHitArray->GetEntries();

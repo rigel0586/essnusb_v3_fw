@@ -225,14 +225,15 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     LOG(debug) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
     LOG(debug) << "  fELoss " << fELoss;
 
+    double g4ToRootEnergy = fut.g4ToRootCoeffEnergy();
     double g4toRootCoeff = fut.g4ToRootCoeffLength();
     AddHit(fTrackID, fVolumeID
           ,TVector3(fposX,       fposY,       fposZ)
           ,TVector3(fPos.X() * g4toRootCoeff,       fPos.Y() * g4toRootCoeff,       fPos.Z() * g4toRootCoeff)
           ,TVector3(fPosExit.X(),   fPosExit.Y(),   fPosExit.Z())
-          ,TVector3(fMom.Px(),      fMom.Py(),      fMom.Pz())
+          ,TVector3(fMom.Px() * g4toRootCoeff,      fMom.Py() * g4toRootCoeff,      fMom.Pz() * g4toRootCoeff)
           ,TVector3(fMomExit.Px() * g4toRootCoeff,  fMomExit.Py() * g4toRootCoeff,  fMomExit.Pz() * g4toRootCoeff)
-          , fTime, fELoss, fLength, track->GetTrackID()
+          , fTime, ( fELoss * g4ToRootEnergy ), fLength, parDef->GetPDGEncoding()
           , track->GetTrackLength()); 
   }    
 
@@ -244,14 +245,14 @@ data::superfgd::FgdDetectorPoint* FgdDetector::AddHit(Int_t trackID, Int_t detID
 					  TVector3 momExit , Double32_t time, Double32_t edep, Double32_t trackLength, Int_t pdg
             , Double32_t trackLengthFromOrigin )
 {
-    LOG(debug) << "FgdDetector::AddHit";
-    LOG(debug) << "trackID " << trackID;
-    LOG(debug) << "detID " << detID;
-    LOG(debug) << "pos.X() " << pos.X() << "; pos.Y() " << pos.Y()<< "; pos.Z() " << pos.Z();
-    LOG(debug) << "mom.Px() " << mom.Px() << "; mom.Py() " << mom.Py() << "; mom.Pz() " << mom.Pz();
-    LOG(debug) << "time " << time;
-    LOG(debug) << "edep " << edep;
-    LOG(debug) << "pdg " << pdg;
+    LOG(debug2) << "FgdDetector::AddHit";
+    LOG(debug2) << "trackID " << trackID;
+    LOG(debug2) << "detID " << detID;
+    LOG(debug2) << "pos.X() " << pos.X() << "; pos.Y() " << pos.Y()<< "; pos.Z() " << pos.Z();
+    LOG(debug2) << "mom.Px() " << mom.Px() << "; mom.Py() " << mom.Py() << "; mom.Pz() " << mom.Pz();
+    LOG(debug2) << "time " << time;
+    LOG(debug2) << "edep " << edep;
+    LOG(debug2) << "pdg " << pdg;
 
   if(fFgdDetectorPointCollection.fdata == nullptr) return nullptr;
 

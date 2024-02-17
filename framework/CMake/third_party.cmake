@@ -68,6 +68,7 @@ macro(third_party_links project_to_link)
                                 ${log4cpp_includes} 
                                 ${pythia6_includes} 
                                 ${genie_includes} 
+                                ${genfit_includes}
                                 ${PathFinder_INCLUDE_DIR} 
                                 ${CLHEP_INCLUDE_DIRS} 
                                 ${Geant4_INCLUDE_DIRS} 

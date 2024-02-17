@@ -4,7 +4,7 @@
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "CLHEP/Units/PhysicalConstants.h"
 
-#include "EsbReconstruction/EsbSuperFGD/FgdReconHit.h"
+#include "reconstruction/SuperFGD/FgdReconHit.hpp"
 
 static const double ESB_NORMALIZARTION = 0.1; // In ESB we work in cm, thus  1 mm = 0.1 cm
 

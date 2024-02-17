@@ -1,4 +1,5 @@
-#include "EsbReconstruction/EsbSuperFGD/PdgFromMomentumLoss.h"
+#include "reconstruction/SuperFGD/PdgFromMomentumLoss.hpp"
+ClassImp(esbroot::reconstruction::superfgd::PdgFromMomentumLoss)
 
 namespace esbroot {
 namespace reconstruction {

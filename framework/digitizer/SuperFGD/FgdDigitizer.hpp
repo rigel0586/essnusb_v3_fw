@@ -45,7 +45,7 @@ class FgdDigitizer : public core::task::ITask
 
 
   /** Virtual method Exec **/
-  virtual bool Exec(TClonesArray* data) override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
   virtual void afterEvent() override;
 
   /** Methods to calculate the revert response from detector physical characteristics **/

@@ -84,7 +84,7 @@ void FgdDigitizer::afterEvent()
 
 
 // -----   Public method Exec   --------------------------------------------
-bool FgdDigitizer::Exec(TClonesArray* data) 
+bool FgdDigitizer::Exec(int eventId, TClonesArray* data) 
 {
   // Reset output array
   fHitArray->Delete();

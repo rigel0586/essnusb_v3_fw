@@ -1,4 +1,5 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdExitData.h"
+#include "reconstruction/SuperFGD/FgdExitData.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdExitData)
 
 
 

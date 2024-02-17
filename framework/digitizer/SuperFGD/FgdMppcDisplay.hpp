@@ -48,7 +48,7 @@ class FgdMppcDisplay : public core::task::ITask
 
 
   /** Virtual method Exec **/
-  virtual bool Exec(TClonesArray* data) override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
 private:
 

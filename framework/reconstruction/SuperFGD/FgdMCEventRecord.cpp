@@ -1,7 +1,9 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdMCEventRecord.h"
+#include "reconstruction/SuperFGD/FgdMCEventRecord.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdMCEventRecord)
 
 #include "Framework/ParticleData/PDGCodes.h"
-#include "FairLogger.h"
+
+#include <fairlogger/Logger.h>
 
 #include <vector>
 #include <fstream>
