@@ -2,18 +2,17 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_MC_GENFIT_H
 
 // EsbRoot headers
-#include "EsbData/EsbSuperFGD/FgdHit.h"
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbGeometry/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconHit.h"
-#include "EsbReconstruction/EsbSuperFGD/PdgFromMomentumLoss.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdTMVAEventRecord.h"
+#include "data/SuperFGD/FgdHit.hpp"
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
+#include "reconstruction/SuperFGD/FgdReconHit.hpp"
+#include "reconstruction/SuperFGD/PdgFromMomentumLoss.hpp"
+#include "reconstruction/SuperFGD/FgdTMVAEventRecord.hpp"
 
-// FairRoot headers
-#include <FairTask.h>
+#include "core/task/ITask.hpp"
 
-// ROOT headers
-#include <include/EventDisplay.h>
+// genfit headers
+#include "EventDisplay.h"
 
 // Pathfinder headers
 #include "basicHit.h"
@@ -23,7 +22,7 @@ namespace esbroot {
 namespace reconstruction {
 namespace superfgd {
 
-class FgdMCGenFitRecon : public FairTask
+class FgdMCGenFitRecon : public core::task::ITask 
 {
 
  public:
@@ -34,7 +33,6 @@ class FgdMCGenFitRecon : public FairTask
   /** Constructor with argument
    *@param name       Name of task
    *@param geoConfigFile  - Configuration file detector
-   *@param mediaFile  - Configuration file for the used mediums
    *@param eventData  - events data file (generated from fgd generator)
    *@param verbose  - Verbosity level
    *@param debugLlv - debug level for genfit
@@ -43,7 +41,6 @@ class FgdMCGenFitRecon : public FairTask
   **/  
   FgdMCGenFitRecon(const char* name
               , const char* geoConfigFile
-              , const char* mediaFile
               , const char* eventData
               , Int_t verbose = 1
               , double debugLlv = 0
@@ -58,14 +55,13 @@ class FgdMCGenFitRecon : public FairTask
   void SetMinHits(Int_t minHits) {fminHits = minHits;}
 
   /** Virtual method Init **/
-  virtual InitStatus Init() override;
-  virtual void OutputFileInit(FairRootManager* manager); // Create virtual method for output file creation
-  virtual void FinishEvent() override;
-  virtual void FinishTask() override;
+  virtual bool Init() override;
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
 
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
   /** For decendents who want to write some data to output file */
   virtual void WriteOutput( Int_t pdg
@@ -186,9 +182,6 @@ protected:
   /** Fit the found tracks using genfit **/
   void FitTracks(std::vector<std::vector<ReconHit>>& foundTracks);
 
-  /** Define materials used in the reconstruction phase **/
-  void DefineMaterials();
-
   /** Print information for fitted grack **/
   void PrintFitTrack(genfit::Track& track);
 
@@ -235,9 +228,6 @@ protected:
   //  1 - debug info
   //  2- detail info
   double fDebuglvl_genfit;//!<!
-
-  /** Path to the used media.geo file - containing definitions of materials **/
-  std::string fmediaFile;//!<!
 
   /** Path to the events file containing Monte carlo simulation data - pdg codes, momentums etc. **/
   std::string feventFile;//!<!
