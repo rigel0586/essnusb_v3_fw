@@ -40,6 +40,9 @@ public:
 	void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
 
+	virtual void AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
+                                            , std::function<void(std::string , G4VSensitiveDetector* , bool)>& f_sd_multi) override;
+
 	void BeginOfEventAction(const G4Event*) override;
 	void EndOfEventAction(const G4Event*) override;
 

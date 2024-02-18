@@ -2,6 +2,7 @@
 ClassImp(esbroot::digitizer::superfgd::FgdDigitizer)
 
 #include "data/SuperFGD/FgdDetectorPoint.hpp"
+#include <fairlogger/Logger.h>
 
 #include <TSpline.h>
 #include <TRandom.h>
@@ -53,18 +54,25 @@ FgdDigitizer::~FgdDigitizer()
 bool FgdDigitizer::Init() 
 {   
   flunit = fParams.GetLenghtUnit(); // [cm]
+  LOG(debug2) <<" FgdDigitizer::Init flunit " << flunit;
 
   f_step_X  = fParams.ParamAsDouble(esbroot::geometry::superfgd::DP::length_X) * flunit;
   f_step_Y  = fParams.ParamAsDouble(esbroot::geometry::superfgd::DP::length_Y) * flunit;
   f_step_Z  = fParams.ParamAsDouble(esbroot::geometry::superfgd::DP::length_Z) * flunit;
 
+  LOG(debug2) <<" FgdDigitizer::Init f_step [ " << f_step_X << " , " << f_step_Y << " , "  << f_step_Z << " ] ";
+
   f_bin_X = fParams.ParamAsInt(esbroot::geometry::superfgd::DP::number_cubes_X);
   f_bin_Y = fParams.ParamAsInt(esbroot::geometry::superfgd::DP::number_cubes_Y);
   f_bin_Z = fParams.ParamAsInt(esbroot::geometry::superfgd::DP::number_cubes_Z);
 
+  LOG(debug2) <<" FgdDigitizer::Init f_bin [ " << f_bin_X << " , " << f_bin_Y << " , "  << f_bin_Z << " ] ";
+
   f_total_X = f_step_X * f_bin_X;
   f_total_Y = f_step_Y * f_bin_Y;
   f_total_Z = f_step_Z * f_bin_Z;
+
+  LOG(debug2) <<" FgdDigitizer::Init f_total [ " << f_total_X << " , " << f_total_Y << " , "  << f_total_Z << " ] ";
 
   // Create and register output array
   fWriterInfo = core::io::EsbWriterPersistency::Instance().Register(geometry::superfgd::DP::FGD_DETECTOR_NAME.c_str()
@@ -86,6 +94,7 @@ void FgdDigitizer::afterEvent()
 // -----   Public method Exec   --------------------------------------------
 bool FgdDigitizer::Exec(int eventId, TClonesArray* data) 
 {
+  LOG(debug2) <<" FgdDigitizer::Exec Event " << eventId;
   // Reset output array
   fHitArray->Delete();
   fdPoints = data;
@@ -103,12 +112,16 @@ bool FgdDigitizer::Exec(int eventId, TClonesArray* data)
     double pos_y = point->GetY() - dpos.Y();
     double pos_z = point->GetZ() - dpos.Z();
 
+    LOG(debug2) <<" FgdDigitizer::Exec pos [ " << pos_x << " , " << pos_y << " , "  << pos_z << " ] ";
+
     // calculate the bin position 
     // pos_x,y,z -> relative from the center of the solid (half l,h,w)
     // to normalize add half l,h,w and divide by the step in each direction
     int bin_pos_x = (pos_x + f_total_X/2)/f_step_X;  
     int bin_pos_y = (pos_y + f_total_Y/2)/f_step_Y;  
     int bin_pos_z = (pos_z + f_total_Z/2)/f_step_Z;  
+
+    LOG(debug2) <<" FgdDigitizer::Exec bin_pos [ " << bin_pos_x << " , " << bin_pos_y << " , "  << bin_pos_z << " ] ";
 
     //=============================================
     //====              MPPC        ===============
@@ -122,6 +135,8 @@ bool FgdDigitizer::Exec(int eventId, TClonesArray* data)
 
     double mppcZ = bin_pos_z*f_step_Z + f_step_Z/2;
     double mppcZ_2ndSide = f_total_Z - mppcZ; // along the opposite direction
+
+    LOG(debug2) <<" FgdDigitizer::Exec mppc [ " << mppcX << " , " << mppcY << " , "  << mppcZ << " ] ";
 
     //=============================================
     //====    Scintilation Response        ========
@@ -164,6 +179,7 @@ bool FgdDigitizer::Exec(int eventId, TClonesArray* data)
     double peZ = peZ1 + peZ2;       // pe along fiber Z
 
     TVector3 photoElectrons(peX,peY,peZ);
+    LOG(debug2) <<" FgdDigitizer::Exec pe [ " << peX << " , " << peY << " , "  << peZ << " ] ";
 
     // Write the mppc location in terms of cube number position in x,y,z
     if(peX!=0 || peY!=0 || peZ!=0)

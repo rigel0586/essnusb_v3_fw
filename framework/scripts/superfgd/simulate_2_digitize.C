@@ -11,7 +11,7 @@
   
 */
 
-void simulate_2_digitize(Int_t nEvents = 17)
+void simulate_2_digitize(Int_t nEvents = 1)
 {
   using namespace esbroot;
 
@@ -24,6 +24,7 @@ void simulate_2_digitize(Int_t nEvents = 17)
           , geometry::superfgd::DP::FGD_BRANCH.c_str());
   
   fRun->setNumberOfEvents(nEvents);   
+  fRun->setLoggerSeverity(core::task::Severity::debug2);
 
   std::stringstream ssOut;
   ssOut << gSystem->Getenv("WORKSPACE_DIR");

@@ -87,7 +87,7 @@ void FgdDetector::ConstructGeometry()
   }
 
   fCubeName = cubeScnintilatorVol->GetName();
-  fCubeName+="_1"; // The export has added _1 to the name of the volume in question
+  // fCubeName+="_1"; // The export has added _1 to the name of the volume in question
 
   TGeoVolume *top = gGeoManager->GetTopVolume();
   if(!top)
@@ -98,19 +98,33 @@ void FgdDetector::ConstructGeometry()
 }
 
 void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume, 
-                                        std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
+                  std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
 {
 
+    // G4SDManager::GetSDMpointer()->AddNewDetector(this);
+
+    // std::vector<G4VPhysicalVolume*> sdVolumes;
+    // fut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+
+    // // LOG(warning) << " sdVolumes.size() " << sdVolumes.size();
+    // for(G4VPhysicalVolume * daug : sdVolumes){
+    //     // f_sd(daug->GetLogicalVolume(),this);
+    //     G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
+    //     dauLogol->SetSensitiveDetector(this);
+    // }
+
+    // sdVolumes.clear();
+    // fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    // if(!sdVolumes.empty())
+    //   AddMagneticField(sdVolumes[0]);
+}
+
+void FgdDetector::AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
+                  , std::function<void(std::string , G4VSensitiveDetector* , bool)>& f_sd_multi)
+{
+    f_sd_multi(fCubeName,this, true);
+
     std::vector<G4VPhysicalVolume*> sdVolumes;
-    fut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
-
-    // Add just one, the rest are the same.
-    if(!sdVolumes.empty()){
-        G4VPhysicalVolume * daug = sdVolumes[0];
-        f_sd(daug->GetLogicalVolume(),this);
-    }
-
-    sdVolumes.clear();
     fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
     if(!sdVolumes.empty())
       AddMagneticField(sdVolumes[0]);

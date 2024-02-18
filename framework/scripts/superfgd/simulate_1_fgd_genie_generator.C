@@ -1,5 +1,5 @@
 void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
-	        Int_t nEvents = 17)
+	        Int_t nEvents = 1)
 {
     using namespace esbroot;
 

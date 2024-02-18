@@ -27,7 +27,10 @@ class IDetector : public TObject
         virtual void ConstructGeometry() = 0;
 
         virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
-                                            , std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) = 0;
+                    , std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd){}
+
+        virtual void AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
+                    , std::function<void(std::string , G4VSensitiveDetector* , bool)>& f_sd_multi){}
 
         virtual void BeginOfEventAction(const G4Event*) {}
         virtual void EndOfEventAction(const G4Event*){}
