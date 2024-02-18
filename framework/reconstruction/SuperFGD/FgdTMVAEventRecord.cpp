@@ -317,7 +317,7 @@ void FgdTMVAEventRecord::InitMembers()
     size_t particleMomZ = 3;
 
     fPrimaryParticles.clear();
-    for(size_t i = Data::PRIMARY_PARTICLES; i < fDataTokens.size(); i+=particleDataSize)
+    for(size_t i = Data::PRIMARY_PARTICLES; (i + particleDataSize) < fDataTokens.size(); i+=particleDataSize)
     {
         Int_t pdg = std::stoi(fDataTokens[i + particlePdg]);
         Double_t momX = std::stod(fDataTokens[i + particleMomX]);

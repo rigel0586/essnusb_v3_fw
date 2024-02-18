@@ -182,25 +182,31 @@ bool FgdTMVAData::Exec(int eventId, TClonesArray* data)
 
     if(rc)
     { 
-      LOG(debug) <<" Hits to retrieve stats from " << allhits.size();
-      SplitTrack(allhits, foundTracks);
+        LOG(debug) <<" Hits to retrieve stats from " << allhits.size();
+        SplitTrack(allhits, foundTracks);
+    }
+
+     if(allhits.empty())
+    {
+        LOG(debug) <<" No its in vector allhits";
+        return true;
     }
 
     if(rc)
     {
-      LOG(debug) <<" Found tracks to process " << foundTracks.size();
-      ProcessStats(foundTracks, allhits);
+        LOG(debug) <<" Found tracks to process " << foundTracks.size();
+        ProcessStats(foundTracks, allhits);
     }
     else
     {
-      LOG(error) << " Could not find clean hits or tracks! ";
-      ++feventNum;
+        LOG(error) << " Could not find clean hits or tracks! ";
+        ++feventNum;
     }
   }
   catch(genfit::Exception& e)
   {
-      LOG(fatal) << "Exception, when tryng to fit track";
-      LOG(fatal) << e.what();
+        LOG(fatal) << "Exception, when tryng to fit track";
+        LOG(fatal) << e.what();
   }
 
   return true;

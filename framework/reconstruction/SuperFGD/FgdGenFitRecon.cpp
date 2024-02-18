@@ -167,7 +167,7 @@ void FgdGenFitRecon::afterRun()
 {
   if(isGenFitVisualization)
   {
-    fdisplay->open();
+      fdisplay->open();
   }
 }
 

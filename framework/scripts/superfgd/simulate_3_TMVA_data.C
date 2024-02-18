@@ -11,54 +11,60 @@
   
 */
 
-void simulate_3_TMVA_data(TString inFile = "fgd_dig.root", 
-	      TString parFile = "params.root",
-	      TString outFile = "fgd_tmva_data.root",
-        Int_t nStartEvent = 0,
-        Int_t nEvents = 500,
-        TString eventDat = "../../EsbMacro/tests/eventsData.dat",
-        TString outputTMVAdata = "../../EsbMacro/tests/tmva_data.root")
+void simulate_3_TMVA_data(Int_t nStartEvent = 0,
+        Int_t nEvents = 17)
 {
   using namespace esbroot;
 
-  FairRunAna *fRun= new FairRunAna();
-  // Set Input Source and Output file
-  FairFileSource *fFileSource = new FairFileSource(inFile);
-  fRun->SetSource(fFileSource);
-
-  fRun->SetSink(new FairRootFileSink(outFile));
-
-  // -----  Parameter database   --------------------------------------------
-  FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
-
-  FairParRootFileIo* parIo1 = new FairParRootFileIo();
-  parIo1->open(parFile);
-  rtdb->setFirstInput(parIo1);
+  std::stringstream ssInput;
+  ssInput << gSystem->Getenv("WORKSPACE_DIR");
+  ssInput << "/simulation/digitization_output.root";
+  std::string inputFile = ssInput.str();
+  core::task::EsbTaskManager* fRun = new core::task::EsbTaskManager(inputFile 
+          , geometry::superfgd::DP::FGD_DETECTOR_NAME.c_str() 
+          , geometry::superfgd::DP::FGD_HIT.c_str());
   
-  rtdb->setOutput(parIo1); 
-  rtdb->saveOutput();
+  fRun->setNumberOfEvents(nEvents); 
+  fRun->setStartOfEvents(nStartEvent);
+
+
+  std::stringstream ssOut;
+  ssOut << gSystem->Getenv("WORKSPACE_DIR");
+  ssOut << "/simulation/tmva_data.root";
+  std::string outputTMVAdata = ssOut.str();
+
+  fRun->setLoggerSeverity(core::task::Severity::debug2);
 
   double debugLvl = 0.0; 
 
-  fair::Logger::SetConsoleSeverity(fair::Severity::debug2);
-  fair::Logger::SetConsoleColor(true);
+  std::stringstream ssConf;
+  ssConf << gSystem->Getenv("ESB_BASE_DIR");
+  ssConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
+  std::string fgdConfig = ssConf.str();
 
-  FairTask* recon = new reconstruction::superfgd::FgdTMVAData(
+  std::stringstream ssGraphConf;
+  ssGraphConf << gSystem->Getenv("ESB_BASE_DIR");
+  ssGraphConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/graphConfig";
+  std::string fgdGraphConfig = ssGraphConf.str();
+
+  std::stringstream ssEvData;
+  ssEvData << gSystem->Getenv("WORKSPACE_DIR");
+  ssEvData << "/simulation/eventsData.dat";
+  std::string eventDat = ssEvData.str();
+
+  core::task::ITask* fgd_tmva = new reconstruction::superfgd::FgdTMVAData(
     "Reconstruction MC Task"             // name of the task
-    ,"../../EsbGeometry/EsbSuperFGD/EsbConfig/fgdconfig"  //File with detector configuration
-    ,"../../EsbGeometry/EsbSuperFGD/EsbConfig/graphConfig" // File containing graph algorithm info
-    ,"../../geometry/media.geo"       // Media file with defined materials
-    ,eventDat             // events data file
-    ,outputTMVAdata       // output root file
+    , fgdConfig.c_str()  //File with detector configuration
+    , fgdGraphConfig.c_str() // File containing graph algorithm info
+    , eventDat.c_str()            // events data file
+    , outputTMVAdata.c_str()       // output root file
     , 1                               // Verbose level
     , debugLvl                        // debug level of genfit (0 - little, 1 - debug info, 2 - detailed)
     );                           
 
-  ((reconstruction::superfgd::FgdTMVAData*)recon)->SetMinHits(3);
+  ((reconstruction::superfgd::FgdTMVAData*)fgd_tmva)->SetMinHits(3);
 
   
-  fRun->AddTask(recon);   
-  fRun->Init(); // initializing
-  fRun->Run(nStartEvent, nStartEvent + nEvents);
-  fRun->CreateGeometryFile("geo_tmva_data.root");  // for additional full geometry file
+  fRun->addTask(fgd_tmva);   
+  fRun->run();
 }

@@ -217,7 +217,9 @@ void FgdMCGenFitRecon::afterEvent()
     fdisplay->addEvent(fgenTracks);
     fgenTracks.clear();
   }
-  fTracksArray->Delete();
+
+  if(fTracksArray != nullptr)
+    fTracksArray->Delete();
 }
 
 void FgdMCGenFitRecon::afterRun()
