@@ -13,6 +13,12 @@ set(Reconstruction_Header   ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/PdgFromMomentum
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenFitRecon.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphGenFitRecon.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCGenFitRecon.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCLeptonStats.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphStats.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMuonRecon.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdTMVAData.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdTMVAData2.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdEdepAnalyzer.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdCalorimetric.hpp)
 
 add_library(${Reconstruction_Target} SHARED)
@@ -29,6 +35,12 @@ target_sources(${Reconstruction_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGenFitRecon.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphGenFitRecon.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCGenFitRecon.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMCLeptonStats.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdGraphStats.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdMuonRecon.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdTMVAData.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdTMVAData2.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdEdepAnalyzer.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdCalorimetric.cpp)
 
 target_include_directories(${Reconstruction_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD

@@ -1,17 +1,11 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdGraphStats.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
-//#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
-#include "EsbDigitizer/EsbSuperFGD/FgdDigitizer.h"
+#include "reconstruction/SuperFGD/FgdGraphStats.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdGraphStats)
 
-// FairRoot headers
-#include "FairGeoBuilder.h"
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
-#include "FairGeoMedia.h"
-#include "FairLogger.h"
-#include <FairRootManager.h>
-#include "FairVolume.h"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
+#include "digitizer/SuperFGD/FgdDigitizer.hpp"
 
+#include <fairlogger/Logger.h>
 
 // Root headers
 #include <TClonesArray.h>
@@ -68,7 +62,7 @@ namespace superfgd {
 
 // -----   Default constructor   -------------------------------------------
 FgdGraphStats::FgdGraphStats() : 
-    FairTask() 
+    ITask("FgdGraphStats")  
     , fgdConstructor("")
 {
 }
@@ -78,12 +72,11 @@ FgdGraphStats::FgdGraphStats() :
 FgdGraphStats::FgdGraphStats(const char* name
                           , const char* geoConfigFile
                           , const char* graphConfig
-                          , const char* mediaFile
                           , const char* eventData
                           , const char* outputRootFile
                           , Int_t verbose
                           , double debugLlv) :
-  FairTask(name, verbose) 
+  ITask("FgdGraphStats") 
   , fgdConstructor(geoConfigFile)
   , fMinTrackLenght(0)
   , f_track_hist(nullptr)
@@ -110,9 +103,8 @@ FgdGraphStats::~FgdGraphStats()
 // -------------------------------------------------------------------------
 
 
-InitStatus FgdGraphStats::Init()
+bool FgdGraphStats::Init()
 {
-  DefineMaterials();
   fsuperFgdVol = fgdConstructor.Construct();
   gGeoManager->SetTopVolume(fsuperFgdVol); 
 
@@ -133,20 +125,6 @@ InitStatus FgdGraphStats::Init()
 
   fMinTrackLenght = fParams.ParamAsInt(esbroot::geometry::superfgd::DP::FGD_MIN_TRACK_LENGTH);
 
-  // Get RootManager
-  FairRootManager* manager = FairRootManager::Instance();
-  if ( !manager ) {
-    LOG(fatal) << "-E- FgdGenFitRecon::Init: " << "FairRootManager not instantised!";
-    return kFATAL;
-  }
-
-  fHitArray = (TClonesArray*) manager->GetObject(geometry::superfgd::DP::FGD_HIT.c_str());
-  if (!fHitArray) 
-  {
-      LOG(fatal) << "Exec", "No fgd hits array";
-      return kFATAL;
-  }
-
   fcanvas = new TCanvas();
   f_track_hist = new TH2F("hist_track","MC_Graph track histogram",STATS_TRACK_NUM,1,STATS_TRACK_NUM, STATS_TRACK_NUM, 1, STATS_TRACK_NUM);
   f_track_hist->GetXaxis()->SetTitle("Number of MC tracks");
@@ -157,10 +135,10 @@ InitStatus FgdGraphStats::Init()
     stats[i]=std::vector<int>();
   }
 
-  return kSUCCESS;
+  return true;
 }
 
-void FgdGraphStats::FinishTask()
+void FgdGraphStats::afterRun()
 {
   if(f_track_hist)
   {
@@ -204,11 +182,12 @@ void FgdGraphStats::FinishTask()
 }
 
 
-void FgdGraphStats::Exec(Option_t* opt)
+bool FgdGraphStats::Exec(int eventId, TClonesArray* data)
 {
     static int event = 0;
     try
     {
+        fHitArray = data;
         LOG(info) << " Event " << event++;
         LOG(info) << " ======================== ";
         std::vector<ReconHit> allMChits;
@@ -286,6 +265,8 @@ void FgdGraphStats::Exec(Option_t* opt)
         LOG(fatal) << "Exception, when tryng to fit track";
         LOG(fatal) << e.what();
     }
+    
+    return true;
 }
 
 void FgdGraphStats::CompareTracks(std::vector<std::vector<ReconHit>>& mcTracks, std::vector<std::vector<ReconHit*>>& grTracks)
@@ -529,95 +510,6 @@ void FgdGraphStats::SplitMCTrack(std::vector<ReconHit>& allHits, std::vector<std
   //LOG(info) << "allHits.size() " << allHits.size();
 }
 
-
-void FgdGraphStats::DefineMaterials() 
-{
-  if(isDefinedMaterials) return; // Define materials only once
-
-  isDefinedMaterials = true;
-
-  new FairGeoLoader("TGeo","Geo Loader");
-  FairGeoLoader *geoLoad = FairGeoLoader::Instance();
-  if(geoLoad==nullptr)
-  {
-    LOG(error)<< "geoLoad is null";
-    std::cout << "geoLoad is null" << endl;
-    throw;
-  }
-
-	FairGeoInterface *geoFace = geoLoad->getGeoInterface();
-
-  geoFace->setMediaFile(fmediaFile.c_str());
-  geoFace->readMedia();
-
-	FairGeoMedia *geoMedia = geoFace->getMedia();
-	FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  // FairGeoMedium* brass = geoMedia->getMedium(esbroot::geometry::superfgd::materials::brass);
-	// geoBuild->createMedium(brass);
-
-  // FairGeoMedium* bronze = geoMedia->getMedium(esbroot::geometry::superfgd::materials::bronze);
-	// geoBuild->createMedium(bronze);
-
-  // FairGeoMedium* stainlessSteel = geoMedia->getMedium(esbroot::geometry::superfgd::materials::stainlessSteel);
-	// geoBuild->createMedium(stainlessSteel);
-
-  // FairGeoMedium* methane = geoMedia->getMedium(esbroot::geometry::superfgd::materials::methane);
-	// geoBuild->createMedium(methane);
-
-  // FairGeoMedium* carbonDioxide = geoMedia->getMedium(esbroot::geometry::superfgd::materials::carbonDioxide);
-	// geoBuild->createMedium(carbonDioxide);
-
-  // FairGeoMedium* carbontetraFloride = geoMedia->getMedium(esbroot::geometry::superfgd::materials::carbontetraFloride);
-	// geoBuild->createMedium(carbontetraFloride);
-
-  // FairGeoMedium* titaniumDioxide = geoMedia->getMedium(esbroot::geometry::superfgd::materials::titaniumDioxide);
-	// geoBuild->createMedium(titaniumDioxide);
-
-  // FairGeoMedium* polystyrene = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polystyrene);
-	// geoBuild->createMedium(polystyrene);
-
-  FairGeoMedium* scintillator = geoMedia->getMedium(esbroot::geometry::superfgd::materials::scintillator);
-  scintillator->setMediumIndex(esbroot::geometry::superfgd::materials::GetNextIndex());
-	geoBuild->createMedium(scintillator);
-  scintillator->Print();
-
-  FairGeoMedium* paraterphnyl = geoMedia->getMedium(esbroot::geometry::superfgd::materials::paraterphnyl);
-	geoBuild->createMedium(paraterphnyl);
-
-  // FairGeoMedium* podscintillator = geoMedia->getMedium(esbroot::geometry::superfgd::materials::podscintillator);
-	// geoBuild->createMedium(podscintillator);
-
-  // FairGeoMedium* polyethylene = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polyethylene);
-	// geoBuild->createMedium(polyethylene);
-
-  // FairGeoMedium* poduleEpoxy = geoMedia->getMedium(esbroot::geometry::superfgd::materials::poduleEpoxy);
-	// geoBuild->createMedium(poduleEpoxy);
-
-  // FairGeoMedium* polycarbonate = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polycarbonate);
-	// geoBuild->createMedium(polycarbonate);
-
-  // FairGeoMedium* carbonFiber = geoMedia->getMedium(esbroot::geometry::superfgd::materials::carbonFiber);
-	// geoBuild->createMedium(carbonFiber);
-
-  FairGeoMedium* fiberCore = geoMedia->getMedium(esbroot::geometry::superfgd::materials::fiberCore);
-	geoBuild->createMedium(fiberCore);
-
-  FairGeoMedium* fiberCladding = geoMedia->getMedium(esbroot::geometry::superfgd::materials::fiberCladding);
-	geoBuild->createMedium(fiberCladding);
-
-  FairGeoMedium* fairTiO2 = geoMedia->getMedium(esbroot::geometry::superfgd::materials::titaniumDioxide);
-  geoBuild->createMedium(fairTiO2);
-
-  FairGeoMedium* fairPolystyrene = geoMedia->getMedium(esbroot::geometry::superfgd::materials::polystyrene);
-  geoBuild->createMedium(fairPolystyrene);
-
-  FairGeoMedium* fairAir = geoMedia->getMedium(esbroot::geometry::superfgd::materials::air);
-  geoBuild->createMedium(fairAir);
-
-  FairGeoMedium* vacuum = geoMedia->getMedium(esbroot::geometry::superfgd::materials::vacuum);
-  geoBuild->createMedium(vacuum);
-}
 
 Bool_t FgdGraphStats::FindUsingGraph(std::vector<ReconHit>& hits
                   , std::vector<std::vector<ReconHit*>>& foundTracks)

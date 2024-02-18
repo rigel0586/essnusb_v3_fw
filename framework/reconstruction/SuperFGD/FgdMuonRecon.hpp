@@ -2,8 +2,12 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_MUON_RECON_H
 
 // EsbRoot headers
-#include "EsbReconstruction/EsbSuperFGD/FgdMCGenFitRecon.h"
+#include "reconstruction/SuperFGD/FgdMCGenFitRecon.hpp"
 
+// Root headers
+#include <TClonesArray.h>
+#include <TFile.h>
+#include <TTree.h>
 
 namespace esbroot {
 namespace reconstruction {
@@ -20,7 +24,6 @@ class FgdMuonRecon : public FgdMCGenFitRecon
     /** Constructor with argument
      *@param name       Name of task
     *@param geoConfigFile  - Configuration file detector
-    *@param mediaFile  - Configuration file for the used mediums
     *@param outputFile  - path to the root file to write the output to
     *@param eventData  - events data file (generated from fgd generator)
     *@param nuEFile  - path to the file generated from the Fgd generatr containing neutrino energy per event
@@ -31,7 +34,6 @@ class FgdMuonRecon : public FgdMCGenFitRecon
     **/  
     FgdMuonRecon(const char* name
                 , const char* geoConfigFile
-                , const char* mediaFile
                 , const char* outputFile
                 , const char* eventData
                 , const char* nuEFile
@@ -43,9 +45,10 @@ class FgdMuonRecon : public FgdMCGenFitRecon
     /** Destructor **/
     virtual ~FgdMuonRecon();
 
-    virtual InitStatus Init() override;
-    virtual void FinishEvent() override;
-    virtual void FinishTask() override;
+    /** Virtual method Init **/
+    virtual bool Init() override;
+    virtual void afterEvent() override;
+    virtual void afterRun() override;
 
     /** For decendents who want to write some data to output file */
     virtual void WriteOutput( Int_t pdg

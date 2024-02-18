@@ -2,8 +2,8 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_EDEP_ANALYZER_H
 
 // EsbRoot headers
-#include "EsbReconstruction/EsbSuperFGD/FgdMCGenFitRecon.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdMCEventRecord.h"
+#include "reconstruction/SuperFGD/FgdMCGenFitRecon.hpp"
+#include "reconstruction/SuperFGD/FgdMCEventRecord.hpp"
 
 namespace esbroot {
 namespace reconstruction {
@@ -20,7 +20,6 @@ class FgdEdepAnalyzer : public FgdMCGenFitRecon
   /** Constructor with argument
    *@param name       Name of task
    *@param geoConfigFile  - Configuration file detector
-   *@param mediaFile  - Configuration file for the used mediums
    *@param eventData - events data file (generated from fgd generator)
    *@param outputEdepFile  - output data statistics for photons to edep
    *@param photoInterval - interval for which to make statistics
@@ -29,7 +28,6 @@ class FgdEdepAnalyzer : public FgdMCGenFitRecon
   **/  
   FgdEdepAnalyzer(const char* name
               , const char* geoConfigFile
-              , const char* mediaFile
               , const char* eventData
               , const char* outputEdepFile
               , Int_t photoInterval
@@ -40,13 +38,13 @@ class FgdEdepAnalyzer : public FgdMCGenFitRecon
   virtual ~FgdEdepAnalyzer();
 
   /** Virtual method Init **/
-  virtual InitStatus Init() override;
-  virtual void OutputFileInit(FairRootManager* manager) override;
+  virtual bool Init() override;
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
+
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
-
-  virtual void FinishTask() override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
 protected:
 

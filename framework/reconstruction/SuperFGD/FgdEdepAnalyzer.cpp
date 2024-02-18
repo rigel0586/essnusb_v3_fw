@@ -1,16 +1,10 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdEdepAnalyzer.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
-#include "EsbDigitizer/EsbSuperFGD/FgdDigitizer.h"
+#include "reconstruction/SuperFGD/FgdEdepAnalyzer.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdEdepAnalyzer)
 
-// FairRoot headers
-#include "FairGeoBuilder.h"
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
-#include "FairGeoMedia.h"
-#include "FairLogger.h"
-#include <FairRootManager.h>
-#include "FairVolume.h"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
+#include "digitizer/SuperFGD/FgdDigitizer.hpp"
 
+#include <fairlogger/Logger.h>
 
 // Root headers
 #include <TClonesArray.h>
@@ -77,13 +71,12 @@ FgdEdepAnalyzer::FgdEdepAnalyzer() : FgdMCGenFitRecon(), feventNum(0)
 // -----   Constructor   -------------------------------------------
 FgdEdepAnalyzer::FgdEdepAnalyzer(const char* name
                           , const char* geoConfigFile
-                          , const char* mediaFile
                           , const char* eventData
                           , const char* outputEdepFile
                           , Int_t photoInterval
                           , Int_t verbose
                           , double debugLlv) :
-  FgdMCGenFitRecon(name, geoConfigFile, mediaFile,eventData,  verbose, 
+  FgdMCGenFitRecon(name, geoConfigFile,eventData,  verbose, 
                     debugLlv, false /* no visualization */, "D")
     , feventData(eventData)
     , foutputEdepFile(outputEdepFile), fphotoInterval(photoInterval)
@@ -110,7 +103,7 @@ FgdEdepAnalyzer::~FgdEdepAnalyzer()
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdEdepAnalyzer::Init() 
+bool FgdEdepAnalyzer::Init() 
 {   
     FgdMCGenFitRecon::Init();
     std::ifstream eventFileStream;
@@ -141,12 +134,7 @@ InitStatus FgdEdepAnalyzer::Init()
     fmagField_Y = fParams.ParamAsDouble(esbroot::geometry::superfgd::DP::magField_Y);
     fmagField_Z = fParams.ParamAsDouble(esbroot::geometry::superfgd::DP::magField_Z); 
 
-    return kSUCCESS;
-}
-
-void FgdEdepAnalyzer::OutputFileInit(FairRootManager* manager)
-{
-    FgdMCGenFitRecon::OutputFileInit(manager);
+    return true;
 }
 
 // -------------------------------------------------------------------------
@@ -155,37 +143,40 @@ void FgdEdepAnalyzer::OutputFileInit(FairRootManager* manager)
 
 // -----   Public methods   --------------------------------------------
 
-void FgdEdepAnalyzer::Exec(Option_t* opt) 
+bool FgdEdepAnalyzer::Exec(int eventId, TClonesArray* data)
 {  
-  try
-  {
-    std::vector<ReconHit> allhits;
-    std::vector<std::vector<ReconHit>> foundTracks;
-
-    bool rc = GetHits(allhits);
-
-    if(rc)
-    { 
-      LOG(debug) <<" Hits to retrieve stats from " << allhits.size();
-      SplitTrack(allhits, foundTracks);
-    }
-
-    if(rc)
+    fHitArray = data;
+    try
     {
-      LOG(debug) <<" Found tracks to process " << foundTracks.size();
-      ProcessStats(foundTracks);
+        std::vector<ReconHit> allhits;
+        std::vector<std::vector<ReconHit>> foundTracks;
+
+        bool rc = GetHits(allhits);
+
+        if(rc)
+        { 
+        LOG(debug) <<" Hits to retrieve stats from " << allhits.size();
+        SplitTrack(allhits, foundTracks);
+        }
+
+        if(rc)
+        {
+        LOG(debug) <<" Found tracks to process " << foundTracks.size();
+        ProcessStats(foundTracks);
+        }
+        else
+        {
+        LOG(error) << " Could not find clean hits or tracks! ";
+        ++feventNum;
+        }
     }
-    else
+    catch(genfit::Exception& e)
     {
-      LOG(error) << " Could not find clean hits or tracks! ";
-      ++feventNum;
+        LOG(fatal) << "Exception, when tryng to fit track";
+        LOG(fatal) << e.what();
     }
-  }
-  catch(genfit::Exception& e)
-  {
-      LOG(fatal) << "Exception, when tryng to fit track";
-      LOG(fatal) << e.what();
-  }
+
+    return true;
 }
 
 Bool_t FgdEdepAnalyzer::ProcessStats(std::vector<std::vector<ReconHit>>& foundTracks)
@@ -243,9 +234,9 @@ Bool_t FgdEdepAnalyzer::ProcessStats(std::vector<std::vector<ReconHit>>& foundTr
     ++feventNum; // Increment to next event from eventData read from simulation`s genie export
 }
 
-void FgdEdepAnalyzer::FinishTask()
+void FgdEdepAnalyzer::afterRun()
 {
-    FgdMCGenFitRecon::FinishTask();
+    FgdMCGenFitRecon::afterRun();
 
     LOG(warning) << "==========================================";
     std::map<Int_t, EdepArray>::iterator pdgKey= fmapEdep.begin();

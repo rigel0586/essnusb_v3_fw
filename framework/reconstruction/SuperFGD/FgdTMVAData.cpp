@@ -1,18 +1,13 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdTMVAData.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
-//#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
-#include "EsbDigitizer/EsbSuperFGD/FgdDigitizer.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdCalorimetric.h"
+#include "reconstruction/SuperFGD/FgdTMVAData.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdTMVAData)
 
-// FairRoot headers
-#include "FairGeoBuilder.h"
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
-#include "FairGeoMedia.h"
-#include "FairLogger.h"
-#include <FairRootManager.h>
-#include "FairVolume.h"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
+#include "reconstruction/SuperFGD/FgdCalorimetric.hpp"
 
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
+#include "digitizer/SuperFGD/FgdDigitizer.hpp"
+
+#include <fairlogger/Logger.h>
 
 // Root headers
 #include <TClonesArray.h>
@@ -79,12 +74,11 @@ FgdTMVAData::FgdTMVAData() : FgdMCGenFitRecon(), feventNum(0), fmagField_X(0.), 
 FgdTMVAData::FgdTMVAData(const char* name
                           , const char* geoConfigFile
                           , const char* graphConfig
-                          , const char* mediaFile
                           , const char* eventData
                           , const char* outputRootFile
                           , Int_t verbose
                           , double debugLlv) :
-  FgdMCGenFitRecon(name, geoConfigFile, mediaFile, eventData, verbose, 
+  FgdMCGenFitRecon(name, geoConfigFile, eventData, verbose, 
                     debugLlv, false /* no visualization */, "D")
     , feventData(eventData), foutputRootFile(outputRootFile)
     , feventNum(0), fmagField_X(0.), fmagField_Y(0.), fmagField_Z(0.)
@@ -128,7 +122,7 @@ FgdTMVAData::~FgdTMVAData()
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdTMVAData::Init() 
+bool FgdTMVAData::Init() 
 {   
     FgdMCGenFitRecon::Init();
 
@@ -167,12 +161,7 @@ InitStatus FgdTMVAData::Init()
     f_hist_spectrum = new TH1F("hist_ph","Photons cube spectrum",PHOTON_SPECTRUM_SIZE, 0, PHOTON_SPECTRUM_MAX);
     f_hist_time = new TH1F("hist_time","Time event spectrum",EVENT_TIME_SPECTRUM_SIZE, 0, EVENT_TIME_SPECTRUM_MAX);
 
-    return kSUCCESS;
-}
-
-void FgdTMVAData::OutputFileInit(FairRootManager* manager)
-{
-    FgdMCGenFitRecon::OutputFileInit(manager);
+    return true;
 }
 
 // -------------------------------------------------------------------------
@@ -181,10 +170,11 @@ void FgdTMVAData::OutputFileInit(FairRootManager* manager)
 
 // -----   Public methods   --------------------------------------------
 
-void FgdTMVAData::Exec(Option_t* opt) 
+bool FgdTMVAData::Exec(int eventId, TClonesArray* data)
 {  
   try
   {
+    fHitArray = data;
     std::vector<ReconHit> allhits;
     std::vector<std::vector<ReconHit>> foundTracks;
 
@@ -212,6 +202,8 @@ void FgdTMVAData::Exec(Option_t* opt)
       LOG(fatal) << "Exception, when tryng to fit track";
       LOG(fatal) << e.what();
   }
+
+  return true;
 }
 
 Bool_t FgdTMVAData::ProcessStats(std::vector<std::vector<ReconHit>>& foundTracks, std::vector<ReconHit>& allhits)
@@ -437,7 +429,7 @@ Double_t FgdTMVAData::CalculatePhotoEdep(ReconHit& hit)
 }
 
 
-void FgdTMVAData::FinishTask()
+void FgdTMVAData::afterRun()
 {
     TFile * outFile = new TFile(foutputRootFile.c_str(), "RECREATE", "TVMA data from Fgd Detector");
     outFile->SetCompressionLevel(9);
@@ -827,7 +819,7 @@ void FgdTMVAData::FinishTask()
     delete outFile;
 
     //printNotUsed();
-    FgdMCGenFitRecon::FinishTask();
+    FgdMCGenFitRecon::afterRun();
 }
 
 Bool_t FgdTMVAData::isParticleAllowed(Int_t pdg)

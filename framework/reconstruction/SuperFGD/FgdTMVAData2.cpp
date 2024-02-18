@@ -1,10 +1,12 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdTMVAData2.h"
+#include "reconstruction/SuperFGD/FgdTMVAData2.hpp"
 ClassImp(esbroot::reconstruction::superfgd::FgdTMVAData2)
 
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
-//#include "EsbData/EsbSuperFGD/FgdDetectorPoint.h"
-#include "EsbDigitizer/EsbSuperFGD/FgdDigitizer.h"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
 
+#include "data/SuperFGD/FgdDetectorPoint.hpp"
+#include "digitizer/SuperFGD/FgdDigitizer.hpp"
+
+#include <fairlogger/Logger.h>
 
 // Root headers
 #include <TClonesArray.h>
@@ -43,8 +45,6 @@ ClassImp(esbroot::reconstruction::superfgd::FgdTMVAData2)
 #include <TRandom.h>
 #include <TVector3.h>
 
-
-
 // STL headers
 #include <vector>
 #include <fstream>
@@ -70,12 +70,11 @@ FgdTMVAData2::FgdTMVAData2() : FgdMCGenFitRecon(), feventNum(0), fmagField_X(0.)
 // -----   Constructor   -------------------------------------------
 FgdTMVAData2::FgdTMVAData2(const char* name
                           , const char* geoConfigFile
-                          , const char* mediaFile
                           , const char* eventData
                           , const char* outputRootFile
                           , Int_t verbose
                           , double debugLlv) :
-  FgdMCGenFitRecon(name, geoConfigFile, mediaFile, eventData, verbose, 
+  FgdMCGenFitRecon(name, geoConfigFile, eventData, verbose, 
                     debugLlv, false /* no visualization */, "D")
     , feventData(eventData), foutputRootFile(outputRootFile)
     , feventNum(0), fmagField_X(0.), fmagField_Y(0.), fmagField_Z(0.)
@@ -105,7 +104,7 @@ FgdTMVAData2::~FgdTMVAData2()
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdTMVAData2::Init() 
+bool FgdTMVAData2::Init() 
 {   
     FgdMCGenFitRecon::Init();
 
@@ -145,7 +144,7 @@ InitStatus FgdTMVAData2::Init()
     fciTree = new TTree(esbroot::geometry::superfgd::DP::FGD_CUBE_INFO_TTREE.c_str()
                                 ,esbroot::geometry::superfgd::DP::FGD_TMVA_DATA_ROOT_FILE.c_str());
 
-    return kSUCCESS;
+    return true;
 }
 
 // -------------------------------------------------------------------------
@@ -154,10 +153,11 @@ InitStatus FgdTMVAData2::Init()
 
 // -----   Public methods   --------------------------------------------
 
-void FgdTMVAData2::Exec(Option_t* opt) 
+bool FgdTMVAData2::Exec(int eventId, TClonesArray* data) 
 {  
   try
   {
+    fHitArray = data;
     std::vector<ReconHit> allhits;
     std::vector<std::vector<ReconHit>> foundTracks;
 
@@ -185,6 +185,8 @@ void FgdTMVAData2::Exec(Option_t* opt)
       LOG(fatal) << "Exception, when tryng to fit track";
       LOG(fatal) << e.what();
   }
+
+  return true;
 }
 
 Bool_t FgdTMVAData2::ProcessStats(std::vector<std::vector<ReconHit>>& foundTracks)
@@ -270,11 +272,11 @@ Bool_t FgdTMVAData2::ProcessStats(std::vector<std::vector<ReconHit>>& foundTrack
     ++feventNum; // Increment to next event from eventData read from simulation`s genie export
 }
 
-void FgdTMVAData2::FinishTask()
+void FgdTMVAData2::afterRun()
 {
     foutFile->WriteTObject(fdeTree); 
     foutFile->WriteTObject(fciTree); 
-    FgdMCGenFitRecon::FinishTask();
+    FgdMCGenFitRecon::afterRun();
 }
 
 // -------------------------------------------------------------------------

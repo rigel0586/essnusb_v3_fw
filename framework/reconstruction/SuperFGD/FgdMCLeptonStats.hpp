@@ -2,10 +2,10 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_MC_LEPTON_STATS_H
 
 // EsbRoot headers
-#include "EsbReconstruction/EsbSuperFGD/FgdMCGenFitRecon.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdMCEventRecord.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdExitData.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdExitParticle.h"
+#include "reconstruction/SuperFGD/FgdMCGenFitRecon.hpp"
+#include "reconstruction/SuperFGD/FgdMCEventRecord.hpp"
+#include "reconstruction/SuperFGD/FgdExitData.hpp"
+#include "reconstruction/SuperFGD/FgdExitParticle.hpp"
 #include <fstream>
 
 namespace esbroot {
@@ -23,7 +23,6 @@ class FgdMCLeptonStats : public FgdMCGenFitRecon
   /** Constructor with argument
    *@param name       Name of task
    *@param geoConfigFile  - Configuration file detector
-   *@param mediaFile  - Configuration file for the used mediums
    *@param eventData  - events data file (generated from fgd generator)
    *@param outputRootFile - full path to the output root file
    *@param exitParticlesFile - output file with data for exiting particles
@@ -32,7 +31,6 @@ class FgdMCLeptonStats : public FgdMCGenFitRecon
   **/  
   FgdMCLeptonStats(const char* name
               , const char* geoConfigFile
-              , const char* mediaFile
               , const char* eventData
               , const char* outputRootFile
               , const char* exitParticlesFile
@@ -43,13 +41,13 @@ class FgdMCLeptonStats : public FgdMCGenFitRecon
   virtual ~FgdMCLeptonStats();
 
   /** Virtual method Init **/
-  virtual InitStatus Init() override;
-  virtual void OutputFileInit(FairRootManager* manager) override;
+  virtual bool Init() override;
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
+
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
-
-  virtual void FinishTask() override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
   void SetFitMuonMom(bool val){ffitMuonMom=val;}
 

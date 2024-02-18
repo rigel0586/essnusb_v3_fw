@@ -1,11 +1,7 @@
-#include "EsbReconstruction/EsbSuperFGD/FgdMuonRecon.h"
+#include "reconstruction/SuperFGD/FgdMuonRecon.hpp"
+ClassImp(esbroot::reconstruction::superfgd::FgdMuonRecon)
 
-// Root headers
-#include <TClonesArray.h>
-#include <TFile.h>
-
-// Fair headers
-#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 // Genie headers
 #include "Framework/ParticleData/PDGCodes.h"
@@ -41,7 +37,6 @@ FgdMuonRecon::FgdMuonRecon() : FgdMCGenFitRecon()
 // -----   Constructor   -------------------------------------------
 FgdMuonRecon::FgdMuonRecon(const char* name
               , const char* geoConfigFile
-              , const char* mediaFile
               , const char* outputFile
               , const char* eventData
               , const char* nuEFile
@@ -49,7 +44,7 @@ FgdMuonRecon::FgdMuonRecon(const char* name
               , double debugLlv 
               , bool visualize 
               , std::string visOption)
-    : FgdMCGenFitRecon(name, geoConfigFile, mediaFile, eventData, verbose, debugLlv, visualize, visOption)
+    : FgdMCGenFitRecon(name, geoConfigFile, eventData, verbose, debugLlv, visualize, visOption)
     , foutputFile(outputFile)
     , fnuEFile(nuEFile)
     , fEventCount(0)
@@ -86,7 +81,7 @@ FgdMuonRecon::~FgdMuonRecon()
 
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FgdMuonRecon::Init() 
+bool FgdMuonRecon::Init() 
 {   
     FgdMCGenFitRecon::Init();
   
@@ -120,7 +115,7 @@ InitStatus FgdMuonRecon::Init()
 
     ReadEnuFile();
 
-    return kSUCCESS;
+    return true;
 }
 
 
@@ -131,16 +126,16 @@ InitStatus FgdMuonRecon::Init()
 
 // -----   Public methods   --------------------------------------------
 
-void FgdMuonRecon::FinishEvent() 
+void FgdMuonRecon::afterEvent() 
 {
-    FgdMCGenFitRecon::FinishEvent();
+    FgdMCGenFitRecon::afterEvent();
     LOG(debug) << "Neutrino energy for event[" << fEnu[fEventCount]<<" GeV]";
     ++fEventCount;
 }
 
-void FgdMuonRecon::FinishTask()
+void FgdMuonRecon::afterRun()
 {
-    FgdMCGenFitRecon::FinishTask();
+    FgdMCGenFitRecon::afterRun();
     if(!foutputFile.empty())
     {
         fTfile->WriteTObject(fTtree);

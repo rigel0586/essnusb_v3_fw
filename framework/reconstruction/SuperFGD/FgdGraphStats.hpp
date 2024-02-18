@@ -6,16 +6,15 @@
 #include <TCanvas.h>
 #include <TH2F.h>
 
-// FairRoot headers
-#include <FairTask.h>
+#include "core/task/ITask.hpp"
 
 // EsbRoot headers
-#include "EsbData/EsbSuperFGD/FgdHit.h"
-#include "EsbGeometry/EsbSuperFGD/EsbFgdDetectorParameters.h"
-#include "EsbGeometry/EsbSuperFGD/EsbSuperFGDDetectorConstruction.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconHit.h"
-#include "EsbReconstruction/EsbSuperFGD/PdgFromMomentumLoss.h"
-#include "EsbReconstruction/EsbSuperFGD/FgdReconTemplate.h"
+#include "data/SuperFGD/FgdHit.hpp"
+#include "geometry/SuperFGD/EsbSuperFGD/FgdDetectorParameters.h"
+#include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
+#include "reconstruction/SuperFGD/FgdReconHit.hpp"
+#include "reconstruction/SuperFGD/PdgFromMomentumLoss.hpp"
+#include "reconstruction/SuperFGD/FgdReconTemplate.hpp"
 
 #define STATS_TRACK_NUM 15
 
@@ -23,7 +22,7 @@ namespace esbroot {
 namespace reconstruction {
 namespace superfgd {
 
-class FgdGraphStats : public FairTask
+class FgdGraphStats : public core::task::ITask 
 {
 
  public:
@@ -35,7 +34,6 @@ class FgdGraphStats : public FairTask
    *@param name       Name of task
    *@param geoConfigFile  - Configuration file detector
    *@param graphConfig  - Configuration file for graph algorithm
-   *@param mediaFile  - Configuration file for the used mediums
    *@param eventData  - events data file (generated from fgd generator)
    *@param outputRootFile - full path to the output root file
    *@param verbose  - Verbosity level
@@ -44,7 +42,6 @@ class FgdGraphStats : public FairTask
   FgdGraphStats(const char* name
               , const char* geoConfigFile
               , const char* graphConfig
-              , const char* mediaFile
               , const char* eventData
               , const char* outputRootFile
               , Int_t verbose = 1
@@ -54,12 +51,13 @@ class FgdGraphStats : public FairTask
   virtual ~FgdGraphStats();
 
   /** Virtual method Init **/
-  virtual InitStatus Init() override;
+  virtual bool Init() override;
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
+
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
-
-  virtual void FinishTask() override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
 protected:
 

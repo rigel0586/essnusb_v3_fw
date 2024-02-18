@@ -2,8 +2,11 @@
 #define ESBROOT_ESBDRECONSTRUCTION_FGD_TMVA_DATA2_STATS_H
 
 // EsbRoot headers
-#include "reconstruction/SuperFGD/FgdMCGenFitRecon.h"
-#include "reconstruction/SuperFGD/FgdTMVAEventRecord.h"
+#include "reconstruction/SuperFGD/FgdMCGenFitRecon.hpp"
+#include "reconstruction/SuperFGD/FgdTMVAEventRecord.hpp"
+
+#include <TFile.h>
+#include <TTree.h>
 
 namespace esbroot {
 namespace reconstruction {
@@ -20,7 +23,6 @@ class FgdTMVAData2 : public FgdMCGenFitRecon
   /** Constructor with argument
    *@param name       Name of task
    *@param geoConfigFile  - Configuration file detector
-   *@param mediaFile  - Configuration file for the used mediums
    *@param eventData  - events data file (generated from fgd generator)
    *@param outputRootFile - full path to the output root file
    *@param verbose  - Verbosity level
@@ -28,7 +30,6 @@ class FgdTMVAData2 : public FgdMCGenFitRecon
   **/  
   FgdTMVAData2(const char* name
               , const char* geoConfigFile
-              , const char* mediaFile
               , const char* eventData
               , const char* outputRootFile
               , Int_t verbose = 1
@@ -38,13 +39,13 @@ class FgdTMVAData2 : public FgdMCGenFitRecon
   virtual ~FgdTMVAData2();
 
   /** Virtual method Init **/
-  virtual InitStatus Init() override;
-  virtual void OutputFileInit(FairRootManager* manager) override;
+  virtual bool Init() override;
+  virtual void afterEvent() override;
+  virtual void afterRun() override;
+
 
   /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt) override;
-
-  virtual void FinishTask() override;
+  virtual bool Exec(int eventId, TClonesArray* data) override;
 
 protected:
 
