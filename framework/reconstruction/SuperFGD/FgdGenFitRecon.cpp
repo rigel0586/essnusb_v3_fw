@@ -84,7 +84,7 @@ FgdGenFitRecon::FgdGenFitRecon(const char* name
                           , double debugLlv
                           , bool visualize
                           , std::string visOption) :
-  ITask("FgdGenFitRecon")                                                        
+  ITask(name)                                                        
   , fsuperFgdVol(nullptr)
   , fgdConstructor(geoConfigFile)
   , fHitArray(nullptr)

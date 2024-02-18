@@ -44,6 +44,7 @@ void simulate_3_generate_pics(Int_t nEvents = 17)
   ssConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
   std::string fgdConfig = ssConf.str();
   core::task::ITask* mppcDisplayTask = new digitizer::superfgd::FgdMppcDisplay("Granular Task", fgdConfig.c_str(), outpics_path.c_str(),0,0,0);
+
   fRun->addTask(mppcDisplayTask);   
   fRun->run();
 }
