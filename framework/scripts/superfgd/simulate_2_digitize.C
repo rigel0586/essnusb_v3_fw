@@ -11,7 +11,7 @@
   
 */
 
-void simulate_2_digitize(Int_t nEvents = 1)
+void simulate_2_digitize(Int_t nEvents = 20)
 {
   using namespace esbroot;
 

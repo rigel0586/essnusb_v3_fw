@@ -11,7 +11,7 @@
   
 */
 
-void simulate_3_generate_pics(Int_t nEvents = 17)
+void simulate_3_generate_pics(Int_t nEvents = 20)
 {
   using namespace esbroot;
 
@@ -35,7 +35,7 @@ void simulate_3_generate_pics(Int_t nEvents = 17)
   ssOut.clear();
 
   ssOut << gSystem->Getenv("WORKSPACE_DIR");
-  ssOut << "/simulation";
+  ssOut << "/simulation/pics";
   std::string outpics_path = ssOut.str();
  
   // Set Tasks 

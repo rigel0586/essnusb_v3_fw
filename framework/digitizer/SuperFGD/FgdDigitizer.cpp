@@ -99,6 +99,7 @@ bool FgdDigitizer::Exec(int eventId, TClonesArray* data)
   fHitArray->Delete();
   fdPoints = data;
   const Int_t points = fdPoints->GetEntries();
+  LOG(debug2) <<" fdPoints->GetEntries() " << fdPoints->GetEntries();
   int nextPoint(0);
   for(Int_t i =0; i < points; i++)
   {
@@ -210,9 +211,9 @@ bool FgdDigitizer::Exec(int eventId, TClonesArray* data)
                                                             , point->GetEnergyLoss()
                                                             , pe);
     }
-
-    return true;
   }
+
+  return true;
 }
 // -------------------------------------------------------------------------
   
