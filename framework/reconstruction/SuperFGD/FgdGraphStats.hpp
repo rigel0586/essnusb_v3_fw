@@ -52,7 +52,6 @@ class FgdGraphStats : public core::task::ITask
 
   /** Virtual method Init **/
   virtual bool Init() override;
-  virtual void afterEvent() override;
   virtual void afterRun() override;
 
 

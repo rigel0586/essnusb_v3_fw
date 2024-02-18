@@ -15,7 +15,6 @@ void simulate_3_reconstruction(Int_t nStartEvent = 7, Int_t nEvents = 1)
 {
   using namespace esbroot;
 
-
   std::stringstream ssInput;
   ssInput << gSystem->Getenv("WORKSPACE_DIR");
   ssInput << "/simulation/digitization_output.root";
@@ -33,7 +32,7 @@ void simulate_3_reconstruction(Int_t nStartEvent = 7, Int_t nEvents = 1)
   std::string outputFile = ssOut.str();
   fRun->setOutputFile(outputFile);
 
-  fRun->setLoggerSeverity(core::simulation::Severity::debug2);
+  fRun->setLoggerSeverity(core::task::Severity::debug2);
 
   double debugLvl = 0.0; 
 
@@ -47,10 +46,10 @@ void simulate_3_reconstruction(Int_t nStartEvent = 7, Int_t nEvents = 1)
   ssGraphConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/graphConfig";
   std::string fgdGraphConfig = ssGraphConf.str();
 
-  core::task::ITask* recon = = new reconstruction::superfgd::FgdGenFitRecon(
+  core::task::ITask* recon = new reconstruction::superfgd::FgdGenFitRecon(
     "Reconstruction Task"             // name of the task
-    , fgdConfig  //File with detector configuration
-    , fgdGraphConfig // File containing graph algorithm info
+    , fgdConfig.c_str()  //File with detector configuration
+    , fgdGraphConfig.c_str() // File containing graph algorithm info
     , 1                               // Verbose level
     , debugLvl                        // debug level of genfit (0 - little, 1 - debug info, 2 - detailed)
     , false                           // To visualize the tracks using genfit::Eventdisplay
@@ -70,6 +69,6 @@ void simulate_3_reconstruction(Int_t nStartEvent = 7, Int_t nEvents = 1)
   ((reconstruction::superfgd::FgdGenFitRecon*)recon)->AddPdgMomLoss(211, 28. , 1.);
   ((reconstruction::superfgd::FgdGenFitRecon*)recon)->AddPdgMomLoss(2212, 148. , 63.);
   
-  fRun->addTask(reconstruction);   
+  fRun->addTask(recon);   
   fRun->run();
 }
