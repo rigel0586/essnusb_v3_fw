@@ -17,10 +17,10 @@ set(CLHEP_CONFIG "${FW_BASE}/clhep/lib/CLHEP-2.4.6.4/")
 set(ROOT_ROOTCLING_DIR "${FW_BASE}/cern_root/install/lib")
 
 
-find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
+find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 Geom PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
 #add ROOT macros to have ROOT_GENERATE_DICTIONARY available
 include(${ROOT_USE_FILE})
-find_package(Geant4 REQUIRED COMPONENTS gdml PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)
+find_package(Geant4 REQUIRED COMPONENTS gdml qt ui_all vis_all PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)
 find_package(GTest  REQUIRED PATHS   ${GOOGLE_CONFIG} NO_DEFAULT_PATH)
 
 
@@ -38,12 +38,14 @@ set(pythia6_includes "${FW_BASE}/pythia6/inc")
 #==== Genie import
 file(GLOB genie_so_files "${FW_BASE}/genie/install/lib/*.so")
 set(genie_includes "${FW_BASE}/genie/install/include/GENIE")
+find_library (FrameAlgo libGFwAlg.so "${FW_BASE}/genie/install/lib")
 #==================
 
 #==== Genfit import
 file(GLOB genfit_pcm_files "${FW_BASE}/genfit/install/lib/*.pcm")
 file(GLOB genfit_rootmap_files "${FW_BASE}/genfit/install/lib/*.rootmap")
 set(genfit_includes "${FW_BASE}/genfit/install/include")
+set(genfit_lib "${FW_BASE}/genfit/install/lib/libgenfit2.so")
 #==================
 
 #==== Fairlogger import
@@ -75,15 +77,17 @@ macro(third_party_links project_to_link)
                                 ${ROOT_INCLUDE_DIRS})
 
     target_link_libraries(${project_to_link} ${scope_type} 
-                                    xml2 
                                     ${genie_so_files} 
+                                    ${genfit_lib}
                                     ${log4cpp_so_files} 
                                     ${Geant4_LIBRARIES} 
                                     ${ROOT_LIBRARIES} 
                                     ${pythia6_so_files} 
                                     FairLogger::FairLogger 
                                     ${PathFinder_LIBRARIES} 
-                                    ${CLHEP_LIBRARIES})
+                                    ${CLHEP_LIBRARIES}
+                                    xml2 
+                                    ${FrameAlgo})
 endmacro()
 
 macro(GENERATE_LIBRARY target_name rootLinkdef target_headers)
