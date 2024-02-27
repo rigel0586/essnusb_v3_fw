@@ -17,6 +17,8 @@
 #include "G4UIExecutive.hh"
 
 #define G4VIS_USE_OPENGLX
+//#define G4VIS_USE_OPENGLXM
+#define G4VIS_USE_OPENGLQT
 #include "G4VisExecutive.hh"
 
 #include "ESSnusbPhysicsList.hpp"

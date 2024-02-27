@@ -104,7 +104,7 @@ void EsbSimManager::run()
             // Detect interactive mode (if no arguments) and define UI session
             G4int argc = 1;
             char **argv{nullptr};
-            char* type = const_cast<char*>(fvisSessionTypes[3].c_str());
+            char* type = const_cast<char*>(fvisSessionTypes[0].c_str());
             argv = &type;
             G4UIExecutive* ui = 0;
             if ( argc == 1 ) {

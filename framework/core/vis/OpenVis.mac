@@ -11,7 +11,20 @@
 /run/verbose 2
 #
 # Use this open statement to create an OpenGL view:
-#/vis/open OGL 1200x600-0+0
+/vis/open OGL 1200x600-0+0
+
+# For qt
+#/vis/open OGL      #(Generic way. For Stored mode if you have define your G4VIS_USE_QT variable)
+#/vis/open OGLI     #(for Immediate mode)
+#/vis/open OGLS     #(for Stored mode)
+#/vis/open OGLIQt   #(for Immediate mode)
+#/vis/open OGLSQt   #(for Stored mode)
+#   OpenGLImmediateQt (OGLIQt, OGLI)
+#   OpenGLStoredQt (OGLSQt, OGL, OGLS)
+#   OpenGLImmediateX (OGLIX, OGLIQt_FALLBACK)
+#   OpenGLStoredX (OGLSX, OGLSQt_FALLBACK)
+
+
 #
 # Use this open statement to create a .prim file suitable for
 # viewing in DAWN:
@@ -19,7 +32,7 @@
 #
 # Use this open statement to create a .heprep file suitable for
 # viewing in HepRApp:
-/vis/open HepRepFile
+#/vis/open HepRepFile
 #
 # Use this open statement to create a .wrl file suitable for
 # viewing in a VRML viewer:
@@ -34,7 +47,7 @@
 #/run/numberOfThreads 4
 #
 # Initialize kernel
-/run/initialize
+#/run/initialize
 #
 # Disable auto refresh and quieten vis messages whilst scene and
 # trajectories are established:
