@@ -14,6 +14,10 @@
 #include "G4RunManagerFactory.hh"
 #include "G4UImanager.hh"
 #include "G4RunManager.hh"
+#include "G4UIExecutive.hh"
+
+#define G4VIS_USE_OPENGLX
+#include "G4VisExecutive.hh"
 
 #include "ESSnusbPhysicsList.hpp"
 #include "EsbDetectorConstructor.hpp"
@@ -57,13 +61,24 @@ public:
 
     void setLoggerSeverity(Severity sev);
     void setOutputFile(const std::string& outPath);
+    void useVisualization(bool vis){fuseVis = vis;}
+
+    void useVisMacro(std::string path, std::string fvm){
+            fvisMacroPath =  path;
+            fvisMacro = fvm;
+    }
 
     void run();
 
 private:
 
+    std::string fvisSessionTypes[5]={"qt" ,"xm", "win32", "tcsh" , "csh"};
+
     bool validate();
+    bool fuseVis{false};
     int fEvents{0};
+    std::string fvisMacro{""};
+    std::string fvisMacroPath{""};
     
     std::vector<detector::IDetector*> fDetectors;
     std::string fWorkindDir{""};

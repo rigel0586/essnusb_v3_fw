@@ -1,0 +1,8 @@
+/control/verbose  1
+/run/verbose 1
+/event/verbose    0
+/tracking/verbose 0
+/run/initialize
+/detector/reflection none
+
+/run/beamOn 10

@@ -54,7 +54,7 @@ export G4INCLDATA=${WORKSPACE_DIR}/geant4/download/G4INCL1.2
 export G4ENSDFSTATEDATA=${WORKSPACE_DIR}/geant4/download/G4ENSDFSTATE2.3
 
 #Preload Geant4 libs for ROOT scripting
-export LD_PRELOAD=${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so:${GENFIT_LIB}libgenfit2.so
+export LD_PRELOAD=${GEANT4_LIB}libG4OpenGL.so:${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so:${GENFIT_LIB}libgenfit2.so
 
 
 

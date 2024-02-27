@@ -8,6 +8,15 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     esbSim->setLoggerSeverity(core::simulation::Severity::debug2);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
+    
+    std::stringstream ssVis;
+    ssVis << gSystem->Getenv("ESB_BASE_DIR");
+    ssVis << "/core/vis/";
+    std::string visMacroPath = ssVis.str();
+    esbSim->useVisualization(true);
+    esbSim->useVisMacro(visMacroPath , "OpenVis.mac");
+
+
     std::stringstream ssOut;
     ssOut << gSystem->Getenv("WORKSPACE_DIR");
     ssOut << "/simulation/sim_output.root";

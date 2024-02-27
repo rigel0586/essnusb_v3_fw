@@ -94,11 +94,50 @@ void EsbSimManager::run()
         runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator, fDetectors)); 
         
 
-        // initialize G4 kernel
-        runManager->Initialize();
+        if(!fuseVis){
+            // initialize G4 kernel
+            runManager->Initialize();
 
-        // start a run
-        runManager->BeamOn(fEvents);
+            // start a run
+            runManager->BeamOn(fEvents);
+        } else{
+            // Detect interactive mode (if no arguments) and define UI session
+            G4int argc = 1;
+            char **argv{nullptr};
+            char* type = const_cast<char*>(fvisSessionTypes[3].c_str());
+            argv = &type;
+            G4UIExecutive* ui = 0;
+            if ( argc == 1 ) {
+                ui = new G4UIExecutive(argc, argv);
+            }
+
+            // Initialise visualization
+            auto* visManager = new G4VisExecutive;
+            visManager->Initialize();
+
+            // Get the Pointer to the UI Manager
+            auto* UImanager = G4UImanager::GetUIpointer();
+
+            // User interactions
+            // Define (G)UI for interactive mode
+            if(argc==1)
+            {
+                std::string path = "/control/macroPath " + fvisMacroPath;
+                UImanager->ApplyCommand(path.c_str());
+
+                std::string file = "/control/execute " + fvisMacro;
+                UImanager->ApplyCommand(file.c_str());
+                ui->SessionStart();
+                delete ui;
+            }
+            else  // Batch mode
+            {
+                G4String command = "/control/execute ";
+                G4String fileName = argv[1];
+                UImanager->ApplyCommand(command+fileName);
+            }
+            delete visManager;
+        }
     }
     catch(...){
         LOG(error) << "runManager encountered an error";
