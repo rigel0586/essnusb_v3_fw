@@ -57,5 +57,23 @@ export G4ENSDFSTATEDATA=${WORKSPACE_DIR}/geant4/download/G4ENSDFSTATE2.3
 export LD_PRELOAD=${GEANT4_LIB}libG4OpenGL.so:${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so:${GENFIT_LIB}libgenfit2.so
 
 
+# Add OpenInventor libs if installed
+coin3dlibPath=${WORKSPACE_DIR}/geant4/OpenInventor/Coid3D/install/lib
+coin3dlib=${coin3dlibPath}/libCoin.so
+if [[ -f $coin3dlib ]]; then
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${coin3dlibPath}
+fi
+
+soxtlibPath=${WORKSPACE_DIR}/geant4/OpenInventor/SoXt/install/lib
+soxtlib=${soxtlibPath}/libSoXt.so
+if [[ -f $soxtlib ]]; then
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${soxtlibPath}
+fi
+
+quarterPath=${WORKSPACE_DIR}/geant4/OpenInventor/quarter/install/lib
+quarterlib=${quarterPath}/libQuarter.so
+if [[ -f $quarterlib ]]; then
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${quarterPath}
+fi
 
 
