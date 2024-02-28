@@ -16,9 +16,10 @@
 #include "G4RunManager.hh"
 #include "G4UIExecutive.hh"
 
-#define G4VIS_USE_OPENGLX
-//#define G4VIS_USE_OPENGLXM
-#define G4VIS_USE_OPENGLQT
+//#define G4VIS_USE_OPENGLX
+//  // #define G4VIS_USE_OPENGLXM
+//#define G4VIS_USE_OPENGLQT
+//#define G4VIS_USE_OIX
 #include "G4VisExecutive.hh"
 
 #include "ESSnusbPhysicsList.hpp"
@@ -48,6 +49,15 @@ enum class Severity : int
     fatal = 14,
 };
 
+enum class G4_vis : int
+{
+    qt = 0,
+    xm = 1,
+    tcsh = 3,
+    csh = 4,
+    none = 42
+};
+
 class EsbSimManager : public TObject
 {
 public:
@@ -63,7 +73,7 @@ public:
 
     void setLoggerSeverity(Severity sev);
     void setOutputFile(const std::string& outPath);
-    void useVisualization(bool vis){fuseVis = vis;}
+    void useVisualization(G4_vis vis){fuseVis = vis;}
 
     void useVisMacro(std::string path, std::string fvm){
             fvisMacroPath =  path;
@@ -77,7 +87,7 @@ private:
     std::string fvisSessionTypes[5]={"qt" ,"xm", "win32", "tcsh" , "csh"};
 
     bool validate();
-    bool fuseVis{false};
+    G4_vis fuseVis{G4_vis::none};
     int fEvents{0};
     std::string fvisMacro{""};
     std::string fvisMacroPath{""};

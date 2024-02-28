@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(workspace_dir);
     
-    esbSim->useVisualization(true);
+    esbSim->useVisualization(core::simulation::G4_vis::qt);
 //    esbSim->useVisMacro(visMacroPath , "OpenVis.mac");
     esbSim->useVisMacro(visMacroPath , "vis.mac");
     esbSim->setOutputFile(outputFile);

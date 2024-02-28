@@ -94,7 +94,7 @@ void EsbSimManager::run()
         runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator, fDetectors)); 
         
 
-        if(!fuseVis){
+        if(fuseVis == G4_vis::none){
             // initialize G4 kernel
             runManager->Initialize();
 
@@ -104,7 +104,8 @@ void EsbSimManager::run()
             // Detect interactive mode (if no arguments) and define UI session
             G4int argc = 1;
             char **argv{nullptr};
-            char* type = const_cast<char*>(fvisSessionTypes[0].c_str());
+            int visId = static_cast<int>(fuseVis);
+            char* type = const_cast<char*>(fvisSessionTypes[visId].c_str());
             argv = &type;
             G4UIExecutive* ui = 0;
             if ( argc == 1 ) {
