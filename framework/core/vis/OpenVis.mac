@@ -5,13 +5,16 @@
 /run/initialize
 #/detector/reflection none
 
-/run/beamOn 100
+/run/beamOn 17
 #
 /control/verbose 1
 /run/verbose 2
 #
 # Use this open statement to create an OpenGL view:
-/vis/open OGL 1200x600-0+0
+/vis/open OGLIQt 1200x600-0+0
+#/vis/open OIX 600x600-0+0
+#/vis/open TSGQt 600x600-0+0
+
 
 # For qt
 #/vis/open OGL      #(Generic way. For Stored mode if you have define your G4VIS_USE_QT variable)
@@ -24,6 +27,27 @@
 #   OpenGLImmediateX (OGLIX, OGLIQt_FALLBACK)
 #   OpenGLStoredX (OGLSX, OGLSQt_FALLBACK)
 
+#You have successfully registered the following graphics systems.
+#Registered graphics systems are:
+#  ASCIITree (ATree)
+#  DAWNFILE (DAWNFILE)
+#  G4HepRepFile (HepRepFile)
+#  RayTracer (RayTracer)
+#  VRML2FILE (VRML2FILE)
+#  gMocrenFile (gMocrenFile)
+#  TOOLSSG_OFFSCREEN (TSG_OFFSCREEN)
+#  TOOLSSG_OFFSCREEN (TSG_OFFSCREEN, TSG_FILE)
+#  OpenGLImmediateQt (OGLIQt, OGLI)
+#  OpenGLStoredQt (OGLSQt, OGL, OGLS)
+#  OpenGLImmediateXm (OGLIXm, OGLIQt_FALLBACK)
+#  OpenGLStoredXm (OGLSXm, OGLSQt_FALLBACK)
+#  OpenGLImmediateX (OGLIX, OGLIQt_FALLBACK, OGLIXm_FALLBACK)
+#  OpenGLStoredX (OGLSX, OGLSQt_FALLBACK, OGLSXm_FALLBACK)
+#  OpenInventorXt (OIX, OI)
+#  OpenInventorXtExtended (OIXE)
+#  TOOLSSG_X11_GLES (TSG_X11_GLES, TSGX11, TSG_XT_GLES_FALLBACK)
+#  TOOLSSG_XT_GLES (TSG_XT_GLES, TSGXt, TSG_QT_GLES_FALLBACK)
+#  TOOLSSG_QT_GLES (TSG_QT_GLES, TSGQt, TSG)
 
 #
 # Use this open statement to create a .prim file suitable for
@@ -55,7 +79,7 @@
 /vis/verbose errors
 #
 # Draw geometry:
-/vis/drawVolume
+/vis/drawVolume EsbSuperFGD_1
 #
 # Specify view angle:
 /vis/viewer/set/viewpointThetaPhi 90. 0.
@@ -67,7 +91,7 @@
 /vis/viewer/set/style wireframe
 #
 # Draw coordinate axes:
-/vis/scene/add/axes 0 0 -5.5 1 m
+/vis/scene/add/axes 0 0 0 1 m
 #
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:

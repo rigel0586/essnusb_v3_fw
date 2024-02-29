@@ -18,9 +18,10 @@ ClassImp(esbroot::geometry::FgdDetector)
 #include "G4SDManager.hh"
 #include "G4MagneticField.hh"
 #include "G4UniformMagField.hh"
-#include <G4TransportationManager.hh>
-#include <G4FieldManager.hh>
-#include <G4Track.hh>
+#include "G4VisAttributes.hh"
+#include "G4TransportationManager.hh"
+#include "G4FieldManager.hh"
+#include "G4Track.hh"
 
 #include <fairlogger/Logger.h>
 
@@ -126,8 +127,11 @@ void FgdDetector::AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume
 
     std::vector<G4VPhysicalVolume*> sdVolumes;
     fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
-    if(!sdVolumes.empty())
+    if(!sdVolumes.empty()){
       AddMagneticField(sdVolumes[0]);
+    }
+
+    AddVisAttr(topVolume);
 }
 
 TVector3 FgdDetector::getDetectorPosition()
@@ -178,6 +182,27 @@ void FgdDetector::AddMagneticField(G4VPhysicalVolume* detectorPhVol){
     G4bool allLocal = true;
     G4LogicalVolume* lVol =  detectorPhVol->GetLogicalVolume();
     lVol->SetFieldManager(localFieldManager, allLocal);
+}
+
+void FgdDetector::AddVisAttr(G4VPhysicalVolume* topVolume)
+{
+    std::vector<G4VPhysicalVolume*> sdVolumes;
+    fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    if(!sdVolumes.empty()){
+        G4LogicalVolume * lVol = sdVolumes[0]->GetLogicalVolume();
+        auto LensVisAtt  = new G4VisAttributes(G4Colour(1.0,0.0,0.0)) ;   // Red
+        LensVisAtt ->SetVisibility(true);
+        LensVisAtt->SetForceWireframe(true);
+        LensVisAtt->SetDaughtersInvisible(true);
+        lVol->SetVisAttributes(LensVisAtt);
+    }
+
+    std::vector<G4VPhysicalVolume*> invVolumes;
+    fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, invVolumes, utility::VolumeSearchType::Excludes);
+    for(G4VPhysicalVolume* pv : invVolumes){
+        G4LogicalVolume * lpv = pv->GetLogicalVolume();
+        lpv->SetVisAttributes (G4VisAttributes::GetInvisible());
+    }
 }
 
 void FgdDetector::Initialize(G4HCofThisEvent*)

@@ -108,6 +108,7 @@ private:
 	FgdDetector& operator=(const FgdDetector&);		
 
 	void AddMagneticField(G4VPhysicalVolume* detectorPhVol);
+	void AddVisAttr(G4VPhysicalVolume* detectorPhVol);
 
 	ClassDef(FgdDetector,2)
 };

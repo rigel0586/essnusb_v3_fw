@@ -25,7 +25,8 @@ namespace utility {
 
 enum class VolumeSearchType{
     MatchName,
-    Contains
+    Contains,
+    Excludes
 };
 
 class Utility : public TObject

@@ -34,6 +34,8 @@ void Utility::findVolume(const std::string& searchName
                                                 break;
             case VolumeSearchType::Contains  :  if(daug->GetName().find(searchName) != std::string::npos) foundVols.emplace_back(daug);
                                                 break;
+            case VolumeSearchType::Excludes  :  if(daug->GetName().find(searchName) == std::string::npos) foundVols.emplace_back(daug);
+                                                break;
             default:
                                                 break;
         }
