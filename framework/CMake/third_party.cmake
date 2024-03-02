@@ -17,7 +17,7 @@ set(CLHEP_CONFIG "${FW_BASE}/clhep/lib/CLHEP-2.4.6.4/")
 set(ROOT_ROOTCLING_DIR "${FW_BASE}/cern_root/install/lib")
 
 
-find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 Geom PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
+find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 Geom Eve RGL ROOTEve PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
 #add ROOT macros to have ROOT_GENERATE_DICTIONARY available
 include(${ROOT_USE_FILE})
 find_package(Geant4 REQUIRED COMPONENTS gdml qt ui_all vis_all PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)

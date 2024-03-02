@@ -14,6 +14,7 @@
 #pragma link C++ namespace esbroot::core::generator+;
 #pragma link C++ namespace esbroot::core::simulation+;
 #pragma link C++ namespace esbroot::core::task+;
+#pragma link C++ namespace esbroot::core::eve+;
 
 #pragma link C++ class esbroot::core::io::EsbIO+;
 #pragma link C++ class esbroot::core::io::EsbWriterPersistency+;
@@ -34,6 +35,9 @@
 #pragma link C++ class esbroot::core::task::EsbTaskManager+;
 #pragma link C++ class esbroot::core::task::ITask+;
 
+#pragma link C++ class esbroot::core::eve::IEvent+;
+#pragma link C++ class esbroot::core::eve::ITrackPoint+;
+#pragma link C++ class esbroot::core::eve::EsbEveManager+;
 
 #endif
 
