@@ -36,6 +36,7 @@
 #pragma link C++ class esbroot::core::task::ITask+;
 
 #pragma link C++ class esbroot::core::eve::IEvent+;
+#pragma link C++ class esbroot::core::eve::ITrack+;
 #pragma link C++ class esbroot::core::eve::ITrackPoint+;
 #pragma link C++ class esbroot::core::eve::EsbEveManager+;
 

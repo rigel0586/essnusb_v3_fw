@@ -30,6 +30,7 @@ set(core_headers ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbIO.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/task/ITask.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/task/EsbTaskManager.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/eve/IEvent.hpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/eve/ITrack.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/eve/ITrackPoint.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveManager.hpp)
 

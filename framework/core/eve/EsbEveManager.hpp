@@ -6,7 +6,10 @@
 #include <vector>
 #include <string>
 
+#include "TEveEventManager.h"
+
 #include "IEvent.hpp"
+#include "ITrack.hpp"
 #include "EsbReaderPersistency.hpp"
 
 namespace esbroot {
@@ -48,7 +51,6 @@ public:
 
     void setOutputFile(const std::string& outPath);
     void run();
-    void visualize();
 
 private:
 
@@ -67,7 +69,10 @@ private:
 
     void beforeRun();
     void afterRun();
-    
+
+    void visualize(std::vector<TEveEventManager*>& eventList);
+    TEveEventManager*  addTracks(int eventId, std::vector<ITrack>& tracks);
+
     ClassDef(EsbEveManager, 2);
 };
 

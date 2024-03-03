@@ -1,11 +1,18 @@
 #include "EsbEveManager.hpp"
 ClassImp(esbroot::core::eve::EsbEveManager)
 
-#include "TEveManager.h"
 #include "TGeoManager.h"
-#include "TEveGeoNode.h"
+#include "TDatabasePDG.h"
+#include "TParticlePDG.h"
+
 #include "TGLClip.h"
 #include "TGLViewer.h"
+
+#include "TEveManager.h"
+#include "TEveGeoNode.h"
+#include "TEveTrackPropagator.h"
+#include "TEveTrack.h"
+#include "TEvePathMarkD.h"
 
 #include <fairlogger/Logger.h>
 #include "EsbWriterPersistency.hpp"
@@ -96,26 +103,33 @@ void EsbEveManager::run()
 
     beforeRun();
 
-//    bool rc{true};
-//    for(int event = fStartEvents; rc && (event < fEvents); ++event){
-//        TTree* ptr_tree = fReadItem.fTree;
-//        ptr_tree->GetEntry(event);
-//        for(int i = 0; rc && (i < fIEvents.size()); ++i){
-//            fIEvents[i]->beforeEvent();
-//            rc = fIEvents[i]->Exec(event, fReadItem.fColl);
-//            fIEvents[i]->afterEvent();
-//
-//            if(!rc){
-//                LOG(fatal) << "Event  " << i << " failed to Execute successfully";
-//            }
-//        }
-//    }
+    std::vector<TEveEventManager*> tEvents;
+    bool rc{true};
+    for(int event = fStartEvents; rc && (event < fEvents); ++event){
+        TTree* ptr_tree = fReadItem.fTree;
+        ptr_tree->GetEntry(event);
+
+        std::vector<ITrack> ltracks;
+
+        for(int i = 0; rc && (i < fIEvents.size()); ++i){
+            fIEvents[i]->beforeEvent();
+            rc = fIEvents[i]->Exec(event, fReadItem.fColl, ltracks);
+            fIEvents[i]->afterEvent();
+
+            if(!rc){
+                LOG(warning) << "Event  " << fIEvents[i]->getName() << " failed to Execute successfully";
+            }
+        }
+
+        TEveEventManager* te = addTracks(event, ltracks);
+        tEvents.emplace_back(te);
+    }
     
     afterRun();
-    visualize();
+    visualize(tEvents);
 }
 
-void EsbEveManager::visualize()
+void EsbEveManager::visualize(std::vector<TEveEventManager*>&  eventList)
 {
     TEveManager::Create();
 
@@ -129,6 +143,13 @@ void EsbEveManager::visualize()
 
     gEve->FullRedraw3D(kTRUE);
 
+    auto it = eventList.rbegin();
+    while(it != eventList.rend())
+    {
+        gEve->AddEvent(*it);
+        ++it;
+    }
+
     // EClipType not exported to CINT (see TGLUtil.h):
     // 0 - no clip, 1 - clip plane, 2 - clip box
     auto v = gEve->GetDefaultGLViewer();
@@ -137,6 +158,67 @@ void EsbEveManager::visualize()
 
     v->CurrentCamera().RotateRad(-.7, 0.5);
     v->DoDraw();
+}
+
+TEveEventManager* EsbEveManager::addTracks(int eventId, std::vector<ITrack>& tracks)
+{
+    TDatabasePDG* tDb =	TDatabasePDG::Instance();
+    TEveTrackList list = new TEveTrackList();
+    std::string trackListName = "TEveTrackList event = " + std::to_String(eventId);
+    list->SetName(trackListName.c_str());
+    TEveTrackPropagator prop = g_prop = list->GetPropagator();
+    prop->SetFitDaughters(kFALSE);
+
+    for(int i = 0; i < tracks.size(); ++i)
+    {
+        
+
+        ITrack& track = tracks[i];
+        
+        if(track.empty()) continue;
+
+        ITrackPoint* firstPoint = track[0];
+        TParticlePDG * tPar = tDb->GetParticle(firstPoint->GetPgd());
+
+        if(tPar == nullptr) continue;
+        
+        TEveRecTrackD rc = new TEveRecTrackD();
+        rc->fV.Set(firstPoint->GetPosition().X()
+                    , firstPoint->GetPosition().Y()
+                    , firstPoint->GetPosition().Z());
+
+        rc->fP.Set(firstPoint->GetMomentum().X()
+                    , firstPoint->GetMomentum().Y()
+                    , firstPoint->GetMomentum().Z());
+        rc->fSign = tPar->fCharge;
+
+        TEveTrack track = new TEveTrack(rc, prop);
+        track->SetName(Form("Charge %d", tPar->fCharge));
+        
+        for(int ti = 0; ti < track.size(); ++ti)
+        {
+            TEvePathMarkD pm1 = new TEvePathMarkD(TEvePathMarkD::kLineSegment);
+            ITrackPoint* point = track[ti];
+            pm1->fV.Set(point->GetPosition().X()
+                    , point->GetPosition().Y()
+                    , point->GetPosition().Z());
+
+            pm1->fP.Set(point->GetMomentum().X()
+                    , point->GetMomentum().Y()
+                    , point->GetMomentum().Z());
+            track->AddPathMark(*pm1);
+        }
+
+        track->SetMarkerStyle(4);
+        list->SetLineColor(kMagenta);
+        list->AddElement(track);
+        track->MakeTrack();
+    }
+    
+    TEveEventManager* currentEvent = new TEveEventManager();
+    currentEvent->AddElement(list);
+
+    return currentEvent;
 }
 
 void EsbEveManager::addEvent(IEvent* event)
@@ -151,30 +233,30 @@ bool EsbEveManager::Init()
 //                    << "[ Requested " << fEvents << " , available " << fReadItem.fEntries;
 //        return false;
 //    }
-//
+
     bool rc{true};
-//    for(int i = 0; rc && (i < fIEvents.size()); ++i)
-//    {
-//        rc = fIEvents[i]->Init();
-//        if(!rc){
-//            LOG(fatal) << "Task  " << fIEvents[i]->getName() << " failed to initialize";
-//        }
-//    }
+    for(int i = 0; rc && (i < fIEvents.size()); ++i)
+    {
+        rc = fIEvents[i]->Init();
+        if(!rc){
+            LOG(fatal) << "Event  " << fIEvents[i]->getName() << " failed to initialize";
+        }
+    }
     return rc;
 }
 
 void EsbEveManager::beforeRun()
 {
-//    for(int i = 0; i < fIEvents.size(); ++i){
-//        fIEvents[i]->beforeRun();
-//    }
+    for(int i = 0; i < fIEvents.size(); ++i){
+        fIEvents[i]->beforeRun();
+    }
 }
 
 void EsbEveManager::afterRun()
 {
-//    for(int i = 0; i < fIEvents.size(); ++i){
-//        fIEvents[i]->afterRun();
-//    }
+    for(int i = 0; i < fIEvents.size(); ++i){
+        fIEvents[i]->afterRun();
+    }
     io::EsbWriterPersistency::Instance().writeData();
 }
 
