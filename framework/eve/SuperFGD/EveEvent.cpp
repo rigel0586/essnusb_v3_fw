@@ -66,11 +66,12 @@ bool EveEvent::Exec(int eventId, TClonesArray* data, std::vector<core::eve::ITra
         double pos_x = point->GetX() - dpos.X();
         double pos_y = point->GetY() - dpos.Y();
         double pos_z = point->GetZ() - dpos.Z();
-        TVector3 position(pos_x, pos_y, pos_z);
+        // TVector3 position(pos_x, pos_y, pos_z);
+        TVector3 position(point->GetX(), point->GetY(), point->GetZ());
         
         TVector3 mom(point->GetPx(), point->GetPy(), point->GetPz());
 
-        core::eve::ITrackPoint trPoint(time, pdg, trackId, position, mom);
+        core::eve::ITrackPoint trPoint(time, pdg, trackId, mom, position);
         fAllPoints.emplace_back(trPoint);
     }
 
