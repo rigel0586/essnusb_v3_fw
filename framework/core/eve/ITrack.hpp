@@ -21,12 +21,15 @@ class ITrack : public TObject
         ITrack() = default;
 
         ITrack(ITrack& point) = default;
-        ITrack& operator=(ITrack& point) = default;
+        ITrack(ITrack&& point) = default;
 
-        void addPoint(const ITrackPoint& point) {fPoints.emplace_back(point);}
+        ITrack& operator=(ITrack& point) = default;
+        ITrack& operator=(ITrack&& point) = default;
+
+        void addPoint(ITrackPoint& point) {fPoints.emplace_back(point);}
 
         const std::vector<ITrackPoint>& getPoints(){
-//            std::sort(fPoints.begin(), fPoints.end(), [](ITrackPoint& ls, ITrackPoint& rs){return ls.GetTime() < rs.GetTime();} );
+            std::sort(fPoints.begin(), fPoints.end(), [](ITrackPoint& ls, ITrackPoint& rs){return ls.GetTime() < rs.GetTime();} );
             return fPoints;
         }
 

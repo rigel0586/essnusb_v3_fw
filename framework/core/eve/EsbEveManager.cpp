@@ -12,7 +12,7 @@ ClassImp(esbroot::core::eve::EsbEveManager)
 #include "TEveGeoNode.h"
 #include "TEveTrackPropagator.h"
 #include "TEveTrack.h"
-#include "TEvePathMarkD.h"
+#include "TEvePathMark.h"
 
 #include <fairlogger/Logger.h>
 #include "EsbWriterPersistency.hpp"
@@ -21,6 +21,8 @@ namespace esbroot {
 namespace core {
 namespace eve {
 
+// typedef TEvePathMarkD TEvePathMarkT<double>;
+using TEvePathMarkD = TEvePathMarkT<double>;
 
 EsbEveManager::EsbEveManager(const std::string& inputGeomFile
                     , const std::string& inputFile
@@ -163,26 +165,26 @@ void EsbEveManager::visualize(std::vector<TEveEventManager*>&  eventList)
 TEveEventManager* EsbEveManager::addTracks(int eventId, std::vector<ITrack>& tracks)
 {
     TDatabasePDG* tDb =	TDatabasePDG::Instance();
-    TEveTrackList list = new TEveTrackList();
-    std::string trackListName = "TEveTrackList event = " + std::to_String(eventId);
+    TEveTrackList* list = new TEveTrackList();
+    std::string trackListName = "TEveTrackList event = " + std::to_string(eventId);
     list->SetName(trackListName.c_str());
-    TEveTrackPropagator prop = g_prop = list->GetPropagator();
+    TEveTrackPropagator* prop =  list->GetPropagator();
     prop->SetFitDaughters(kFALSE);
 
     for(int i = 0; i < tracks.size(); ++i)
     {
         
 
-        ITrack& track = tracks[i];
+        ITrack& itrack = tracks[i];
         
-        if(track.empty()) continue;
+        if(itrack.getPoints().empty()) continue;
 
-        ITrackPoint* firstPoint = track[0];
+        const ITrackPoint* firstPoint = &itrack.getPoints()[0];
         TParticlePDG * tPar = tDb->GetParticle(firstPoint->GetPgd());
 
         if(tPar == nullptr) continue;
         
-        TEveRecTrackD rc = new TEveRecTrackD();
+        TEveRecTrackD* rc = new TEveRecTrackD();
         rc->fV.Set(firstPoint->GetPosition().X()
                     , firstPoint->GetPosition().Y()
                     , firstPoint->GetPosition().Z());
@@ -190,15 +192,15 @@ TEveEventManager* EsbEveManager::addTracks(int eventId, std::vector<ITrack>& tra
         rc->fP.Set(firstPoint->GetMomentum().X()
                     , firstPoint->GetMomentum().Y()
                     , firstPoint->GetMomentum().Z());
-        rc->fSign = tPar->fCharge;
+        rc->fSign = tPar->Charge();
 
-        TEveTrack track = new TEveTrack(rc, prop);
-        track->SetName(Form("Charge %d", tPar->fCharge));
+        TEveTrack* track = new TEveTrack(rc, prop);
+        track->SetName(Form("Charge %d", tPar->Charge()));
         
-        for(int ti = 0; ti < track.size(); ++ti)
+        for(int ti = 0; ti < itrack.getPoints().size(); ++ti)
         {
-            TEvePathMarkD pm1 = new TEvePathMarkD(TEvePathMarkD::kLineSegment);
-            ITrackPoint* point = track[ti];
+            TEvePathMarkD* pm1 = new TEvePathMarkD(TEvePathMarkD::kLineSegment);
+            const ITrackPoint* point = &itrack.getPoints()[ti];
             pm1->fV.Set(point->GetPosition().X()
                     , point->GetPosition().Y()
                     , point->GetPosition().Z());
