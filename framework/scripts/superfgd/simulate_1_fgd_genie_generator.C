@@ -1,5 +1,5 @@
 void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
-	        Int_t nEvents = 20)
+	        Int_t nEvents = 17)
 {
     using namespace esbroot;
 
@@ -13,7 +13,7 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     ssVis << gSystem->Getenv("ESB_BASE_DIR");
     ssVis << "/core/vis/";
     std::string visMacroPath = ssVis.str();
-//    esbSim->useVisualization(true);
+    //esbSim->useVisualization(core::simulation::G4_vis::qt);
     esbSim->useVisMacro(visMacroPath , "OpenVis.mac");
 
 

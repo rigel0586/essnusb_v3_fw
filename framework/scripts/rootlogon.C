@@ -70,4 +70,14 @@
     std::string reconstruction_pcm = ss.str();
     printf("\n %s \n", reconstruction_pcm.c_str());
     gSystem->Load(reconstruction_pcm.c_str());
+
+    ss.str(std::string());
+    ss.clear();
+
+    // 8. Load eve
+    ss << gSystem->Getenv("ESB_BASE_DIR");
+    ss << "/build/eve/libessnusb_eve.so";
+    std::string eve_pcm = ss.str();
+    printf("\n %s \n", eve_pcm.c_str());
+    gSystem->Load(eve_pcm.c_str());
 }

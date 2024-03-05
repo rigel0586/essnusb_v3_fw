@@ -10,3 +10,4 @@ pathfinder/
 clhep/
 framework/build
 framework/workspace
+framework/main.cpp

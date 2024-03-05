@@ -12,11 +12,12 @@ set(ESSNUSB_PROJECT_NAME fw_essnusb)
 
 add_subdirectory(core)
 add_subdirectory(data)
+add_subdirectory(digitizer)
+add_subdirectory(eve)
 add_subdirectory(generators)
 add_subdirectory(geometry)
-add_subdirectory(utility)
-add_subdirectory(digitizer)
 add_subdirectory(reconstruction)
+add_subdirectory(utility)
 
 set(fw_path ${CMAKE_CURRENT_SOURCE_DIR})
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/main.in ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp @ONLY)
@@ -25,11 +26,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/main.in ${CMAKE_CURRENT_SOURCE_DIR}/m
 set(EsbSimApp esb_sim_app)
 set(EsbSim_Deps EsbCore
                 essnusb_data
+                essnusb_digitizer
+                essnusb_eve
                 essnusb_generators
                 essnusb_geometry
-                essnusb_utility
-                essnusb_digitizer
-                essnusb_reconstruction)
+                essnusb_reconstruction
+                essnusb_utility)
 
 add_executable(${EsbSimApp} ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
