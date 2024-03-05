@@ -103,6 +103,8 @@ void EsbEveManager::run()
         return;
     }
 
+    TEveManager::Create();
+
     beforeRun();
 
     std::vector<TEveEventManager*> tEvents;
@@ -133,8 +135,6 @@ void EsbEveManager::run()
 
 void EsbEveManager::visualize(std::vector<TEveEventManager*>&  eventList)
 {
-    TEveManager::Create();
-
     TFile::SetCacheFileDir(".");
     gGeoManager = gEve->GetGeometry(finputGeomFile);
     gGeoManager->DefaultColors();
@@ -173,8 +173,6 @@ TEveEventManager* EsbEveManager::addTracks(int eventId, std::vector<ITrack>& tra
 
     for(int i = 0; i < tracks.size(); ++i)
     {
-        
-
         ITrack& itrack = tracks[i];
         
         if(itrack.getPoints().empty()) continue;
@@ -183,7 +181,7 @@ TEveEventManager* EsbEveManager::addTracks(int eventId, std::vector<ITrack>& tra
         TParticlePDG * tPar = tDb->GetParticle(firstPoint->GetPgd());
 
         if(tPar == nullptr) continue;
-        
+
         TEveRecTrackD* rc = new TEveRecTrackD();
         rc->fV.Set(firstPoint->GetPosition().X()
                     , firstPoint->GetPosition().Y()
