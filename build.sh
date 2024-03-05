@@ -83,6 +83,7 @@ check_lib_exists ${geant4_check_lib}
 
 cd ${fw_directory}
 
+mkdir -p ${framework_dir}/workspace
 cd ${framework_dir}/workspace
 mkdir geant4
 cd geant4
@@ -159,7 +160,7 @@ curl -O https://geant4-data.web.cern.ch/datasets/G4TENDL.1.4.tar.gz
 tar -xf G4TENDL.1.4.tar.gz
 
 G4TENDL_var=${fw_directory}/framework/workspace/geant4/download/G4TENDL1.4/README
-check_lib_exists ${G4TENDL}
+check_lib_exists ${G4TENDL_var}
 
 cd ${fw_directory}
 
