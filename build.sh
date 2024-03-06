@@ -83,11 +83,12 @@ check_lib_exists ${geant4_check_lib}
 
 cd ${fw_directory}
 
-mkdir -p ${framework_dir}/workspace
+cd ${framework_dir}
+mkdir -p workspace
 cd ${framework_dir}/workspace
-mkdir geant4
+mkdir -p geant4
 cd geant4
-mkdir download
+mkdir -p download
 cd download
 
 curl -O https://geant4-data.web.cern.ch/datasets/G4NDL.4.7.tar.gz
