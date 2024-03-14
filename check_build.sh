@@ -32,6 +32,10 @@ cd ${fw_directory}
 root_check_lib=${fw_directory}/cern_root/install/lib/libCling.so
 check_lib_exists ${root_check_lib}
 
+# Mathmore is required for Genie
+root_mathmore_check_lib=${fw_directory}/cern_root/install/lib/libMathMore.so
+check_lib_exists ${root_mathmore_check_lib}
+
 cd ${fw_directory}
 
 # Googlest
