@@ -127,6 +127,10 @@ void FgdDetector::AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume
 
     std::vector<G4VPhysicalVolume*> sdVolumes;
     fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    LOG(debug2) << "  FgdDetector::AddMultiSensitiveDetector sdVolumes [ " 
+                          << superfgd::fgdnames::superFGDName 
+                          << "] found "
+                          << sdVolumes.size();
     if(!sdVolumes.empty()){
       AddMagneticField(sdVolumes[0]);
     }
@@ -170,6 +174,10 @@ void FgdDetector::GetMagneticFieldRegion(Double_t& xMin, Double_t& xMax,
 void FgdDetector::AddMagneticField(G4VPhysicalVolume* detectorPhVol){
     TVector3 magVec = fgdConstructor.GetMagneticField();
 
+    LOG(debug2) << "  FgdDetector::AddMagneticField  X [ " << magVec.X() << " ] "
+                                                << " Y [ " << magVec.Y() << " ] "
+                                                << " Z [ " << magVec.Z() << " ] ";
+
     G4MagneticField* magField = new G4UniformMagField(
                                       G4ThreeVector(magVec.X() * kilogauss
                                                     , magVec.Y() * kilogauss
@@ -178,6 +186,7 @@ void FgdDetector::AddMagneticField(G4VPhysicalVolume* detectorPhVol){
 
     G4FieldManager* localFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
     localFieldManager->SetDetectorField(magField);
+    localFieldManager->CreateChordFinder(magField);
 
     G4bool allLocal = true;
     G4LogicalVolume* lVol =  detectorPhVol->GetLogicalVolume();

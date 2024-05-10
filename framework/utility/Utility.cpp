@@ -28,18 +28,19 @@ void Utility::findVolume(const std::string& searchName
     G4int limit = lv->GetNoDaughters();
     for(int i = 0; i < limit; ++i)
     {
-        G4VPhysicalVolume * daug = lv->GetDaughter(i);
+        G4VPhysicalVolume * ph_daug = lv->GetDaughter(i);
+        G4LogicalVolume * daug = ph_daug->GetLogicalVolume();
         switch(searchtype){
-            case VolumeSearchType::MatchName :  if(daug->GetName() == searchName) foundVols.emplace_back(daug);
+            case VolumeSearchType::MatchName :  if(daug->GetName() == searchName) foundVols.emplace_back(ph_daug);
                                                 break;
-            case VolumeSearchType::Contains  :  if(daug->GetName().find(searchName) != std::string::npos) foundVols.emplace_back(daug);
+            case VolumeSearchType::Contains  :  if(daug->GetName().find(searchName) != std::string::npos) foundVols.emplace_back(ph_daug);
                                                 break;
-            case VolumeSearchType::Excludes  :  if(daug->GetName().find(searchName) == std::string::npos) foundVols.emplace_back(daug);
+            case VolumeSearchType::Excludes  :  if(daug->GetName().find(searchName) == std::string::npos) foundVols.emplace_back(ph_daug);
                                                 break;
             default:
                                                 break;
         }
-        findVolume(searchName, daug, foundVols, searchtype);
+        findVolume(searchName, ph_daug, foundVols, searchtype);
     }
 }
 
