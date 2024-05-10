@@ -110,8 +110,7 @@ void FgdMppcDisplay::afterEvent()
 
   if(f_xz_hist)
   {
-    //f_xz_hist->Draw("colz");
-    f_xz_hist->Draw();
+    f_xz_hist->Draw("colz");
     WriteCanvas("XZ");
     f_xz_hist->Reset();
   } 
