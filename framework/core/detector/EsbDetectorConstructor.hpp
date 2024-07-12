@@ -42,11 +42,10 @@ private:
     std::vector<IDetector*> fDetectors;
     
     std::string fWorkDir{""};
-    std::string fgdml{"esbVolume.gdml"};
+    const std::string fgdml{"esbVolume.gdml"};
+    const std::string froot{"esbVolume.root"};
 
     io::EsbIO fIo;
-
-    void setGdmlFile(const std::string& fileName){fgdml = fileName;};
 
     ClassDef(EsbDetectorConstructor, 2);
 };

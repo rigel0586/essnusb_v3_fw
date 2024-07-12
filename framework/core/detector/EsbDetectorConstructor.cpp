@@ -25,6 +25,8 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 
     std::string fileGdml = fWorkDir + "/" + fgdml;
     fIo.ExportTGeoVolume(fileGdml);
+    std::string fileRoot = fWorkDir + "/" + froot;
+    fIo.ExportTGeoVolume(fileRoot);
 
     G4VPhysicalVolume* convertedWorld = fIo.readGdmlToGeant4(fileGdml);
 
