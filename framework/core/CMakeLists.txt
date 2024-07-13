@@ -14,7 +14,8 @@ target_sources(${core_Target} PUBLIC
                 ${CMAKE_CURRENT_SOURCE_DIR}/simulation/EsbEventAction.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/simulation/EsbActionInitializer.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/task/EsbTaskManager.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveManager.cpp)
+                ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveManager.cpp
+                ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveEventManager.cpp)
 
 set(core_headers ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbIO.hpp 
                  ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbWriterPersistency.hpp
@@ -32,7 +33,8 @@ set(core_headers ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbIO.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/eve/IEvent.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/eve/ITrack.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/eve/ITrackPoint.hpp
-                 ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveManager.hpp)
+                 ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveManager.hpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/eve/EsbEveEventManager.hpp)
 
 target_include_directories(${core_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/
                                                     ${CMAKE_CURRENT_SOURCE_DIR}/io

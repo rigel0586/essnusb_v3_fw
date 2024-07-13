@@ -20,11 +20,11 @@ class ITrack : public TObject
     public:
         ITrack() = default;
 
-        ITrack(ITrack& point) = default;
-        ITrack(ITrack&& point) = default;
+        ITrack(const ITrack& track) = default;
+        ITrack(ITrack&& track) = default;
 
-        ITrack& operator=(ITrack& point) = default;
-        ITrack& operator=(ITrack&& point) = default;
+        ITrack& operator=(const ITrack& track) = default;
+        ITrack& operator=(ITrack&& track) = default;
 
         void addPoint(ITrackPoint& point) {fPoints.emplace_back(point);}
 

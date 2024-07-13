@@ -106,17 +106,16 @@ void EsbEveManager::run()
     }
 
     TEveManager::Create();
+    gEve->AddEvent(&m_esbEveEventManager);
 
     beforeRun();
 
-    std::vector<TEveEventManager*> tEvents;
     bool rc{true};
     for(int event = fStartEvents; rc && (event < fEvents); ++event){
         TTree* ptr_tree = fReadItem.fTree;
         ptr_tree->GetEntry(event);
 
         std::vector<ITrack> ltracks;
-
         for(int i = 0; rc && (i < fIEvents.size()); ++i){
             fIEvents[i]->beforeEvent();
             rc = fIEvents[i]->Exec(event, fReadItem.fColl, ltracks);
@@ -126,16 +125,14 @@ void EsbEveManager::run()
                 LOG(warning) << "Event  " << fIEvents[i]->getName() << " failed to Execute successfully";
             }
         }
-
-        TEveEventManager* te = addTracks(event, ltracks);
-        // tEvents.emplace_back(te);
+        m_esbEveEventManager.AddEventTracks(event, ltracks);
     }
     
     afterRun();
-    visualize(tEvents);
+    visualize();
 }
 
-void EsbEveManager::visualize(std::vector<TEveEventManager*>&  eventList)
+void EsbEveManager::visualize()
 {
     TFile::SetCacheFileDir(".");
     gGeoManager = gEve->GetGeometry(finputGeomFile);
@@ -146,13 +143,6 @@ void EsbEveManager::visualize(std::vector<TEveEventManager*>&  eventList)
     gEve->AddGlobalElement(inn);
 
     gEve->FullRedraw3D(kTRUE);
-
-    // auto it = eventList.rbegin();
-    // while(it != eventList.rend())
-    // {
-    //     gEve->AddEvent(*it);
-    //     ++it;
-    // }
 
     // EClipType not exported to CINT (see TGLUtil.h):
     // 0 - no clip, 1 - clip plane, 2 - clip box
@@ -172,88 +162,6 @@ void EsbEveManager::visualize(std::vector<TEveEventManager*>&  eventList)
     
     gv->CurrentCamera().RotateRad(-0.5, 1.4);
     gv->RequestDraw();
-}
-
-TEveEventManager* EsbEveManager::addTracks(int eventId, std::vector<ITrack>& tracks)
-{
-    // TEveEventManager* currentEvent = new TEveEventManager();
-    TDatabasePDG* tDb =	TDatabasePDG::Instance();
-    TEveTrackList* list = new TEveTrackList();
-    std::string trackListName = "TEveTrackList event = " + std::to_string(eventId);
-    list->SetName(trackListName.c_str());
-    TEveTrackPropagator* prop =  list->GetPropagator();
-    prop->SetFitDaughters(kTRUE);
-    prop->SetStepper(TEveTrackPropagator::kRungeKutta);
-    prop->SetMaxR(1000);
-    prop->SetMaxZ(1000);
-    prop->SetRnrReferences(kTRUE);
-    prop->SetRnrDaughters(kTRUE);
-    prop->SetRnrDecay(kTRUE);
-    prop->RefPMAtt().SetMarkerStyle(4);
-
-    const Int_t gamma_pdg = 22;
-    for(int i = 0; i < tracks.size(); ++i)
-    {
-        ITrack& itrack = tracks[i];
-        
-        if(itrack.getPoints().empty()) continue;
-
-        const ITrackPoint* firstPoint = &itrack.getPoints()[0];
-        if(gamma_pdg == firstPoint->GetPgd()) continue; // Ignore photons
-
-        TParticlePDG * tPar = tDb->GetParticle(firstPoint->GetPgd());
-        
-        if(tPar == nullptr) continue;
-        Double_t charge = tPar->Charge()/3;
-        LOG(INFO) << "Pdg " << firstPoint->GetPgd() << " charge " << charge;
-
-        
-
-        TEveRecTrackD* rc = new TEveRecTrackD();
-        rc->fV.Set(firstPoint->GetPosition().X()
-                    , firstPoint->GetPosition().Y()
-                    , firstPoint->GetPosition().Z());
-
-        rc->fP.Set(firstPoint->GetMomentum().X()
-                    , firstPoint->GetMomentum().Y()
-                    , firstPoint->GetMomentum().Z());
-        rc->fSign = charge;
-
-        TEveTrack* track = new TEveTrack(rc, prop);
-        track->SetName(Form("Charge %d", charge));
-        
-        for(int ti = 0; ti < itrack.getPoints().size(); ++ti)
-        {
-            TEvePathMarkD* pm1 = new TEvePathMarkD(TEvePathMarkD::kReference);
-            const ITrackPoint* point = &itrack.getPoints()[ti];
-            pm1->fV.Set(point->GetPosition().X()
-                    , point->GetPosition().Y()
-                    , point->GetPosition().Z());
-
-            pm1->fP.Set(point->GetMomentum().X()
-                    , point->GetMomentum().Y()
-                    , point->GetMomentum().Z());
-            track->AddPathMark(*pm1);
-        }
-
-        // track->SetRnrPoints(kTRUE);
-        track->SetSmooth(kTRUE);
-
-        track->SetMarkerStyle(4);
-        // list->SetLineColor(kMagenta);
-        list->AddElement(track);
-        // track->MakeTrack();
-    }
-
-    list->SetLineColor(kMagenta);
-    list->MakeTracks();
-
-    gEve->AddEvent(new TEveEventManager("Event", std::to_string(eventId).c_str()));
-    gEve->AddElement(list);
-    // currentEvent->AddElement(list);
-    // gEve->AddEvent(currentEvent);
-    // return currentEvent;
-    return nullptr;
 }
 
 void EsbEveManager::addEvent(IEvent* event)

@@ -11,6 +11,7 @@
 #include "IEvent.hpp"
 #include "ITrack.hpp"
 #include "EsbReaderPersistency.hpp"
+#include "EsbEveEventManager.hpp"
 
 namespace esbroot {
 namespace core {
@@ -64,14 +65,14 @@ private:
     const std::string fBranch;
 
     io::EsbReaderPersistency::ReadItem fReadItem;
+    EsbEveEventManager m_esbEveEventManager;
 
     bool Init();
 
     void beforeRun();
     void afterRun();
 
-    void visualize(std::vector<TEveEventManager*>& eventList);
-    TEveEventManager*  addTracks(int eventId, std::vector<ITrack>& tracks);
+    void visualize();
 
     ClassDef(EsbEveManager, 2);
 };
