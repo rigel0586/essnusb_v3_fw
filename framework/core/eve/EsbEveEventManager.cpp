@@ -52,7 +52,6 @@ void EsbEveEventManager::GotoEvent(Int_t event)
 {
     if(gEve != nullptr && translateTracks(event)){
         m_currentEventId = event;
-        gEve->FullRedraw3D(kTRUE);
     }else{
         LOG(INFO) << "GotoEvent " << event << " does not exits";
     }
@@ -63,7 +62,6 @@ void EsbEveEventManager::NextEvent()
     int nextEventId = m_currentEventId + 1;
     if(gEve != nullptr && translateTracks(nextEventId)){
         m_currentEventId = nextEventId;
-        gEve->FullRedraw3D(kTRUE);
     }
 }
 
@@ -72,12 +70,15 @@ void EsbEveEventManager::PrevEvent()
     int previousEventId = m_currentEventId - 1;
     if(gEve != nullptr && previousEventId >= 0 && translateTracks(previousEventId)){
         m_currentEventId = previousEventId;
-        gEve->FullRedraw3D(kTRUE);
     }
 }
 
 void EsbEveEventManager::AddEventTracks(int eventId, std::vector<ITrack>& tracks){
     LOG(INFO) << "AddEventTracks (Adding event) " << eventId << " tracks = " << tracks.size();
+
+    auto it = m_tracks.find(eventId);
+    if(it != m_tracks.end()) LOG(WARNING) << "Override AddEventTracks for eventId: " << eventId << " tracks = " << tracks.size();
+
     m_tracks[eventId] = tracks;
 }
 
@@ -180,6 +181,8 @@ bool EsbEveEventManager::translateTracks(int eventId)
     list->MakeTracks();
 
     TEveEventManager::AddElement(list);
+
+    gEve->FullRedraw3D(kTRUE);
 
     return true;
 }
