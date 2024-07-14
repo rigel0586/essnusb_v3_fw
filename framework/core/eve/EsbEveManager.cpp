@@ -125,7 +125,10 @@ void EsbEveManager::run()
                 LOG(warning) << "Event  " << fIEvents[i]->getName() << " failed to Execute successfully";
             }
         }
-        m_esbEveEventManager.AddEventTracks(event, ltracks);
+
+        if(rc){
+            m_esbEveEventManager.AddEventTracks(event, ltracks);
+        }
     }
     
     afterRun();
