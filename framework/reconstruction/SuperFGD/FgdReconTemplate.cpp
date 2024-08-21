@@ -1201,7 +1201,6 @@ bool FgdReconTemplate::FitTrack(
       toFitTrack->checkConsistency();
 
       // do the fit
-      LOG(info) << "Somthing ";
       fitter->processTrack(toFitTrack, true);
       toFitTrack->checkConsistency();
 
