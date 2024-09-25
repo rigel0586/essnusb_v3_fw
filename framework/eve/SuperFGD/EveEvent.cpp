@@ -50,6 +50,7 @@ bool EveEvent::Exec(int eventId, TClonesArray* data, std::vector<core::eve::ITra
     const Int_t points = fdPoints->GetEntries();
     LOG(debug2) <<" fdPoints->GetEntries() " << fdPoints->GetEntries();
     int nextPoint(0);
+    std::vector<core::eve::ITrackPoint> allPoints;
     //=============================================
     //====       Extract Data       ===============
     //=============================================
@@ -72,25 +73,25 @@ bool EveEvent::Exec(int eventId, TClonesArray* data, std::vector<core::eve::ITra
         TVector3 mom(point->GetPx(), point->GetPy(), point->GetPz());
 
         core::eve::ITrackPoint trPoint(time, pdg, trackId, mom, position);
-        fAllPoints.emplace_back(trPoint);
+        allPoints.emplace_back(trPoint);
     }
 
     //=============================================
     //====          Sort Data       ===============
     //=============================================
     std::map<Int_t, core::eve::ITrack> trackMap;
-    for(int i = 0; i < fAllPoints.size(); ++i)
+    for(int i = 0; i < allPoints.size(); ++i)
     {
-        Int_t trId = fAllPoints[i].GetTrackId();
+        Int_t trId = allPoints[i].GetTrackId();
         auto it = trackMap.find(trId);
         if (it != trackMap.end())
         {
-            trackMap[trId].addPoint(fAllPoints[i]);
+            trackMap[trId].addPoint(allPoints[i]);
         }
         else
         {
             core::eve::ITrack newTrack;
-            newTrack.addPoint(fAllPoints[i]);
+            newTrack.addPoint(allPoints[i]);
             trackMap[trId] = newTrack;
         }
     }

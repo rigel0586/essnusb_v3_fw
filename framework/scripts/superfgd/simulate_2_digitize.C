@@ -6,12 +6,12 @@
   Based on the example in the presentation from
   Konstantin Gertsenberger
   
-  .L ess_dig_fgd.C
-  ess_dig_fgd()
+  .L simulate_2_digitize.C
+  simulate_2_digitize()
   
 */
 
-void simulate_2_digitize(Int_t nEvents = 20)
+void simulate_2_digitize(Int_t nEvents = 15)
 {
   using namespace esbroot;
 

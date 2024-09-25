@@ -1,5 +1,4 @@
-void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
-	        Int_t nEvents = 17)
+void simulate_1_fgd_genie_generator(Int_t nEvents = 15)
 {
     using namespace esbroot;
 
@@ -13,8 +12,9 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
     ssVis << gSystem->Getenv("ESB_BASE_DIR");
     ssVis << "/core/vis/";
     std::string visMacroPath = ssVis.str();
-    //esbSim->useVisualization(core::simulation::G4_vis::qt);
-    esbSim->useVisMacro(visMacroPath , "OpenVis.mac");
+    // esbSim->useVisualization(core::simulation::G4_vis::qt);
+    // esbSim->useVisMacro(visMacroPath , "OpenVis.mac");
+    // esbSim->useVisMacro(visMacroPath , "HepRapp.mac");
 
 
     std::stringstream ssOut;
@@ -49,7 +49,8 @@ void simulate_1_fgd_genie_generator(TString outFileName = "evetest.root",
 
     std::stringstream sflux;
     sflux << gSystem->Getenv("ESB_BASE_DIR");
-    sflux << "/neutrino_flux/essnusb_v1/nuFlux/nuFlux100km_250kAm.txt";
+    //sflux << "/neutrino_flux/essnusb_v1/nuFlux/nuFlux100km_250kAm.txt";
+    sflux << "/neutrino_flux/essnusb_v1/nuFlux/uni1gev.txt";
     std::string neutrinoFluxPath = sflux.str();
 
     generators::superfgd::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";

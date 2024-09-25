@@ -1,6 +1,13 @@
 #include "EsbSimManager.hpp"
 ClassImp(esbroot::core::simulation::EsbSimManager)
 
+#include "TEveManager.h"
+#include "TEveGeoNode.h"
+#include "TEveViewer.h"
+#include "TSystem.h"
+#include "TGLClip.h"
+#include "TGLViewer.h"
+
 #include <fairlogger/Logger.h>
 #include "EsbActionInitializer.hpp"
 #include "ESSnusbPhysicsList.hpp"
@@ -147,6 +154,35 @@ void EsbSimManager::run()
     // job termination
     delete runManager;
     return;
+}
+
+void EsbSimManager::displayGeometry()
+{
+    for(detector::IDetector* d : fDetectors)
+    {
+        d->ConstructGeometry(); // Every detector constructs its volumes and add it to the Top volume
+    }
+
+    TEveManager::Create();
+
+    TFile::SetCacheFileDir(".");
+    gGeoManager->DefaultColors();
+
+    auto node1 = gGeoManager->GetTopNode();
+    TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
+    gEve->AddGlobalElement(inn);
+
+    gEve->FullRedraw3D(kTRUE);
+
+    // EClipType not exported to CINT (see TGLUtil.h):
+    // 0 - no clip, 1 - clip plane, 2 - clip box
+    auto v = gEve->GetDefaultGLViewer();
+    v->GetClipSet()->SetClipType(TGLClip::EType(1));
+    v->RefreshPadEditor(v);
+
+    v->CurrentCamera().RotateRad(-.7, 0.5);
+    v->DoDraw();
+
 }
 
 void EsbSimManager::setWorkingDir(const std::string& dirPath)

@@ -132,7 +132,13 @@ void EsbEveManager::run()
     }
     
     afterRun();
-    visualize();
+}
+
+
+void EsbEveManager::goToEvent(int eventDIsplayID)
+{
+    m_esbEveEventManager.GotoEvent(eventDIsplayID);
+
 }
 
 void EsbEveManager::visualize()

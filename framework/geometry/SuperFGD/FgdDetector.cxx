@@ -101,41 +101,42 @@ void FgdDetector::ConstructGeometry()
 void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume, 
                   std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
 {
+    G4SDManager::GetSDMpointer()->AddNewDetector(this);
 
-    // G4SDManager::GetSDMpointer()->AddNewDetector(this);
+    std::vector<G4VPhysicalVolume*> sdVolumes;
+    fut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
 
-    // std::vector<G4VPhysicalVolume*> sdVolumes;
-    // fut.findVolume(fCubeName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    LOG(debug3) << fCubeName << " volumes found: " << sdVolumes.size();
+    //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
+    for(G4VPhysicalVolume * daug : sdVolumes){
+        // f_sd(daug->GetLogicalVolume(),this);
+        G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
+        dauLogol->SetSensitiveDetector(this);
+    }
 
-    // // LOG(warning) << " sdVolumes.size() " << sdVolumes.size();
-    // for(G4VPhysicalVolume * daug : sdVolumes){
-    //     // f_sd(daug->GetLogicalVolume(),this);
-    //     G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
-    //     dauLogol->SetSensitiveDetector(this);
-    // }
-
-    // sdVolumes.clear();
-    // fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
-    // if(!sdVolumes.empty())
-    //   AddMagneticField(sdVolumes[0]);
+    sdVolumes.clear();
+    fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    LOG(debug3) << superfgd::fgdnames::superFGDName  << " volumes found: " << sdVolumes.size();
+    if(!sdVolumes.empty())
+      AddMagneticField(sdVolumes[0]);
 }
 
 void FgdDetector::AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
                   , std::function<void(std::string , G4VSensitiveDetector* , bool)>& f_sd_multi)
 {
-    f_sd_multi(fCubeName,this, true);
+    // f_sd_multi(fCubeName,this, true);
 
-    std::vector<G4VPhysicalVolume*> sdVolumes;
-    fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
-    LOG(debug2) << "  FgdDetector::AddMultiSensitiveDetector sdVolumes [ " 
-                          << superfgd::fgdnames::superFGDName 
-                          << "] found "
-                          << sdVolumes.size();
-    if(!sdVolumes.empty()){
-      AddMagneticField(sdVolumes[0]);
-    }
+    // std::vector<G4VPhysicalVolume*> sdVolumes;
+    // fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, sdVolumes, utility::VolumeSearchType::MatchName);
+    // LOG(debug2) << "  FgdDetector::AddMultiSensitiveDetector sdVolumes [ " 
+    //                       << superfgd::fgdnames::superFGDName 
+    //                       << "] found "
+    //                       << sdVolumes.size();
+    // if(!sdVolumes.empty()){
+    //   AddMagneticField(sdVolumes[0]);
+    // }
 
-    AddVisAttr(topVolume);
+    // AddVisAttr(topVolume);
 }
 
 TVector3 FgdDetector::getDetectorPosition()
@@ -176,7 +177,9 @@ void FgdDetector::AddMagneticField(G4VPhysicalVolume* detectorPhVol){
 
     LOG(debug2) << "  FgdDetector::AddMagneticField  X [ " << magVec.X() << " ] "
                                                 << " Y [ " << magVec.Y() << " ] "
-                                                << " Z [ " << magVec.Z() << " ] ";
+                                                << " Z [ " << magVec.Z() << " ] "
+                                                << " kilogauss unit " << kilogauss
+                                                << " Tesla unit " << tesla;
 
     G4MagneticField* magField = new G4UniformMagField(
                                       G4ThreeVector(magVec.X() * kilogauss
@@ -184,7 +187,11 @@ void FgdDetector::AddMagneticField(G4VPhysicalVolume* detectorPhVol){
                                                     , magVec.Z() * kilogauss)
                                                     );
 
-    G4FieldManager* localFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+    // Set global magnetic field
+    //G4FieldManager* localFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+
+    // Set local magnetic field - to the vogical volume only
+    G4FieldManager* localFieldManager = new G4FieldManager();
     localFieldManager->SetDetectorField(magField);
     localFieldManager->CreateChordFinder(magField);
 
@@ -242,7 +249,8 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
   fLength += astep->GetStepLength();
 
   // Create FairTutorialDet1Point at exit of active volume
-  if ( astep->IsLastStepInVolume() ) {
+  if ( astep->IsLastStepInVolume() ) 
+  {
 
     G4Track* track = astep->GetTrack();
     fTrackID  = track->GetTrackID();

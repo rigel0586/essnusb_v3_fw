@@ -6,8 +6,8 @@
   Based on the example in the presentation from
   Konstantin Gertsenberger
   
-  .L ess_dig_fgd.C
-  ess_dig_fgd()
+  .L simulate_3_reconstruction.C
+  simulate_3_reconstruction()
   
 */
 

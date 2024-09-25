@@ -51,13 +51,20 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 
 void EsbDetectorConstructor::SetSensitiveHandler(G4LogicalVolume* logVol, G4VSensitiveDetector* aSD)
 {
-    G4SDManager::GetSDMpointer()->AddNewDetector(aSD);
-    G4VUserDetectorConstruction::SetSensitiveDetector(logVol, aSD);
+    if(G4SDManager::GetSDMpointer()->FindSensitiveDetector(aSD->GetName()) == nullptr){
+        G4SDManager::GetSDMpointer()->AddNewDetector(aSD);
+    }
+
+    if(logVol->GetSensitiveDetector() == nullptr){
+        G4VUserDetectorConstruction::SetSensitiveDetector(logVol, aSD);
+    }
 }
 
 void EsbDetectorConstructor::SetMultiSensitiveHandler(std::string logVolName, G4VSensitiveDetector* aSD, bool multi)
 {
-    G4SDManager::GetSDMpointer()->AddNewDetector(aSD);
+    if(G4SDManager::GetSDMpointer()->FindSensitiveDetector(aSD->GetName()) == nullptr){
+        G4SDManager::GetSDMpointer()->AddNewDetector(aSD);
+    }
     G4VUserDetectorConstruction::SetSensitiveDetector(logVolName, aSD, multi);
 }
     

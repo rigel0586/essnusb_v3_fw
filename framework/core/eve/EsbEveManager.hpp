@@ -53,6 +53,8 @@ public:
     void setOutputFile(const std::string& outPath);
     void run();
 
+    void goToEvent(int eventDIsplayID);
+    void visualize();
 private:
 
     int fEvents{0};
@@ -71,8 +73,6 @@ private:
 
     void beforeRun();
     void afterRun();
-
-    void visualize();
 
     ClassDef(EsbEveManager, 2);
 };

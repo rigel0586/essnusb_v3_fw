@@ -82,6 +82,8 @@ public:
 
     void run();
 
+    void displayGeometry();
+
 private:
 
     std::string fvisSessionTypes[5]={"qt" ,"xm", "win32", "tcsh" , "csh"};

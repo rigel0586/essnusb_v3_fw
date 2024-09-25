@@ -6,12 +6,12 @@
   Based on the example in the presentation from
   Konstantin Gertsenberger
   
-  .L ess_dig_fgd.C
-  ess_dig_fgd()
+  .L simulate_4_visualize.C
+  simulate_4_visualize()
   
 */
 
-void simulate_4_visualize(Int_t nEvents = 3)
+void simulate_4_visualize(Int_t nEvents = 15)
 {
   using namespace esbroot;
 
@@ -33,16 +33,19 @@ void simulate_4_visualize(Int_t nEvents = 3)
 
   std::stringstream ssOut;
   ssOut << gSystem->Getenv("WORKSPACE_DIR");
-  ssOut << "/simulation/digitization_output.root";
+  ssOut << "/simulation/eve_output.root";
   std::string outputFile = ssOut.str();
   fRun->setOutputFile(outputFile);
- 
+
   // Set IEvents 
-//  std::stringstream ssConf;
-//  ssConf << gSystem->Getenv("ESB_BASE_DIR");
-//  ssConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
-//  std::string fgdConfig = ssConf.str();
-//  core::task::ITask* digitizerTask = new digitizer::superfgd::FgdDigitizer("Granular Task", fgdConfig.c_str(),0,0,0);
-//  fRun->addTask(digitizerTask);   
+  std::stringstream ssConf;
+  ssConf << gSystem->Getenv("ESB_BASE_DIR");
+  ssConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
+  std::string fgdConfig = ssConf.str();
+  core::eve::IEvent* event = new eve::superfgd::EveEvent(fgdConfig.c_str());
+  fRun->addEvent(event);   
   fRun->run();
+
+  fRun->goToEvent(9);
+  fRun->visualize();
 }

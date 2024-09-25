@@ -40,8 +40,6 @@ private:
 
     /** Input array of FgdDetectorPoint(s)**/
     TClonesArray* fdPoints;     //! 
-
-    std::vector<core::eve::ITrackPoint> fAllPoints; //! 
       	   
     ClassDef(EveEvent, 2);
 };

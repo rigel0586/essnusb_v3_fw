@@ -6,13 +6,13 @@
   Based on the example in the presentation from
   Konstantin Gertsenberger
   
-  .L ess_dig_fgd.C
-  ess_dig_fgd()
+  .L simulate_3_TMVA_data.C
+  simulate_3_TMVA_data()
   
 */
 
 void simulate_3_TMVA_data(Int_t nStartEvent = 0,
-        Int_t nEvents = 17)
+        Int_t nEvents = 15)
 {
   using namespace esbroot;
 

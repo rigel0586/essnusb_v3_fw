@@ -6,12 +6,12 @@
   Based on the example in the presentation from
   Konstantin Gertsenberger
   
-  .L ess_dig_gen_pics.C
-  ess_dig_gen_pics()
+  .L simulate_3_generate_pics.C
+  simulate_3_generate_pics()
   
 */
 
-void simulate_3_generate_pics(Int_t nEvents = 20)
+void simulate_3_generate_pics(Int_t nEvents = 15)
 {
   using namespace esbroot;
 

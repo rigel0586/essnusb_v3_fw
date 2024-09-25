@@ -119,7 +119,7 @@ bool EsbEveEventManager::translateTracks(int eventId)
         
         if(tPar == nullptr) continue;
         Double_t charge = tPar->Charge()/3;
-        LOG(INFO) << "Pdg " << firstPoint->GetPgd() << " charge " << charge << "color " << static_cast<int>(getColor(firstPoint->GetPgd()))
+        LOG(debug3) << "Pdg " << firstPoint->GetPgd() << " charge " << charge << "color " << static_cast<int>(getColor(firstPoint->GetPgd()))
                     << "  E = " << (firstPoint->GetMomentum()).Mag();
 
         TEveRecTrackD* rc = new TEveRecTrackD();
@@ -151,6 +151,7 @@ bool EsbEveEventManager::translateTracks(int eventId)
             track->AddPathMark(*pm1);
         }
         
+        LOG(debug3) << "Track size " << itrack.getPoints().size();
         for(int ti = 1; ti < itrack.getPoints().size(); ++ti)
         {
             TEvePathMarkD* pm1 = new TEvePathMarkD(TEvePathMarkD::kReference);
@@ -166,6 +167,12 @@ bool EsbEveEventManager::translateTracks(int eventId)
                     , point->GetMomentum().Y()
                     , point->GetMomentum().Z());
             track->AddPathMark(*pm1);
+
+            LOG(debug3)   << "Track point X " << point->GetPosition().X()
+                        << "Track point X " << point->GetPosition().Y()
+                        << "Track point X " << point->GetPosition().Z()
+                        << " Point time " << point->GetTime()
+                        << " Track Id " << point->GetTrackId();
         }
 
         // track->SetRnrPoints(kTRUE);
