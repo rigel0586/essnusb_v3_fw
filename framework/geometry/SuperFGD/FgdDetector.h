@@ -43,11 +43,11 @@ public:
 	virtual void AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
                                             , std::function<void(std::string , G4VSensitiveDetector* , bool)>& f_sd_multi) override;
 
-	void BeginOfEventAction(const G4Event*) override;
-	void EndOfEventAction(const G4Event*) override;
+	virtual void BeginOfEventAction(const G4Event*) override;
+	virtual void EndOfEventAction(const G4Event*) override;
 
-	void BeginOfRunAction(const G4Run* aRun) override;
-    void EndOfRunAction(const G4Run* aRun) override;
+	virtual void BeginOfRunAction(const G4Run* aRun) override;
+	virtual void EndOfRunAction(const G4Run* aRun) override;
 	//	============================
 
 	void GetMagneticField(Double_t& Bx,Double_t& By, Double_t& Bz);
@@ -60,9 +60,9 @@ public:
 	TGeoVolume* GetSDVolume(){return fgdConstructor.GetSensitiveVolume();}
 
 	// G4VSensitiveDetector
-	void    Initialize(G4HCofThisEvent*);
-  	G4bool  ProcessHits(G4Step* astep,G4TouchableHistory* ROHist);
-  	void    EndOfEvent(G4HCofThisEvent*);
+	virtual void    Initialize(G4HCofThisEvent*) override;
+  	virtual G4bool  ProcessHits(G4Step* astep,G4TouchableHistory* ROHist) override;
+  	virtual void    EndOfEvent(G4HCofThisEvent*) override;
 	// ============================
 
 	TVector3 getDetectorPosition();
