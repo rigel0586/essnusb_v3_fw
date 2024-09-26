@@ -20,7 +20,7 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
 
     for(IDetector* d : fDetectors)
     {
-        d->ConstructGeometry(); // Every detector constructs its volumes and add it to the Top volume
+        d->ConstructGeometry(); // Every detector constructs its volumes and add it to the Cern root Top volume
     }
 
     std::string fileGdml = fWorkDir + "/" + fgdml;
@@ -29,6 +29,11 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
     fIo.ExportTGeoVolume(fileRoot);
 
     G4VPhysicalVolume* convertedWorld = fIo.readGdmlToGeant4(fileGdml);
+
+    for(IDetector* d : fDetectors)
+    {
+        d->PostConstructG4Geometry(convertedWorld); // Pass G4 world if any post convertion configuration is required
+    }
 
     std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)> f_sd = 
                     std::bind(&EsbDetectorConstructor::SetSensitiveHandler, this, _1, _2);

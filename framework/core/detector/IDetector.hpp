@@ -25,6 +25,7 @@ class IDetector : public TObject
         virtual ~IDetector() = default;
 
         virtual void ConstructGeometry() = 0;
+        virtual void PostConstructG4Geometry(G4VPhysicalVolume* G4World){};
 
         virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
                     , std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd){}

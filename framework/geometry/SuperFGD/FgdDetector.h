@@ -36,8 +36,8 @@ public:
 	virtual ~FgdDetector();
 
 	// IDetector interface
-	void ConstructGeometry() override;
-	void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
+	virtual void ConstructGeometry() override;
+	virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
 
 	virtual void AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
