@@ -8,12 +8,43 @@ ClassImp(esbroot::core::physicsList::ESSnusbPhysicsList)
 #include "G4MesonConstructor.hh"
 #include "G4ShortLivedConstructor.hh"
 
+#include "G4ParticleDefinition.hh"
+#include "G4ParticleTypes.hh"
+#include "G4ParticleWithCuts.hh"
+#include "G4ParticleTable.hh"
+#include "G4Material.hh"
+#include "G4MaterialTable.hh"
+#include "G4ProcessManager.hh"
+#include "G4ProcessVector.hh"
+
+#include "G4DecayPhysics.hh"
+#include "G4EmStandardPhysics.hh"
+#include "G4EmLivermorePhysics.hh"
+#include "G4EmPenelopePhysics.hh"
+#include "G4EmLowEPPhysics.hh"
+#include "G4EmExtraPhysics.hh"
+#include "G4HadronElasticPhysics.hh"
+#include "G4IonPhysics.hh"
+#include "G4OpticalPhysics.hh"
+#include "G4StoppingPhysics.hh"
+#include "G4RadioactiveDecayPhysics.hh"
+#include "G4VHadronPhysics.hh"
+
+#include "G4NeutronElasticXS.hh"
+#include "G4NeutronInelasticXS.hh"
+#include "G4NeutronCaptureXS.hh"
+
+#include "G4HadronElasticPhysicsXS.hh"
+#include "G4IonBinaryCascadePhysics.hh"
+#include "G4HadronInelasticQBBC.hh"
+#include "G4ThermalNeutrons.hh"
 
 namespace esbroot {
 namespace core {
 namespace physicsList {
 
-ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
+ESSnusbPhysicsList::ESSnusbPhysicsList(std::vector<G4VPhysicsConstructor*>& customProcesses) 
+    : G4VModularPhysicsList(), fcustomProcesses(customProcesses)
 {
     G4int ver = 1;
     SetVerboseLevel(ver);
@@ -50,9 +81,6 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
     fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(ionP));
     RegisterPhysics( ionP );
 
-    // Hadron physics
-//    RegisterPhysics( new G4HadronElasticPhysics(ver) );
-    
     // Optical
     G4OpticalPhysics* optP = new G4OpticalPhysics(ver);
     fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(optP));
@@ -62,6 +90,35 @@ ESSnusbPhysicsList::ESSnusbPhysicsList() : G4VModularPhysicsList()
     G4StoppingPhysics* stopP = new G4StoppingPhysics(ver);
     fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(stopP));
     RegisterPhysics( stopP );
+
+    // Radioactive decay
+    G4RadioactiveDecayPhysics* rActiveP = new G4RadioactiveDecayPhysics();
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(rActiveP));
+    RegisterPhysics (rActiveP);
+
+    // Hadron physics
+    G4HadronElasticPhysics* hadElP = new G4HadronElasticPhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(hadElP));
+    RegisterPhysics (hadElP);
+
+    G4HadronInelasticQBBC* hadInElPhQbbc = new G4HadronInelasticQBBC(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(hadInElPhQbbc));
+    RegisterPhysics (hadInElPhQbbc);
+
+    G4HadronElasticPhysicsXS* hadElPhXs = new G4HadronElasticPhysicsXS(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(hadElPhXs));
+    RegisterPhysics (hadElPhXs);
+
+    G4IonBinaryCascadePhysics* hadIonBCPh = new G4IonBinaryCascadePhysics(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(hadIonBCPh));
+    RegisterPhysics (hadIonBCPh);
+
+
+    G4ThermalNeutrons* hadTherNeu = new G4ThermalNeutrons(ver);
+    fProcesses.emplace_back(static_cast<G4VPhysicsConstructor*>(hadTherNeu));
+    RegisterPhysics (hadTherNeu);
+
+    AddCustomProcesses();
 }
 
 ESSnusbPhysicsList::~ESSnusbPhysicsList() {}
@@ -113,6 +170,15 @@ void ESSnusbPhysicsList::SetCuts() {
   //  " G4VUserPhysicsList::SetCutsWithDefault" method sets
   //   the default cut value for all particle types
   SetCutsWithDefault();
+}
+
+void ESSnusbPhysicsList::AddCustomProcesses()
+{
+    for(G4VPhysicsConstructor* pr : fcustomProcesses)
+    {
+        fProcesses.emplace_back(pr);
+        RegisterPhysics(pr); 
+    }
 }
 
 } // namespace physicsList

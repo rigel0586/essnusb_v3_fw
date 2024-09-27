@@ -8,27 +8,6 @@
 #include "globals.hh"
 
 #include "G4VModularPhysicsList.hh"
-
-#include "G4ParticleDefinition.hh"
-#include "G4ParticleTypes.hh"
-#include "G4ParticleWithCuts.hh"
-#include "G4ParticleTable.hh"
-#include "G4Material.hh"
-#include "G4MaterialTable.hh"
-#include "G4ProcessManager.hh"
-#include "G4ProcessVector.hh"
-
-#include "G4EmStandardPhysics.hh"
-#include "G4EmLivermorePhysics.hh"
-#include "G4EmPenelopePhysics.hh"
-#include "G4EmLowEPPhysics.hh"
-#include "G4DecayPhysics.hh"
-#include "G4IonPhysics.hh"
-#include "G4EmExtraPhysics.hh"
-#include "G4StoppingPhysics.hh"
-#include "G4OpticalPhysics.hh"
-#include "G4HadronElasticPhysics.hh"
-
 #include "G4VPhysicsConstructor.hh"
 
 #include "G4UnitsTable.hh"
@@ -43,7 +22,7 @@ namespace physicsList {
 
 class ESSnusbPhysicsList : public TObject, public G4VModularPhysicsList {
 public:
-    ESSnusbPhysicsList();
+    ESSnusbPhysicsList(std::vector<G4VPhysicsConstructor*>& customProcesses);
     virtual ~ESSnusbPhysicsList();
 
     virtual void ConstructParticle() override;
@@ -54,8 +33,11 @@ public:
 private:
     // Physics
     std::vector<G4VPhysicsConstructor*> fProcesses;
+    std::vector<G4VPhysicsConstructor*> fcustomProcesses;
 
     ClassDef(ESSnusbPhysicsList, 2);
+
+    void AddCustomProcesses();
 };
 
 } // namespace physicsList

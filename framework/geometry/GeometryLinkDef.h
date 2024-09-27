@@ -23,4 +23,7 @@
 #pragma link C++ class esbroot::geometry::FgdDetector+;
 #pragma link C++ class esbroot::geometry::Cave+;
 
+#pragma link C++ namespace esbroot::geometry::ndcherenkov+;
+#pragma link C++ class esbroot::geometry::ndcherenkov::NeutronHPphysics+;
+
 #endif

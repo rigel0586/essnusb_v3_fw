@@ -1,0 +1,52 @@
+Files include in this folder are taken from examples that add additional physics
+
+1. NeutronHPphysics -> from ~/third_party/geant4_11_1/examples/extended/hadronic/Hadr04/include/NeutronHPphysics.hh
+    A) In order not to have an exception of the sort
+            -------- EEEE ------- G4Exception-START -------- EEEE -------
+            *** G4Exception : had001
+                issued by : G4CrossSectionDataStore::GetIsoCrossSection
+            No isotope cross section found for neutron off target Element ARGON_elm Z= 18 A= 36 from air E(MeV)=1000
+
+            *** Fatal Exception *** core dump ***
+            G4Track (0x5648d96629c0) - track ID = 7, parent ID = 0
+            Particle type : neutron - creator process : not available
+            Kinetic energy : 1 GeV - Momentum direction : (1,0,0)
+            Step length : 0 fm  - total energy deposit : 0 eV 
+            Pre-step point : (55.569,121.452,83790.4) - Physical volume : caveVol_PV (air)
+            - defined by : not available
+            Post-step point : (55.569,121.452,83790.4) - Physical volume : caveVol_PV (air)
+            - defined by : not available
+            *** Note: Step information might not be properly updated.
+        
+        Two datasets are added:
+            #include "G4NeutronElasticXS.hh"
+            #include "G4NeutronInelasticXS.hh"
+
+    B) The Max energy is changed to 2 GeV for Neutron Elastic processes otherwise we get 
+        No model found out of 2
+            0.  Elow= 4e-06, Ehigh= 20   NeutronHPElastic
+            1.  Elow= 0, Ehigh= 4e-06   NeutronHPThermalScattering
+
+            -------- EEEE ------- G4Exception-START -------- EEEE -------
+            *** G4Exception : had005
+                issued by : G4HadronElasticProcess::PostStepDoIt
+            neutron off target element NITROGEN_elm  Z= 7  A= 14
+            Unrecoverable error in the method ChooseHadronicInteraction of hadElastic
+            TrackID= 7  ParentID= 4  neutron
+            Ekin(GeV)= 0.0377677;  direction= (0.623571,-0.738223,-0.257265)
+            Position(mm)= (69334.9,-81183.9,-33744.8);  material air
+            PhysicalVolume  <caveVol_PV>
+            No HadronicInteraction found out
+
+            *** Fatal Exception *** core dump ***
+            G4Track (0x55c7c4fa40d0) - track ID = 7, parent ID = 4
+            Particle type : neutron - creator process : neutronInelastic, creator model : model_G4ParticleHPNXInelasticFS_F02
+            Kinetic energy : 37.7677 MeV - Momentum direction : (0.623571,-0.738223,-0.257265)
+            Step length : 110.067 m   - total energy deposit : 0 eV 
+            Pre-step point : (700,70.451,-5428.28) - Physical volume : caveVol_PV (air)
+            - defined by : Transportation - step status : 1
+            Post-step point : (69334.9,-81183.9,-33744.8) - Physical volume : caveVol_PV (air)
+            - defined by : hadElastic - step status : 4
+            *** Note: Step information might not be properly updated.
+
+            -------- EEEE -------- G4Exception-END --------- EEEE -------

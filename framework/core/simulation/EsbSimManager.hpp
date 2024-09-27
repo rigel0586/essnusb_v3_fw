@@ -10,6 +10,7 @@
 #include "TGeoManager.h"
 
 #include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4VPhysicsConstructor.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4RunManagerFactory.hh"
 #include "G4UImanager.hh"
@@ -70,6 +71,7 @@ public:
     void setWorkingDir(const std::string& dirPath);
 
     void AddDetector(detector::IDetector* d);
+    void AddCustomPhysicsList(G4VPhysicsConstructor* pr);
 
     void setLoggerSeverity(Severity sev);
     void setOutputFile(const std::string& outPath);
@@ -95,6 +97,8 @@ private:
     std::string fvisMacroPath{""};
     
     std::vector<detector::IDetector*> fDetectors;
+    std::vector<G4VPhysicsConstructor*> fcustomProcesses;
+    
     std::string fWorkindDir{""};
     generator::IGenerator* fIGenerator{nullptr};
     

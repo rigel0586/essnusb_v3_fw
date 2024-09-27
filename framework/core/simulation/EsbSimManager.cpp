@@ -82,7 +82,6 @@ void EsbSimManager::setLoggerSeverity(Severity sev){
     fair::Logger::SetConsoleColor(true);
 }
 
-
 void EsbSimManager::run()
 {
     if(!validate()){
@@ -95,7 +94,7 @@ void EsbSimManager::run()
 
         // set mandatory initialization classes
         runManager->SetUserInitialization(new detector::EsbDetectorConstructor(fWorkindDir, fDetectors));
-        runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList());
+        runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList(fcustomProcesses));
 
         // set user actions
         runManager->SetUserInitialization(new EsbActionInitializer(fIGenerator, fDetectors)); 
@@ -198,6 +197,12 @@ void EsbSimManager::setTopVolume(TGeoVolume *vol)
 void EsbSimManager::AddDetector(detector::IDetector* d)
 {
     fDetectors.emplace_back(d);
+}
+
+void EsbSimManager::AddCustomPhysicsList(G4VPhysicsConstructor* pr)
+{
+    LOG(error) << "EsbSimManager::AddCustomPhysicsList";
+    fcustomProcesses.emplace_back(pr);
 }
 
 bool EsbSimManager::validate(){
