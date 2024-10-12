@@ -11,6 +11,7 @@ namespace io {
 
 EsbIO::EsbIO()
 {
+    fg4Parser = new G4GDMLParser();
 }
 
 EsbIO::~EsbIO()
@@ -19,6 +20,17 @@ EsbIO::~EsbIO()
 
 int EsbIO::ExportTGeoVolume(const std::string& path_to_file){
     return gGeoManager->Export(path_to_file.c_str());
+}
+
+int EsbIO::ExportG4Volume(const std::string& path_to_file, G4VPhysicalVolume* g4Volume){
+    if(fg4Parser == nullptr) return -1;
+
+    fg4Parser->Write(path_to_file, g4Volume);
+}
+
+bool EsbIO::ImportTGeoVolume(const std::string& path_to_file){
+    auto geoMng = gGeoManager->Import(path_to_file.c_str());
+    return (geoMng != nullptr);
 }
 
 G4VPhysicalVolume* EsbIO::readGdmlToGeant4(const std::string& gdml_file)

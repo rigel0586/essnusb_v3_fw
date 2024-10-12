@@ -7,6 +7,9 @@
 #include "TObject.h"
 #include <G4VPhysicalVolume.hh>
 
+#include "G4GDMLParser.hh"
+#include "G4VPhysicalVolume.hh"
+
 namespace esbroot {
 namespace core {
 namespace io {
@@ -36,11 +39,31 @@ public:
     */
     int ExportTGeoVolume(const std::string& path_to_file);
 
+    /**
+      @brief Import to out file using TGeoManager->Import
+      @param[in]  path_to_file to import the volume to TGeoManager
+        /// Case 1: gdml if filename ends with ".gdml" the foreign geometry described with gdml 
+        /// is imported executing some python scripts in $ROOTSYS/gdml. NOTE that to use this option, 
+        /// the PYTHONPATH must be defined like export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/gdml
+        ///
+        /// Case 2: root file (.root) or root/xml file (.xml) Import in memory from filename 
+        /// the geometry with key=name. if name="" (default), the first TGeoManager object in the file is returned.
+    */
+    bool ImportTGeoVolume(const std::string& path_to_file);
+
+    /**
+      @brief Exports to out file using G4GDMLParser->Write
+      @param[in]  path_to_file to export the Top geant4 volume to
+    */
+    int ExportG4Volume(const std::string& path_to_file, G4VPhysicalVolume* g4Volume);
+
     G4VPhysicalVolume* readGdmlToGeant4(const std::string& gdml_file);
 
     void printG4Volume(G4VPhysicalVolume* g4vol, int tabs = 1);
 
 private:
+
+    G4GDMLParser* fg4Parser{nullptr};
 
     ClassDef(EsbIO, 2);
 };

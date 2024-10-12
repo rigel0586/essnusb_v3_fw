@@ -1,6 +1,9 @@
 #include "EsbDetectorConstructor.hpp"
 ClassImp(esbroot::core::detector::EsbDetectorConstructor)
 
+
+#include <fairlogger/Logger.h>
+
 namespace esbroot {
 namespace core {
 namespace detector {
@@ -34,6 +37,20 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
     {
         d->PostConstructG4Geometry(convertedWorld); // Pass G4 world if any post convertion configuration is required
     }
+
+
+    std::string filePostGdml = fWorkDir + "/" + fPostgdml;
+    fIo.ExportG4Volume(filePostGdml, convertedWorld);
+
+    if(!fIo.ImportTGeoVolume(filePostGdml)){
+        LOG(error) << "Unable to convert geometry to root format";
+        exit(0);
+    }
+
+    std::string fileFinalGdml = fWorkDir + "/" + fFinalgdml;
+    fIo.ExportTGeoVolume(fileFinalGdml);
+    std::string fileFinalRoot = fWorkDir + "/" + fFinalroot;
+    fIo.ExportTGeoVolume(fileFinalRoot);
 
     std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)> f_sd = 
                     std::bind(&EsbDetectorConstructor::SetSensitiveHandler, this, _1, _2);

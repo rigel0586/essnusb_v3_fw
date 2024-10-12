@@ -45,6 +45,10 @@ private:
     const std::string fgdml{"esbVolume.gdml"};
     const std::string froot{"esbVolume.root"};
 
+    const std::string fPostgdml{"esbInterVolume.gdml"};
+    const std::string fFinalgdml{"esbFinalVolume.gdml"};
+    const std::string fFinalroot{"esbFinalVolume.root"};
+    
     io::EsbIO fIo;
 
     ClassDef(EsbDetectorConstructor, 2);
