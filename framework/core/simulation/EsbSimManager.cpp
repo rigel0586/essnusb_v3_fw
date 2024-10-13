@@ -201,7 +201,6 @@ void EsbSimManager::AddDetector(detector::IDetector* d)
 
 void EsbSimManager::AddCustomPhysicsList(G4VPhysicsConstructor* pr)
 {
-    LOG(error) << "EsbSimManager::AddCustomPhysicsList";
     fcustomProcesses.emplace_back(pr);
 }
 
