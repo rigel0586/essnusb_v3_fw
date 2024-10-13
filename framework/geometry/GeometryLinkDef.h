@@ -25,5 +25,6 @@
 
 #pragma link C++ namespace esbroot::geometry::ndcherenkov+;
 #pragma link C++ class esbroot::geometry::ndcherenkov::NeutronHPphysics+;
+#pragma link C++ class esbroot::geometry::NDCherenkov+;
 
 #endif

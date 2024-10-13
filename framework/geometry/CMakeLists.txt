@@ -11,6 +11,7 @@ set(Geometry_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD/Materials.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD/Names.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList/NeutronHPphysics.hh
+                            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.hpp
                             )
 
 add_library(${Geometry_Target} SHARED)
@@ -22,7 +23,8 @@ target_sources(${Geometry_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.cxx
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.cxx
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/Cave.cxx
-            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList/NeutronHPphysics.cc)
+            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList/NeutronHPphysics.cc
+            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.cpp)
 
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
