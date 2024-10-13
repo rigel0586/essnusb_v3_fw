@@ -37,8 +37,8 @@ public:
     void IGeneratePrimaries(G4Event* anEvent) override;
 
 private:
-	//G4ParticleGun *fParticleGun{nullptr}; //!<!
-	//G4GeneralParticleSource* gps{nullptr}; //!<!
+	G4ParticleGun *fParticleGun{nullptr}; //!<!
+	G4GeneralParticleSource* gps{nullptr}; //!<!
 
 	ClassDef(NDSimpleGenerator,3)
 };
