@@ -66,6 +66,7 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
     std::function<void(std::string, G4VSensitiveDetector*, bool)> f_sd_multi = 
                     std::bind(&EsbDetectorConstructor::SetMultiSensitiveHandler, this, _1, _2, _3);
 
+    convertedWorld = fIo.readGdmlToGeant4(fileFinalGdml);
     for(IDetector* sd : fDetectors)
     {
         sd->AddSensitiveDetector(convertedWorld, f_sd); // Every detector should find its sensitive volume
