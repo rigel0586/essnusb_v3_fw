@@ -286,9 +286,9 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     AddHit(fTrackID, fVolumeID
           ,TVector3(fposX,       fposY,       fposZ)
           ,TVector3(fPos.X() * g4toRootCoeff,       fPos.Y() * g4toRootCoeff,       fPos.Z() * g4toRootCoeff)
-          ,TVector3(fPosExit.X(),   fPosExit.Y(),   fPosExit.Z())
-          ,TVector3(fMom.Px() * g4toRootCoeff,      fMom.Py() * g4toRootCoeff,      fMom.Pz() * g4toRootCoeff)
-          ,TVector3(fMomExit.Px() * g4toRootCoeff,  fMomExit.Py() * g4toRootCoeff,  fMomExit.Pz() * g4toRootCoeff)
+          ,TVector3(fPosExit.X() * g4toRootCoeff,   fPosExit.Y() * g4toRootCoeff,   fPosExit.Z() * g4toRootCoeff)
+          ,TVector3(fMom.Px() * g4ToRootEnergy,      fMom.Py() * g4ToRootEnergy,      fMom.Pz() * g4ToRootEnergy)
+          ,TVector3(fMomExit.Px() * g4ToRootEnergy,  fMomExit.Py() * g4ToRootEnergy,  fMomExit.Pz() * g4ToRootEnergy)
           , fTime, ( fELoss * g4ToRootEnergy ), fLength, parDef->GetPDGEncoding()
           , track->GetTrackLength()); 
   }    

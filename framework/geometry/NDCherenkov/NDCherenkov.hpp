@@ -18,6 +18,9 @@
 #include "G4VSensitiveDetector.hh"
 #include "G4VUserDetectorConstruction.hh"
 
+#include "core/io/EsbWriterPersistency.hpp"
+#include "utility/Utility.hpp" 
+
 #include <set>
 
 namespace esbroot {
@@ -36,6 +39,8 @@ public:
 	virtual void PostConstructG4Geometry(G4VPhysicalVolume* G4World) override;
 	virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
+
+	void EndOfEventAction(const G4Event*) override;
 	//	============================
 
 	// G4VSensitiveDetector
@@ -43,13 +48,15 @@ public:
   	virtual G4bool  ProcessHits(G4Step* astep,G4TouchableHistory* ROHist) override;
   	virtual void    EndOfEvent(G4HCofThisEvent*) override {};
 	// ============================
-
 private:
 
 	// Detector position
 	double fposX;
 	double fposY;
 	double fposZ;	
+
+	utility::Utility fut;
+	core::io::WriterInfo  fDataPointCollection;  //! 
 
 	ClassDef(NDCherenkov,2)
 };

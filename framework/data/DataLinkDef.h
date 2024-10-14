@@ -14,6 +14,6 @@
 #pragma link C++ class esbroot::data::superfgd::FgdDetectorPoint+;
 
 #pragma link C++ namespace esbroot::data::ndcherenkov+;
-#pragma link C++ namespace esbroot::data::ndcherenkov::NDCherenkovDataPoint+;
+#pragma link C++ class esbroot::data::ndcherenkov::NDCherenkovDataPoint+;
 
 #endif
