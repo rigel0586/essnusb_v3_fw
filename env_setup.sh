@@ -39,6 +39,7 @@ export PATH=$PATH:${ROOTSYS}/bin:${GENIE_install}/bin
 export ESB_BASE_DIR=${fw_directory}/framework
 export WORKSPACE_DIR=${fw_directory}/framework/workspace
 export GENIE_XCROSS=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-FNALsmall.xml
+export GENIE_XCROSS_BIG=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-NUbig.xml
 export GXMLPATH=${genie_dir}/config/G18_02a
 
 export G4NEUTRONHPDATA=${WORKSPACE_DIR}/geant4/download/G4NDL4.7

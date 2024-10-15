@@ -30,7 +30,7 @@ namespace generators {
 namespace generic {
 
 
-class GenericGenieGenerator : public GenieGenerator
+class GenericGenieGenerator : public esbroot::generators::generic::GenieGenerator
 						, public core::generator::IGenerator
 						, public TObject
 {

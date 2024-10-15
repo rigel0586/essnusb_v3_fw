@@ -40,7 +40,7 @@ GenericGenieGenerator::GenericGenieGenerator(IFluxNextPosition* fluxPosition
 									, Bool_t uniformFlux
 									, TGeoManager* gm
 									, Bool_t keepThrowingFluxNu)
-	 : GenieGenerator()
+	 : esbroot::generators::generic::GenieGenerator()
 	 	, fFluxPosition(fluxPosition)
 		, fvolumeName(volumeName)
 		, fnuFluxFile(nuFluxFile)
@@ -108,7 +108,7 @@ Bool_t GenericGenieGenerator::Configure()
 		SetFluxI(shared_ptr<genie::GFluxI>(fExtFlux));	
 	}
 
-	GenieGenerator::Configure();
+	esbroot::generators::generic::GenieGenerator::Configure();
 	fmcj_driver->KeepOnThrowingFluxNeutrinos(fKeepThrowingFluxNu);
 	// GenerateEvents();
 	

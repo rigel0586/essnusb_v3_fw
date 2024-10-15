@@ -14,6 +14,7 @@
 
 #include "core/detector/IDetector.hpp"
 #include "core/io/EsbWriterPersistency.hpp"
+#include "generators/generic/IFluxNextPosition.h"
 
 #include "G4VSensitiveDetector.hh"
 #include "G4VUserDetectorConstruction.hh"
@@ -22,16 +23,18 @@
 #include "utility/Utility.hpp" 
 
 #include <set>
+#include <random>
 
 namespace esbroot {
 namespace geometry {
 
-class NDCherenkov : public esbroot::core::detector::IDetector,
-					public G4VSensitiveDetector
+class NDCherenkov : public esbroot::core::detector::IDetector
+					, public esbroot::generators::generic::IFluxNextPosition
+					, public G4VSensitiveDetector
 {
 public:
 	NDCherenkov();
-	NDCherenkov(double posX, double posY, double posZ);
+	NDCherenkov(double posX, double posY, double posZ, unsigned int seed);
 	virtual ~NDCherenkov();
 
 	// IDetector interface
@@ -41,6 +44,10 @@ public:
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
 
 	void EndOfEventAction(const G4Event*) override;
+
+
+	// IFluxNextPosition interface
+	TVector3 NextVertexPosition() override;
 	//	============================
 
 	// G4VSensitiveDetector
@@ -55,8 +62,13 @@ private:
 	double fposY;
 	double fposZ;	
 
+	G4double fwater_radius{0};
+
 	utility::Utility fut;
 	core::io::WriterInfo  fDataPointCollection;  //! 
+
+	std::mt19937 frndGen;//!<!
+    std::uniform_real_distribution<Double_t> fdis;//!<!
 
 	ClassDef(NDCherenkov,2)
 };

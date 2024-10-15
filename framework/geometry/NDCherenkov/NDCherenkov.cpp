@@ -67,12 +67,14 @@ NDCherenkov::NDCherenkov()
 }
 
 
-NDCherenkov::NDCherenkov(double posX, double posY, double posZ)
+NDCherenkov::NDCherenkov(double posX, double posY, double posZ, unsigned int seed)
   : G4VSensitiveDetector("NDCherenkov")
     , fposX(posX)
     , fposY(posY)
     , fposZ(posZ)
     , fDataPointCollection()
+    , frndGen(seed)
+	, fdis(0.0, 1.0)
 {
     TClass* tCl = esbroot::data::ndcherenkov::NDCherenkovDataPoint::Class();
     fDataPointCollection 
@@ -169,6 +171,7 @@ void NDCherenkov::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 
 	// Water volume
     G4double water_radius = 40.0 * m;
+    fwater_radius = water_radius;
     G4Sphere *solidWater = new G4Sphere("WaterSphere", 0, water_radius, 0, 360 * deg, 0, 180 * deg);
     //G4LogicalVolume *logicWater = new G4LogicalVolume(solidWater, waterMat, "Water");
     G4LogicalVolume *logicWater = new G4LogicalVolume(solidWater, waterWithGd, "WaterWithGd");
@@ -381,6 +384,18 @@ void NDCherenkov::EndOfEventAction(const G4Event*)
 
     if(fDataPointCollection.fdata != nullptr)
         fDataPointCollection.fdata->Clear();
+}
+
+TVector3 NDCherenkov::NextVertexPosition()
+{
+    Double_t mag = fdis(frndGen) * fwater_radius;
+    Double_t theta = fdis(frndGen) * 2 * TMath::Pi();
+    Double_t phi = fdis(frndGen) * 2 * TMath::Pi();
+    
+    TVector3 nextPosition;
+    nextPosition.SetMagThetaPhi(mag, theta, phi);
+
+    return nextPosition;
 }
 
 

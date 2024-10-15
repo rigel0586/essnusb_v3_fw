@@ -159,6 +159,10 @@ void GenieFluxDriver::CalculateNext4position()
     Double_t rndm_Y = fdetPos.Y() + pos_det.Y();
     Double_t rndm_Z = fdetPos.Z() + pos_det.Z();
 
+    // Double_t rndm_X = pos_det.X();
+    // Double_t rndm_Y = pos_det.Y();
+    // Double_t rndm_Z = pos_det.Z();
+
     f4position.SetX(rndm_X);
     f4position.SetY(rndm_Y);
     // Used if rootgeaomanalyzer GenerateVertex
