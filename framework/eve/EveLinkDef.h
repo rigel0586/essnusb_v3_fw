@@ -12,5 +12,7 @@
 
 #pragma link C++ class esbroot::eve::superfgd::EveEvent+;
 
-#endif
+#pragma link C++ namespace esbroot::eve::ndcherenkov+;
+#pragma link C++ class esbroot::eve::ndcherenkov::EveEvent+;
 
+#endif
