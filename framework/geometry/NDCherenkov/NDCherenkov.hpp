@@ -34,7 +34,7 @@ class NDCherenkov : public esbroot::core::detector::IDetector
 {
 public:
 	NDCherenkov();
-	NDCherenkov(double posX, double posY, double posZ, unsigned int seed);
+	NDCherenkov(double posX, double posY, double posZ, unsigned int seed = 0);
 	virtual ~NDCherenkov();
 
 	// IDetector interface

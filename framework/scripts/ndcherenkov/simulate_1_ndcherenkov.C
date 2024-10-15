@@ -18,7 +18,6 @@ void simulate_1_ndcherenkov(Int_t nEvents = 15)
     esbSim->setTopVolume(cave->getVolume());
 
     TVector3 ndCherenvkoPosition(0,0,0);
-
     core::detector::IDetector* ndCherenkovDetector = new geometry::NDCherenkov(ndCherenvkoPosition.X()
                                                                                         ,ndCherenvkoPosition.Y()
                                                                                         ,ndCherenvkoPosition.Z());
