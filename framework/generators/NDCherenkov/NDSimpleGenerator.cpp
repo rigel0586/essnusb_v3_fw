@@ -20,6 +20,12 @@ NDSimpleGenerator::NDSimpleGenerator()
 {
 }
 
+
+NDSimpleGenerator::NDSimpleGenerator(Double_t neutronE) : fNeutron_E(neutronE)
+{
+
+}
+
 NDSimpleGenerator::~NDSimpleGenerator()
 {
 	delete fParticleGun;
@@ -45,7 +51,7 @@ void NDSimpleGenerator::IGeneratePrimaries(G4Event* anEvent)
 	
 	fParticleGun->SetParticlePosition(pos);
 	fParticleGun->SetParticleMomentumDirection(mom);
-	fParticleGun->SetParticleEnergy(5. *MeV);
+	fParticleGun->SetParticleEnergy(fNeutron_E *MeV);
 	fParticleGun->SetParticleDefinition(particle);
 	
 	fParticleGun->GeneratePrimaryVertex(anEvent);

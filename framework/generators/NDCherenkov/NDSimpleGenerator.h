@@ -30,6 +30,8 @@ public:
 
 	//! Default constructor
 	NDSimpleGenerator();
+
+	NDSimpleGenerator(Double_t neutronE);
 	
 	//! Destructor
 	~NDSimpleGenerator();
@@ -39,6 +41,8 @@ public:
 private:
 	G4ParticleGun *fParticleGun{nullptr}; //!<!
 	G4GeneralParticleSource* gps{nullptr}; //!<!
+
+	Double_t fNeutron_E{5.}; // MeV
 
 	ClassDef(NDSimpleGenerator,3)
 };

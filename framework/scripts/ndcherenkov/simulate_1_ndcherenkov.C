@@ -24,7 +24,7 @@ void simulate_1_ndcherenkov(Int_t nEvents = 15)
 
     esbSim->AddDetector(ndCherenkovDetector);
 
-    core::generator::IGenerator* partGen = new generators::ndcherenkov::NDSimpleGenerator(); 
+    core::generator::IGenerator* partGen = new generators::ndcherenkov::NDSimpleGenerator(500); 
 
     //Add to list of generators
     esbSim->setGenerator(partGen);
