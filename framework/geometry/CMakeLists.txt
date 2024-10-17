@@ -12,7 +12,9 @@ set(Geometry_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD/Names.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList/NeutronHPphysics.hh
                             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.hpp
-                            )
+                            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EmulsionDetector.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/DetectorDefinition.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.hpp)
 
 add_library(${Geometry_Target} SHARED)
 
@@ -24,7 +26,10 @@ target_sources(${Geometry_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.cxx
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/Cave.cxx
             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList/NeutronHPphysics.cc
-            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EmulsionDetector.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/DetectorDefinition.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.cpp)
 
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD

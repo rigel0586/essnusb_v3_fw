@@ -27,4 +27,6 @@
 #pragma link C++ class esbroot::geometry::ndcherenkov::NeutronHPphysics+;
 #pragma link C++ class esbroot::geometry::NDCherenkov+;
 
+#pragma link C++ class esbroot::geometry::EmulsionDetector+;
+
 #endif
