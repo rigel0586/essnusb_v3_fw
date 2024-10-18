@@ -219,21 +219,21 @@ EmulsionDetector::~EmulsionDetector()
 
 void EmulsionDetector::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 {
-    
-    // G4VPhysicalVolume* scint_det = ConstructDetector();
-    // G4GDMLParser* fg4Parser = new G4GDMLParser();
-    
-    // fg4Parser->Write("/home/rigel/essnusb/working_repo/fw/essnusb_v3_fw/framework/workspace", scint_det);
-
-    //new G4PVPlacement(0, G4ThreeVector(), scint_det->GetLogicalVolume(), "EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
+    new G4PVPlacement(0, G4ThreeVector(), logicWorld, "G4V_Physical_EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
 }
 
 void EmulsionDetector::ConstructGeometry()
 {
     G4VPhysicalVolume* scint_det = ConstructDetector();
-    G4GDMLParser* fg4Parser = new G4GDMLParser();
-    
-    fg4Parser->Write("/home/rigel/essnusb/working_repo/fw/essnusb_v3_fw/framework/workspace/emul.gdml", scint_det);
+	if(scint_det == nullptr){
+		LOG(error) << "EmulsionDetector is not created!";
+		exit(0);
+	}
+
+	if(!fexport_file_path.empty()){
+		G4GDMLParser* g4Parser = new G4GDMLParser();
+    	g4Parser->Write(fexport_file_path, scint_det);
+	}
 }
 
 void EmulsionDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume 

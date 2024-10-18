@@ -38,7 +38,6 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
         d->PostConstructG4Geometry(convertedWorld); // Pass G4 world if any post convertion configuration is required
     }
 
-
     std::string filePostGdml = fWorkDir + "/" + fPostgdml;
     fIo.ExportG4Volume(filePostGdml, convertedWorld);
 

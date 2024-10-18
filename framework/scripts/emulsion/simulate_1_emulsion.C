@@ -10,7 +10,7 @@ void simulate_1_emulsion(Int_t nEvents = 1)
     
     std::stringstream ssOut;
     ssOut << gSystem->Getenv("WORKSPACE_DIR");
-    ssOut << "/simulation/nd_sim_output.root";
+    ssOut << "/simulation/emultion_sim_output.root";
     std::string outputFile = ssOut.str();
     esbSim->setOutputFile(outputFile);
 
@@ -18,11 +18,18 @@ void simulate_1_emulsion(Int_t nEvents = 1)
     esbSim->setTopVolume(cave->getVolume());
 
     TVector3 emulsionPosition(0,0,0);
-    core::detector::IDetector* emulsionDetector = new geometry::EmulsionDetector(emulsionPosition.X()
+    geometry::EmulsionDetector* emulsionDetector = new geometry::EmulsionDetector(emulsionPosition.X()
                                                                                         ,emulsionPosition.Y()
                                                                                         ,emulsionPosition.Z());
 
-    esbSim->AddDetector(emulsionDetector);
+
+    std::stringstream ssg4Export;
+    ssg4Export << gSystem->Getenv("WORKSPACE_DIR");
+    ssg4Export << "/emultion_geom.gdml";
+    std::string emulGdmlFile = ssg4Export.str();
+    emulsionDetector->setExportGeometry(emulGdmlFile);
+
+    esbSim->AddDetector(static_cast<core::detector::IDetector*>(emulsionDetector));
 
     core::generator::IGenerator* partGen = new generators::ndcherenkov::NDSimpleGenerator(500); 
 

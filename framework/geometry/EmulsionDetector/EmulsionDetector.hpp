@@ -75,7 +75,8 @@ public:
   	virtual void    EndOfEvent(G4HCofThisEvent*) override {};
 	// ============================
 
-    
+    void setExportGeometry(const std::string& export_file_path) { fexport_file_path = export_file_path;}
+
 public:
     void GeometryCleanUp();
     void MaterialConstruction();
@@ -104,6 +105,7 @@ private:
 	double fposZ;	
 
 	G4double fwater_radius{0};
+    std::string fexport_file_path{""};
 
 	utility::Utility fut;
 	core::io::WriterInfo  fDataPointCollection;  //! 

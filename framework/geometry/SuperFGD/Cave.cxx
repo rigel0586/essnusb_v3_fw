@@ -37,9 +37,9 @@ Cave::Cave()
     airMix->AddElement(nitrogen, 0.755);
     airMix->AddElement(oxygen, 0.231);
     airMix->AddElement(argon, 0.014);
-    TGeoMedium* air = new TGeoMedium("airCave", superfgd::materials::GetNextIndex(), airMix);
+    TGeoMedium* airCave = new TGeoMedium("airCave", superfgd::materials::GetNextIndex(), airMix);
     
-    fCaveVol = new TGeoVolume("caveVol",caveBox, air);
+    fCaveVol = new TGeoVolume("caveVol",caveBox, airCave);
 }
 
 Cave::~Cave()
