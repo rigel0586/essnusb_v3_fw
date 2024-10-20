@@ -10,7 +10,7 @@ ClassImp(esbroot::geometry::EmulsionDetector)
 
 #include "geometry/EmulsionDetector/DetectorDefinition.hpp"
 #include "geometry/EmulsionDetector/MagneticField.hpp"
-//#include "data/NDCherenkov/NDCherenkovDataPoint.hpp"
+#include "data/EmulsionDetector/EmulsionDataPoint.hpp"
 
 #include "TGeoManager.h"
 #include "TGraph.h"
@@ -106,12 +106,12 @@ EmulsionDetector::EmulsionDetector()
 	solidEmulsion(0),logicEmulsionUp(0),logicEmulsionDown(0),physEmulsionUp(0),physEmulsionDw(0),
 	SDman(0) //,EmulsionSD(0)
 {
-    // TClass* tCl = esbroot::data::ndcherenkov::NDCherenkovDataPoint::Class();
-    // fDataPointCollection 
-    //     = core::io::EsbWriterPersistency::Instance().Register(
-    //           "Gd_Cherenkov_Detector"
-    //         , "DataSimulationPoints"
-    //         , tCl);
+    TClass* tCl = esbroot::data::emulsion::EmulsionDataPoint::Class();
+    fDataPointCollection 
+        = core::io::EsbWriterPersistency::Instance().Register(
+              "EmulsionDetectorSD"
+            , "DataSimulationPoints"
+            , tCl);
 
     //----- defalt setting
 	checkOverlaps		= true;
@@ -166,12 +166,12 @@ EmulsionDetector::EmulsionDetector(double posX, double posY, double posZ, unsign
 	solidEmulsion(0),logicEmulsionUp(0),logicEmulsionDown(0),physEmulsionUp(0),physEmulsionDw(0),
 	SDman(0)//,EmulsionSD(0)
 {
-    // TClass* tCl = esbroot::data::ndcherenkov::NDCherenkovDataPoint::Class();
-    // fDataPointCollection 
-    //     = core::io::EsbWriterPersistency::Instance().Register(
-    //           "Gd_Cherenkov_Detector"
-    //         , "DataSimulationPoints"
-    //         , tCl);
+    TClass* tCl = esbroot::data::emulsion::EmulsionDataPoint::Class();
+    fDataPointCollection 
+        = core::io::EsbWriterPersistency::Instance().Register(
+              "EmulsionDetectorSD"
+            , "DataSimulationPoints"
+            , tCl);
 
     //----- defalt setting
 	checkOverlaps		= true;
@@ -219,7 +219,7 @@ EmulsionDetector::~EmulsionDetector()
 
 void EmulsionDetector::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 {
-    new G4PVPlacement(0, G4ThreeVector(), logicWorld, "G4V_Physical_EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
+    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), logicWorld, "G4V_Physical_EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
 }
 
 void EmulsionDetector::ConstructGeometry()
@@ -239,27 +239,32 @@ void EmulsionDetector::ConstructGeometry()
 void EmulsionDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
 {
-    // G4SDManager::GetSDMpointer()->AddNewDetector(this);
+    G4SDManager::GetSDMpointer()->AddNewDetector(this);
 
-    // std::vector<G4VPhysicalVolume*> sdVolumes;
-    // fut.findVolume("WaterWithGd", topVolume, sdVolumes, utility::VolumeSearchType::Contains);
+	std::string emulsionDetectorName = "ECCContainer"; 
+    std::vector<G4VPhysicalVolume*> sdVolumes;
+	fut.findVolume(emulsionDetectorName, topVolume, sdVolumes, utility::VolumeSearchType::Contains);
+	
 
-    // LOG(info) << "WaterWithGd" << " volumes found: " << sdVolumes.size();
-    // //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
-    // for(G4VPhysicalVolume * daug : sdVolumes){
-    //     // f_sd(daug->GetLogicalVolume(),this);
-    //     G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
-    //     dauLogol->SetSensitiveDetector(this);
-    // }
+	if(sdVolumes.empty()){
+		LOG(error) << "No " << emulsionDetectorName << " volumes found: " << sdVolumes.size();
+		exit(0);
+	}else{
+		LOG(info) << emulsionDetectorName << " volumes found: " << sdVolumes.size();
+	}
+
+    //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
+    for(G4VPhysicalVolume * daug : sdVolumes){
+        // f_sd(daug->GetLogicalVolume(),this);
+        G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
+        dauLogol->SetSensitiveDetector(this);
+    }
 }
 
 G4bool  EmulsionDetector::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
 {
-    // TODO
-    // Get the volume where the step occurs
-    //const G4LogicalVolume* volume = dynamic_cast<const 
-    //G4LogicalVolume*>(step->GetPreStepPoint()->GetTouchableHandle()->GetVolume());
-		
+	LOG(debug3) << "EmulsionDetector::ProcessHits";
+
     const G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
     G4String volumeName = volume->GetName(); // Get the name of the volume
     
@@ -281,11 +286,7 @@ G4bool  EmulsionDetector::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
     //G4double energyDeposit = step->GetTotalEnergyDeposit();
     
     // Timing information
-    G4double stepTime = step->GetPreStepPoint()->GetGlobalTime();
-    
-    // Process name
-    G4String processName = step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
-    
+    G4double time = step->GetPreStepPoint()->GetGlobalTime();
     
     // Calculate the free path taken by the particle
     G4double freePathLength = step->GetStepLength();
@@ -293,45 +294,23 @@ G4bool  EmulsionDetector::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
     // Get the material and its elements
     const G4Material* material = step->GetPreStepPoint()->GetMaterial();
     G4String materialName = material->GetName();
-    
-    // Find the target nucleus for nCapture process
-    G4String secName;
-    
-    // Check if the process is neutron capture (get the secondary nucleus)
-    if (processName == "nCapture") {
-        const G4HadronicProcess* hadronicProcess = dynamic_cast<const G4HadronicProcess*>(step->GetPostStepPoint()->GetProcessDefinedStep());
-        if (hadronicProcess) {
-            const std::vector<const G4Track*>* secondaries = step->GetSecondaryInCurrentStep();
-            for (const G4Track* secondary : *secondaries) {
-                if (secondary->GetParentID() == trackID) {
-                    const G4ParticleDefinition* particleDef = secondary->GetDefinition();
-                    if (particleDef->GetParticleType() == "nucleus") {
-                        secName = particleDef->GetParticleName();
-                        break;
-                    }
-                }
-            }
-        }
+
+    if(fDataPointCollection.fdata != nullptr)
+    {
+        TClonesArray& clref = *fDataPointCollection.fdata;
+        Int_t size = clref.GetEntriesFast();
+
+        new(clref[size]) data::emulsion::EmulsionDataPoint(eventID
+                    , trackID
+                    , parentID
+                    , particleID
+                    , particleName
+                    , TVector3( (position.x() / cm) , (position.y() / cm) , (position.z() / cm))
+                    , TVector3( (momentum.x() / MeV) , (momentum.y() / MeV) , (momentum.z() / MeV))
+                    , time
+                    , freePathLength
+        );
     }
-
-    // if(fDataPointCollection.fdata != nullptr)
-    // {
-    //     TClonesArray& clref = *fDataPointCollection.fdata;
-    //     Int_t size = clref.GetEntriesFast();
-
-    //     new(clref[size]) data::ndcherenkov::NDCherenkovDataPoint(eventID
-    //                 , trackID
-    //                 , parentID
-    //                 , particleID
-    //                 , particleName
-    //                 , TVector3( (position.x() / cm) , (position.y() / cm) , (position.z() / cm))
-    //                 , TVector3( (momentum.x() / MeV) , (momentum.y() / MeV) , (momentum.z() / MeV))
-    //                 , stepTime
-    //                 , processName
-    //                 , freePathLength
-    //                 , secName
-    //     );
-    // }
 
   
 }
@@ -347,13 +326,18 @@ void EmulsionDetector::EndOfEventAction(const G4Event*)
 
 TVector3 EmulsionDetector::NextVertexPosition()
 {
-    // TODO
-    Double_t mag = fdis(frndGen) * fwater_radius;
-    Double_t theta = fdis(frndGen) * 2 * TMath::Pi();
-    Double_t phi = fdis(frndGen) * 2 * TMath::Pi();
-    
-    TVector3 nextPosition;
-    nextPosition.SetMagThetaPhi(mag, theta, phi);
+	static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
+    Double_t x_det = WorldSizeX * 2 * ldis(frndGen);
+    Double_t y_det = WorldSizeY * 2 * ldis(frndGen);
+    Double_t z_det = WorldSizeZ * 2 * ldis(frndGen);
+
+    // Set the Position of the event
+    Double_t rndm_X = fposX + x_det;
+    Double_t rndm_Y = fposY + y_det;
+    Double_t rndm_Z = fposZ + z_det;
+
+	TVector3 nextPosition;
+    nextPosition.SetXYZ(rndm_X, rndm_Y, rndm_Z);
 
     return nextPosition;
 }
