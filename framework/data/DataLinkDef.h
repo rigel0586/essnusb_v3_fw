@@ -16,4 +16,8 @@
 #pragma link C++ namespace esbroot::data::ndcherenkov+;
 #pragma link C++ class esbroot::data::ndcherenkov::NDCherenkovDataPoint+;
 
+
+#pragma link C++ namespace esbroot::data::emulsion+;
+#pragma link C++ class esbroot::data::emulsion::EmulsionDataPoint+;
+
 #endif
