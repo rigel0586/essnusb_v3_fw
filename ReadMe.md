@@ -1,4 +1,4 @@
-Framework installation and setup): <br/>
+Framework installation and setup: <br/>
 1. Retrieve the repositories <br/>
 	**$sudo apt-get install git (optional, if git is not available)** <br/>
 	**$sudo apt-get install repo** <br/>
@@ -20,7 +20,7 @@ Framework installation and setup): <br/>
 	navigate to <br/>
 	**~fw/essnusb_v3_fw/framework/scripts** <br/>
 	From here execute e.g.<br/>
-	**root -l <path to script>** <br/>
+	**root -l "path to script"** <br/>
 	e.g. <br/>
 	**root -l emulsion/simulate_1_emulsion.C**<br/>
 	The reason to be executed from folder<br/>
