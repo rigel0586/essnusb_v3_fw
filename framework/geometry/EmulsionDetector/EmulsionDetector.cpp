@@ -853,10 +853,10 @@ void EmulsionDetector::MaterialConstruction()
 	G4Element* elS  = Nistman->FindOrBuildElement("S");
 	G4Element* elK  = Nistman->FindOrBuildElement("K");
 	G4Element* elBr = Nistman->FindOrBuildElement("Br");
-	G4Element* elSr = Nistman->FindOrBuildElement("Sr");
-	G4Element* elAg = Nistman->FindOrBuildElement("Ag");
-	G4Element* elI  = Nistman->FindOrBuildElement("I");
-	G4Element* elBa = Nistman->FindOrBuildElement("Ba");
+	// G4Element* elSr = Nistman->FindOrBuildElement("Sr");
+	// G4Element* elAg = Nistman->FindOrBuildElement("Ag");
+	// G4Element* elI  = Nistman->FindOrBuildElement("I");
+	// G4Element* elBa = Nistman->FindOrBuildElement("Ba");
 	
 	//----------define pure NIST materials
 	Nistman->FindOrBuildMaterial("G4_Al");
@@ -879,22 +879,26 @@ void EmulsionDetector::MaterialConstruction()
 	
 	//--- Emulsion: OPERA film
 	G4double fNormalization = 0.97;
+	// G4Material* EmulsionOpera
+	// 	= new G4Material(	name        = "EmulsionOpera" , 
+	// 						density     = 2.77*fNormalization*g/cm3,
+	// 						ncomponents = 14);
 	G4Material* EmulsionOpera
 		= new G4Material(	name        = "EmulsionOpera" , 
 							density     = 2.77*fNormalization*g/cm3,
-							ncomponents = 14);
+							ncomponents = 10);
 	EmulsionOpera->AddElement(elH , fractionmass= 0.024);
 	EmulsionOpera->AddElement(elC , fractionmass= 0.13);
 	EmulsionOpera->AddElement(elN , fractionmass= 0.0481);
 	EmulsionOpera->AddElement(elO , fractionmass= 0.1243);
 	EmulsionOpera->AddElement(elS , fractionmass= 0.0009);
 	EmulsionOpera->AddElement(elBr, fractionmass= 0.2786);
-	EmulsionOpera->AddElement(elAg, fractionmass= 0.3835);
-	EmulsionOpera->AddElement(elI , fractionmass= 0.0081);
+	// EmulsionOpera->AddElement(elAg, fractionmass= 0.3835);
+	// EmulsionOpera->AddElement(elI , fractionmass= 0.0081);
 	EmulsionOpera->AddElement(elSi, fractionmass= 0.0008);
 	EmulsionOpera->AddElement(elNa, fractionmass= 0.0008);
-	EmulsionOpera->AddElement(elSr, fractionmass= 0.0002);
-	EmulsionOpera->AddElement(elBa, fractionmass= 0.0001);
+	// EmulsionOpera->AddElement(elSr, fractionmass= 0.0002);
+	// EmulsionOpera->AddElement(elBa, fractionmass= 0.0001);
 	EmulsionOpera->AddElement(elK , fractionmass= 0.0005);
 	EmulsionOpera->AddElement(elF , fractionmass= 0.00004);
 	
