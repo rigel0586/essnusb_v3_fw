@@ -15,4 +15,7 @@
 #pragma link C++ namespace esbroot::eve::ndcherenkov+;
 #pragma link C++ class esbroot::eve::ndcherenkov::EveEvent+;
 
+#pragma link C++ namespace esbroot::eve::emulsion+;
+#pragma link C++ class esbroot::eve::emulsion::EveEvent+;
+
 #endif

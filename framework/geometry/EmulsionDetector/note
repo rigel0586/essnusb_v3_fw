@@ -1,0 +1,15 @@
+The following error occurs:
+1729630790 WARN GEVGDriver : [n] <GEVGDriver.cxx::UseSplines (566)> : *** At least a spline (algorithm: genie::LwlynSmithQELCCPXSec/Dipole, interaction: nu:-16;tgt:1000531270;N:2212;proc:Weak[CC],QES; doesn't exist. Reverting back to not using splines
+
+This is because in the emulsion detector we have the following elements:
+// EmulsionOpera->AddElement(elAg, fractionmass= 0.3835);
+// EmulsionOpera->AddElement(elI , fractionmass= 0.0081);
+// EmulsionOpera->AddElement(elSr, fractionmass= 0.0002);
+// EmulsionOpera->AddElement(elBa, fractionmass= 0.0001);
+For which we do not have defined splines as declared in 
+https://genie-docdb.pp.rl.ac.uk/DocDB/0000/000002/003/man.pdf
+page 94 7.2.2 Downloading pre-computed cross section splines
+"the ~ 40 isotopes that can be found in the T2K detector geometries"
+
+To use these elements, the splines have to generated using gmkspl as e.g.
+$ gmkspl -p 14,-14 -t 1000260560 -n 150 -e 20

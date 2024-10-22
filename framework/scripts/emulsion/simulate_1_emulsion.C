@@ -38,7 +38,6 @@ void simulate_1_emulsion(Int_t nEvents = 3)
     std::stringstream sflux;
     sflux << gSystem->Getenv("ESB_BASE_DIR");
     sflux << "/neutrino_flux/essnusb_v1/nuFlux/nuFlux100km_250kAm.txt";
-    // sflux << "/neutrino_flux/essnusb_v1/nuFlux/uni1gev.txt";
     std::string neutrinoFluxPath = sflux.str();
 
     
@@ -46,6 +45,7 @@ void simulate_1_emulsion(Int_t nEvents = 3)
     //File with cross-section splines (see: http://scisoft.fnal.gov/scisoft/packages/genie_xsec/)
     std::string genieXCrossPath = gSystem->Getenv("GENIE_XCROSS_BIG");
 
+    
     generators::generic::GenieGenerator::GlobalState.fXsecSplineFileName = genieXCrossPath; 
     // File containing interaction data
     std::stringstream seventsData;
@@ -57,9 +57,9 @@ void simulate_1_emulsion(Int_t nEvents = 3)
     
     generators::generic::GenericGenieGenerator* partGen = new generators::generic::GenericGenieGenerator(
             fluxPos // Vertex position generator
-		    , "ECCContainer"     // Name of the volume to generate the neutrino events
-		    , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
-	        , seed // uniform random number generator seed
+		        , "ECCContainer"     // Name of the volume to generate the neutrino events
+		        , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
+	          , seed // uniform random number generator seed
             , emulsionPosition
             , nEvents
             , nullptr // external_fluxDriver

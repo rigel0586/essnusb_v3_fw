@@ -9,10 +9,10 @@ void simulate_4_visualize(Int_t nEvents = 3)
 
   std::stringstream ssInput;
   ssInput << gSystem->Getenv("WORKSPACE_DIR");
-  ssInput << "/simulation/nd_sim_output.root";
+  ssInput << "/simulation/emultion_sim_output.root";
   std::string inputFile = ssInput.str();
   core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile 
-          , "Gd_Cherenkov_Detector"
+          , "EmulsionDetectorSD"
           , "DataSimulationPoints");
 
   fRun->setNumberOfEvents(nEvents);   
@@ -25,10 +25,10 @@ void simulate_4_visualize(Int_t nEvents = 3)
   fRun->setOutputFile(outputFile);
 
   // Set IEvents 
-  core::eve::IEvent* event = new eve::ndcherenkov::EveEvent();
+  core::eve::IEvent* event = new eve::emulsion::EveEvent();
   fRun->addEvent(event);   
   fRun->run();
 
-  fRun->goToEvent(0);
+  fRun->goToEvent(1);
   fRun->visualize();
 }
