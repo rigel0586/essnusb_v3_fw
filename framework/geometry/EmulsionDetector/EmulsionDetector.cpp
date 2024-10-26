@@ -857,6 +857,7 @@ void EmulsionDetector::MaterialConstruction()
 	// G4Element* elAg = Nistman->FindOrBuildElement("Ag");
 	// G4Element* elI  = Nistman->FindOrBuildElement("I");
 	// G4Element* elBa = Nistman->FindOrBuildElement("Ba");
+	G4Element* elTin = Nistman->FindOrBuildElement("Sn");
 	
 	//----------define pure NIST materials
 	Nistman->FindOrBuildMaterial("G4_Al");
@@ -886,7 +887,7 @@ void EmulsionDetector::MaterialConstruction()
 	G4Material* EmulsionOpera
 		= new G4Material(	name        = "EmulsionOpera" , 
 							density     = 2.77*fNormalization*g/cm3,
-							ncomponents = 10);
+							ncomponents = 11);
 	EmulsionOpera->AddElement(elH , fractionmass= 0.024);
 	EmulsionOpera->AddElement(elC , fractionmass= 0.13);
 	EmulsionOpera->AddElement(elN , fractionmass= 0.0481);
@@ -901,6 +902,9 @@ void EmulsionDetector::MaterialConstruction()
 	// EmulsionOpera->AddElement(elBa, fractionmass= 0.0001);
 	EmulsionOpera->AddElement(elK , fractionmass= 0.0005);
 	EmulsionOpera->AddElement(elF , fractionmass= 0.00004);
+
+	EmulsionOpera->AddElement(elTin, fractionmass= 0.3919);
+	
 	
 	//----------TAC
 	G4Material* TAC
