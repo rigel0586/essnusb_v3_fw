@@ -56,6 +56,12 @@ namespace esbroot {
 
 namespace geometry {
 
+std::map<int, G4Transform3D> WCSimGeometry::tubeIDMap;
+std::map<int, G4Transform3D> WCSimGeometry::ODtubeIDMap;
+
+hash_map<std::string, int, hash<std::string> > WCSimGeometry::tubeLocationMap;
+hash_map<std::string, int, hash<std::string> > WCSimGeometry::ODtubeLocationMap;
+
 //___________________________________________________________________
 WCSimGeometry::WCSimGeometry()
   : G4VSensitiveDetector("WCSimGeometry")
@@ -80,7 +86,63 @@ WCSimGeometry::WCSimGeometry(double posX
     , fDataPointCollection()
     , frndGen(seed)
 	, fdis(0.0, 1.0)
+    , WCSimTuningParams(WCSimTuningPars)
 {
+    // Decide if (only for the case of !1kT detector) should be upright or horizontal
+    isUpright = false;
+    isEggShapedHyperK  = false;
+
+    debugMode = false;
+
+    isODConstructed = false;
+
+    myConfiguration = DetConfig;
+
+    //-----------------------------------------------------
+    // Create Materials
+    //-----------------------------------------------------
+        
+    ConstructMaterials();
+
+    //-----------------------------------------------------
+    // Initialize things related to the tubeID
+    //-----------------------------------------------------
+
+    WCSimGeometry::tubeIDMap.clear();
+    WCSimGeometry::ODtubeIDMap.clear();
+    //WCSimGeometry::tubeCylLocation.clear();// (JF) Removed
+    WCSimGeometry::tubeLocationMap.clear();
+    WCSimGeometry::ODtubeLocationMap.clear();
+    WCSimGeometry::PMTLogicalVolumes.clear();
+    totalNumPMTs = 0;
+    totalNumODPMTs = 0;
+    WCPMTExposeHeight= 0.;
+    //-----------------------------------------------------
+    // Set the default WC geometry.  This can be changed later.
+    //-----------------------------------------------------
+
+    SetSuperKGeometry();
+    //SetHyperKGeometry();
+
+    //----------------------------------------------------- 
+    // Set whether or not Pi0-specific info is saved
+    //-----------------------------------------------------
+
+    SavePi0Info(false);
+    
+    //-----------------------------------------------------
+    // Set the default method for implementing the PMT QE
+    //-----------------------------------------------------
+    SetPMT_QE_Method(1);
+
+    //default is to use collection efficiency
+    SetPMT_Coll_Eff(1);
+    // set default visualizer to OGLSX
+    SetVis_Choice("OGLSX");
+
+    //----------------------------------------------------- 
+    // Make the detector messenger to allow changing geometry
+
     // TClass* tCl = esbroot::data::ndcherenkov::NDCherenkovDataPoint::Class();
     // fDataPointCollection 
     //     = core::io::EsbWriterPersistency::Instance().Register(
@@ -227,6 +289,67 @@ TVector3 WCSimGeometry::NextVertexPosition()
     // nextPosition.SetMagThetaPhi(mag, theta, phi);
 
     return nextPosition;
+}
+
+WCSimPMTObject *WCSimGeometry::CreatePMTObject(G4String PMTType, G4String CollectionName)
+{
+    if (PMTType == "PMT20inch"){
+        WCSimPMTObject* PMT = new PMT20inch;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "PMT8inch"){
+        WCSimPMTObject* PMT = new PMT8inch;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "PMT10inch"){
+        WCSimPMTObject* PMT = new PMT10inch;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "PMT10inchHQE"){
+        WCSimPMTObject* PMT = new PMT10inchHQE;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "PMT12inchHQE"){
+        WCSimPMTObject* PMT = new PMT12inchHQE;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "HPD20inchHQE"){
+        WCSimPMTObject* PMT = new HPD20inchHQE;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "HPD12inchHQE"){
+        WCSimPMTObject* PMT = new HPD12inchHQE;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "BoxandLine20inchHQE"){
+        WCSimPMTObject* PMT = new BoxandLine20inchHQE;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "BoxandLine12inchHQE"){
+        WCSimPMTObject* PMT = new BoxandLine12inchHQE;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "PMT5inch"){
+        WCSimPMTObject* PMT = new PMT5inch;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+    else if (PMTType == "PMT3inch"){
+        WCSimPMTObject* PMT = new PMT3inch;
+        WCSimGeometry::SetPMTPointer(PMT, CollectionName);
+        return PMT;
+    }
+
+    else { G4cout << PMTType << " is not a recognized PMT Type. Exiting WCSim." << G4endl; exit(1);}
 }
 
 

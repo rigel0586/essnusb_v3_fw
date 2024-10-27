@@ -59,7 +59,7 @@ class G4LogicalVolume;
 class G4AssemblyVolume;
 class G4VPhysicalVolume;
 class WCSimTuningParameters;
-class WCSimDetectorMessenger;
+//class WCSimDetectorMessenger;
 class WCSimWCSD;
 
 namespace esbroot {
@@ -236,7 +236,7 @@ private: // From WCSimDetectorConstruction
 
 	// The messenger we use to change the geometry.
 
-	WCSimDetectorMessenger* messenger;
+	// WCSimDetectorMessenger* messenger;
 
 	// The Construction routines
 	G4LogicalVolume*   ConstructCylinder();

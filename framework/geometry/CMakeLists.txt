@@ -22,7 +22,9 @@ set(Geometry_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimEnumerations.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCPMT.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCHit.hpp
-                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.hpp)
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimTuningParameters.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.hpp)
 
 add_library(${Geometry_Target} SHARED)
 
@@ -39,19 +41,25 @@ target_sources(${Geometry_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/DetectorDefinition.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimGeometry.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructMaterials.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimPmtInfo.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimPMTObject.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimRootOptions.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimEnumerations.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCPMT.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCHit.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimTuningParameters.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimDetectorConfigs.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructPMT.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.cpp)
 
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EsbSuperFGD
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/WCSim
 )
 
 LIBRARY_FOOTER(${Geometry_Target} ${CMAKE_CURRENT_SOURCE_DIR}/GeometryLinkDef.h "${Geometry_Header}")
