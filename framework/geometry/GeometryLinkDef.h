@@ -29,4 +29,13 @@
 
 #pragma link C++ class esbroot::geometry::EmulsionDetector+;
 
+#pragma link C++ class esbroot::geometry::WCSimGeometry+;
+#pragma link C++ class WCSimPmtInfo+;
+#pragma link C++ class WCSimPMTObject+;
+#pragma link C++ class WCSimRootOptions+;
+#pragma link C++ class WCSimEnumerations+;
+#pragma link C++ class WCSimWCPMT+;
+#pragma link C++ class WCSimWCHit+;
+#pragma link C++ class WCSimWCDigi+;
+
 #endif

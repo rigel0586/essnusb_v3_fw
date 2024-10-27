@@ -14,7 +14,15 @@ set(Geometry_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EmulsionDetector.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/DetectorDefinition.hpp
-                            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.hpp)
+                            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimGeometry.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimPmtInfo.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimPMTObject.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimRootOptions.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimEnumerations.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCPMT.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCHit.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.hpp)
 
 add_library(${Geometry_Target} SHARED)
 
@@ -29,7 +37,15 @@ target_sources(${Geometry_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDCherenkov.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EmulsionDetector.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/DetectorDefinition.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/MagneticField.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimGeometry.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimPmtInfo.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimPMTObject.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimRootOptions.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimEnumerations.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCPMT.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCHit.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.cpp)
 
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
