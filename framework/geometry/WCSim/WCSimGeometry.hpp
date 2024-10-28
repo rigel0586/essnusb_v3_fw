@@ -65,6 +65,8 @@ class WCSimWCSD;
 namespace esbroot {
 namespace geometry {
 
+void ComputeWCODPMT(G4int NPMT, G4double *NPMTHorizontal, G4double *NPMTVertical);
+
 class WCSimGeometry : public esbroot::core::detector::IDetector
 					, public esbroot::generators::generic::IFluxNextPosition
 					, public G4VSensitiveDetector
@@ -255,6 +257,9 @@ private: // From WCSimDetectorConstruction
 	G4LogicalVolume* logicWCBarrelCellBlackSheet;
 	G4LogicalVolume* logicWCTowerBlackSheet;
 	G4double capAssemblyHeight;
+
+	G4VPhysicalVolume* 	fphysiExpHall{nullptr};
+	G4LogicalVolume* 	flogicExpHall{nullptr};
 
 	G4bool WCAddGd;
 

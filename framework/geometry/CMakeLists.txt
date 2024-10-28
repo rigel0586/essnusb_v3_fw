@@ -52,7 +52,10 @@ target_sources(${Geometry_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimTuningParameters.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimDetectorConfigs.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructPMT.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructEggShapedHyperK.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructCylinder.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructGeometryTables.cpp)
 
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
