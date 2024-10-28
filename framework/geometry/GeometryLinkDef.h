@@ -37,5 +37,6 @@
 #pragma link C++ class WCSimWCPMT+;
 #pragma link C++ class WCSimWCHit+;
 #pragma link C++ class WCSimWCDigi+;
+#pragma link C++ class WCSimTuningParameters+;
 
 #endif

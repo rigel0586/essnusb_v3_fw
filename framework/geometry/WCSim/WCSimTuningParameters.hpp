@@ -4,7 +4,9 @@
 #include "WCSimRootOptions.hpp"
 #include "globals.hh"
 
-class WCSimTuningParameters
+#include "TObject.h"
+
+class WCSimTuningParameters : public TObject
 {
 public:
   WCSimTuningParameters();
@@ -55,6 +57,7 @@ private:
   G4double tvspacing;
   G4bool topveto;
 
+  ClassDef(WCSimTuningParameters,2)
 };
 
 #endif

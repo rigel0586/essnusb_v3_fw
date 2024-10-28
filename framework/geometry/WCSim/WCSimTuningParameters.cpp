@@ -2,7 +2,7 @@
 
 #include "WCSimTuningParameters.hpp"
 // #include "WCSimTuningMessenger.hh"
-
+ClassImp(WCSimTuningParameters)
 
 WCSimTuningParameters::WCSimTuningParameters()
 {
