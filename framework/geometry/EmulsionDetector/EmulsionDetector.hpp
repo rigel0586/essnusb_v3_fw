@@ -62,7 +62,8 @@ public:
 	virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
 
-	void EndOfEventAction(const G4Event*) override;
+	virtual void EndOfEventAction(const G4Event*) override;
+    virtual void EndOfRunAction(const G4Run* aRun) override;
 
 
 	// IFluxNextPosition interface
@@ -161,13 +162,13 @@ private:
 //	G4int				NbOfRearFilm;
     
 	//----- pointer ( solid , logicalVolume , PhysicalVolume )
-    G4Box*              solidWorld;
-    G4LogicalVolume*    logicWorld;
-    G4VPhysicalVolume*  physWorld;
+    G4Box*              solidWorld{nullptr};
+    G4LogicalVolume*    logicWorld{nullptr};
+    G4VPhysicalVolume*  physWorld{nullptr};
     
-    G4Box*              solidECCContainer;
-    G4LogicalVolume*    logicECCContainer;
-    G4VPhysicalVolume*  physECCContainer;
+    G4Box*              solidECCContainer{nullptr};
+    G4LogicalVolume*    logicECCContainer{nullptr};
+    G4VPhysicalVolume*  physECCContainer{nullptr};
 
     G4Box*              solidECC;
     G4LogicalVolume*    logicECC;

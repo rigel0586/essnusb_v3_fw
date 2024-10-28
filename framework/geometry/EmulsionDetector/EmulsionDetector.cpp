@@ -229,11 +229,6 @@ void EmulsionDetector::ConstructGeometry()
 		LOG(error) << "EmulsionDetector is not created!";
 		exit(0);
 	}
-
-	if(!fexport_file_path.empty()){
-		G4GDMLParser* g4Parser = new G4GDMLParser();
-    	g4Parser->Write(fexport_file_path, scint_det);
-	}
 }
 
 void EmulsionDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume 
@@ -322,6 +317,14 @@ void EmulsionDetector::EndOfEventAction(const G4Event*)
 
     if(fDataPointCollection.fdata != nullptr)
         fDataPointCollection.fdata->Clear();
+}
+
+void EmulsionDetector::EndOfRunAction(const G4Run* aRun)
+{
+	if(!fexport_file_path.empty() && physWorld != nullptr){
+		G4GDMLParser* g4Parser = new G4GDMLParser();
+    	g4Parser->Write(fexport_file_path, physWorld);
+	}
 }
 
 TVector3 EmulsionDetector::NextVertexPosition()
