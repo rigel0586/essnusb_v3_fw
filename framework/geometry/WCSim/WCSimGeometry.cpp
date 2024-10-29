@@ -127,7 +127,7 @@ void WCSimGeometry::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 	// 	G4GDMLParser* g4Parser = new G4GDMLParser();
     // 	g4Parser->Write(fexport_file_path, fphysiExpHall);
 	// }
-    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
+    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_Detector", G4World->GetLogicalVolume(), false, 0);
 }
 
 void WCSimGeometry::init()
