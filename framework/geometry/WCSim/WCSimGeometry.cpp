@@ -23,6 +23,7 @@ ClassImp(esbroot::geometry::WCSimGeometry)
 #include "G4SystemOfUnits.hh"
 #include "G4NistManager.hh"
 #include "G4PVPlacement.hh"
+#include "G4GDMLParser.hh"
 
 #include "G4EventManager.hh"
 #include "G4RunManager.hh"
@@ -91,6 +92,46 @@ WCSimGeometry::WCSimGeometry(double posX
 	, fdis(0.0, 1.0)
     , WCSimTuningParams(WCSimTuningPars)
 {
+    myConfiguration = DetConfig;
+}
+
+WCSimGeometry::~WCSimGeometry()
+{
+    // if (fDataPointCollection.fdata) {
+    //     fDataPointCollection.fdata->Delete();
+    //     delete fDataPointCollection.fdata;
+    // }
+
+    for (unsigned int i=0;i<fpmts.size();i++){
+        delete fpmts.at(i);
+    }
+    fpmts.clear();
+    for (unsigned int i=0;i<fODpmts.size();i++){
+        delete fODpmts.at(i);
+    }
+    fODpmts.clear();
+}
+
+void WCSimGeometry::UpdateGeometry()
+{
+    G4bool geomChanged = true;
+    ConstructGeometry();
+    if(fphysiExpHall != nullptr)
+        G4RunManager::GetRunManager()->DefineWorldVolume(fphysiExpHall, geomChanged);
+}
+
+
+void WCSimGeometry::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
+{
+    // if(!fexport_file_path.empty() && fphysiExpHall != nullptr){
+	// 	G4GDMLParser* g4Parser = new G4GDMLParser();
+    // 	g4Parser->Write(fexport_file_path, fphysiExpHall);
+	// }
+    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
+}
+
+void WCSimGeometry::init()
+{
     // Decide if (only for the case of !1kT detector) should be upright or horizontal
     isUpright = false;
     isEggShapedHyperK  = false;
@@ -98,8 +139,6 @@ WCSimGeometry::WCSimGeometry(double posX
     debugMode = false;
 
     isODConstructed = false;
-
-    myConfiguration = DetConfig;
 
     //-----------------------------------------------------
     // Create Materials
@@ -154,39 +193,10 @@ WCSimGeometry::WCSimGeometry(double posX
     //         , tCl);
 }
 
-WCSimGeometry::~WCSimGeometry()
-{
-    // if (fDataPointCollection.fdata) {
-    //     fDataPointCollection.fdata->Delete();
-    //     delete fDataPointCollection.fdata;
-    // }
-
-    for (unsigned int i=0;i<fpmts.size();i++){
-        delete fpmts.at(i);
-    }
-    fpmts.clear();
-    for (unsigned int i=0;i<fODpmts.size();i++){
-        delete fODpmts.at(i);
-    }
-    fODpmts.clear();
-}
-
-void WCSimGeometry::UpdateGeometry()
-{
-    G4bool geomChanged = true;
-    ConstructGeometry();
-    if(fphysiExpHall != nullptr)
-        G4RunManager::GetRunManager()->DefineWorldVolume(fphysiExpHall, geomChanged);
-}
-
-
-void WCSimGeometry::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
-{
-    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_EmulsionDetector", G4World->GetLogicalVolume(), false, 0);
-}
-
 void WCSimGeometry::ConstructGeometry()
 {
+    init();
+
     WCSimGeometry::PMTLogicalVolumes.clear();
 
     totalNumPMTs = 0;
@@ -472,6 +482,14 @@ WCSimPMTObject *WCSimGeometry::CreatePMTObject(G4String PMTType, G4String Collec
     }
 
     else { G4cout << PMTType << " is not a recognized PMT Type. Exiting WCSim." << G4endl; exit(1);}
+}
+
+void WCSimGeometry::EndOfRunAction(const G4Run* aRun)
+{
+	// if(!fexport_file_path.empty() && fphysiExpHall != nullptr){
+	// 	G4GDMLParser* g4Parser = new G4GDMLParser();
+    // 	g4Parser->Write(fexport_file_path, fphysiExpHall);
+	// }
 }
 
 

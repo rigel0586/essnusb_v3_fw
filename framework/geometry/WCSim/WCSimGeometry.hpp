@@ -87,7 +87,8 @@ public:
 	virtual void AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd) override;
 
-	void EndOfEventAction(const G4Event*) override;
+	virtual void EndOfEventAction(const G4Event*) override;
+	virtual void EndOfRunAction(const G4Run* aRun) override;
 
 
 	// IFluxNextPosition interface
@@ -99,6 +100,8 @@ public:
   	virtual G4bool  ProcessHits(G4Step* astep,G4TouchableHistory* ROHist) override;
   	virtual void    EndOfEvent(G4HCofThisEvent*) override {};
 	// ============================
+
+	void setExportGeometry(const std::string& export_file_path) { fexport_file_path = export_file_path;}
 
 public: // From WCSimDetectorConstruction 
 	void SaveOptionsToOutput(WCSimRootOptions * wcopt);
@@ -209,6 +212,9 @@ private:
 	double fposZ;	
 
 	G4double fwater_radius{0};
+	std::string fexport_file_path{""};
+
+	void init();
 
 	utility::Utility fut;
 	core::io::WriterInfo  fDataPointCollection;  //! 

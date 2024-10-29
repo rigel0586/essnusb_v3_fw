@@ -28,6 +28,12 @@ void simulate_1_wcsim(Int_t nEvents = 3)
                                                                                         , WCSimTuningPars
                                                                                         , seed);
 
+    std::stringstream ssg4Export;
+    ssg4Export << gSystem->Getenv("WORKSPACE_DIR");
+    ssg4Export << "/wcsim_geom.gdml";
+    std::string emulGdmlFile = ssg4Export.str();
+    wcsimDetector->setExportGeometry(emulGdmlFile);
+
     esbSim->AddDetector(static_cast<core::detector::IDetector*>(wcsimDetector));
 
     core::generator::IGenerator* partGen = new generators::ndcherenkov::NDSimpleGenerator(500); 
