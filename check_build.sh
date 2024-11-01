@@ -86,6 +86,12 @@ check_lib_exists ${G4TENDL_var}
 
 cd ${fw_directory}
 
+# VGM
+vgm_check_lib=${fw_directory}/vgm/install/lib/libGeant4GM.so
+check_lib_exists ${vgm_check_lib}
+
+cd ${fw_directory}
+
 # Genfit
 genfit_check_lib=${fw_directory}/genfit/install/lib/libgenfit2.so
 check_lib_exists ${genfit_check_lib}
