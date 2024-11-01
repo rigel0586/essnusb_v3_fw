@@ -13,6 +13,7 @@ set(GOOGLE_CONFIG "${FW_BASE}/googletest/install/lib/cmake/GTest/")
 set(FAIRROOT_CONFIG "${FW_BASE}/fairlogger/install/lib/cmake/FairLogger-1.11.1/")
 set(PATHFINDER_CONFIG "${FW_BASE}/pathfinder/install/")
 set(CLHEP_CONFIG "${FW_BASE}/clhep/lib/CLHEP-2.4.6.4/")
+set(VGM_CONFIG "${FW_BASE}/vgm/install/lib/VGM-5.3.0/")
 
 set(ROOT_ROOTCLING_DIR "${FW_BASE}/cern_root/install/lib")
 
@@ -22,7 +23,7 @@ find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 Geom Eve RGL ROOTEve PATHS 
 include(${ROOT_USE_FILE})
 find_package(Geant4 REQUIRED COMPONENTS gdml qt ui_all vis_all PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)
 find_package(GTest  REQUIRED PATHS   ${GOOGLE_CONFIG} NO_DEFAULT_PATH)
-
+find_package(VGM REQUIRED PATHS ${VGM_CONFIG} NO_DEFAULT_PATH)
 
 #==== Genie dependencies import
 file(GLOB log4cpp_so_files "${FW_BASE}/log4cpp/lib/*.so")
@@ -59,7 +60,6 @@ find_package(PathFinder REQUIRED PATHS ${PATHFINDER_CONFIG} NO_DEFAULT_PATH)
 #==== CLHEP import
 find_package(CLHEP REQUIRED PATHS ${CLHEP_CONFIG} NO_DEFAULT_PATH)
 #==================
-
 macro(third_party_links project_to_link)
     if(${ARGC} LESS 2)
          set(scope_type PUBLIC)
@@ -74,7 +74,8 @@ macro(third_party_links project_to_link)
                                 ${PathFinder_INCLUDE_DIR} 
                                 ${CLHEP_INCLUDE_DIRS} 
                                 ${Geant4_INCLUDE_DIRS} 
-                                ${ROOT_INCLUDE_DIRS})
+                                ${ROOT_INCLUDE_DIRS}
+                                ${VGM_INCLUDE_DIRS})
 
     target_link_libraries(${project_to_link} ${scope_type} 
                                     ${genie_so_files} 
@@ -82,6 +83,7 @@ macro(third_party_links project_to_link)
                                     ${log4cpp_so_files} 
                                     ${Geant4_LIBRARIES} 
                                     ${ROOT_LIBRARIES} 
+                                    ${VGM_LIBRARIES}
                                     ${pythia6_so_files} 
                                     FairLogger::FairLogger 
                                     ${PathFinder_LIBRARIES} 
