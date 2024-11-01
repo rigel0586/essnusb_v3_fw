@@ -32,7 +32,7 @@ int EsbIO::ExportG4Volume(const std::string& path_to_file, G4VPhysicalVolume* g4
     fg4Parser->Write(path_to_file, g4Volume);
 }
 
-void EsbIO::ExportG4VolumeGVM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume)
+void EsbIO::ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume)
 {
     // Import Geant4 geometry to VGM
     Geant4GM::Factory g4Factory;

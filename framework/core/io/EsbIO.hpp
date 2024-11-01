@@ -61,7 +61,7 @@ public:
       @brief Exports to out file using VGM
       @param[in]  path_to_file to export the Top geant4 volume to (will be converted to root file)
     */
-    void ExportG4VolumeGVM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume);
+    void ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume);
 
     G4VPhysicalVolume* readGdmlToGeant4(const std::string& gdml_file);
 
