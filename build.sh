@@ -27,6 +27,7 @@ googletest_dir=${base_directory}/${third_party_dir}/googletest
 fairlogger_dir=${base_directory}/${third_party_dir}/fairlogger
 framework_dir=${fw_directory}/framework
 pathfinder_dir=${base_directory}/${third_party_dir}/PathFinder
+vgm_dir=${base_directory}/${third_party_dir}/vgm
 
 cd ${fw_directory}
 
@@ -168,6 +169,19 @@ G4TENDL_var=${fw_directory}/framework/workspace/geant4/download/G4TENDL1.4/READM
 check_lib_exists ${G4TENDL_var}
 
 cd ${fw_directory}
+
+# VGM
+mkdir vgm
+cd vgm
+mkdir build
+mkdir install
+cd build
+cmake -S ${vgm_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/vgm/install -DCMAKE_SYSTEM_PREFIX_PATH="${fw_directory}/cern_root/build;${fw_directory}/geant4/build"
+cmake --build . 
+cmake --install .
+
+vgm_check_lib=${fw_directory}/vgm/install/lib/libGeant4GM.so
+check_lib_exists ${vgm_check_lib}
 
 # Genfit
 mkdir genfit
