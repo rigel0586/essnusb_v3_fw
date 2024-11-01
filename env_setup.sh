@@ -29,6 +29,7 @@ export LHAPDF6_LIB=${dependencies_dir}/genie/LHAPDF-6.5.4/install/lib/
 export GEANT4_INC=${fw_directory}/geant4/install/include/
 export GEANT4_LIB=${fw_directory}/geant4/install/lib/ 
 export GENFIT_LIB=${fw_directory}/genfit/install/lib/ 
+export VGM_LIB=${fw_directory}/vgm/install/lib/ 
 export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/geom/gdml
 
 framework_build_dir=${fw_directory}/framework/build
@@ -54,8 +55,8 @@ export G4ABLADATA=${WORKSPACE_DIR}/geant4/download/G4ABLA3.3
 export G4INCLDATA=${WORKSPACE_DIR}/geant4/download/G4INCL1.2
 export G4ENSDFSTATEDATA=${WORKSPACE_DIR}/geant4/download/G4ENSDFSTATE2.3
 
-#Preload Geant4 libs for ROOT scripting
-export LD_PRELOAD=${GEANT4_LIB}libG4OpenGL.so:${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so:${GENFIT_LIB}libgenfit2.so
+#Preload Geant4,VGM libs for ROOT scripting
+export LD_PRELOAD=${GEANT4_LIB}libG4OpenGL.so:${GEANT4_LIB}libG4geometry.so:${GEANT4_LIB}libG4particles.so:${GEANT4_LIB}libG4digits_hits.so:${GEANT4_LIB}libG4processes.so:${GENFIT_LIB}libgenfit2.so:${VGM_LIB}libClhepVGM.so
 
 
 # Add OpenInventor libs if installed
