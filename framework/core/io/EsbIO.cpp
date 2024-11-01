@@ -3,6 +3,10 @@ ClassImp(esbroot::core::io::EsbIO)
 
 #include "TGeoManager.h"
 #include "G4GDMLParser.hh"
+#include "Geant4GM/volumes/Factory.h"
+#include "RootGM/volumes/Factory.h"
+#include <fairlogger/Logger.h>
+#include <filesystem>
 
 namespace esbroot {
 namespace core {
@@ -26,6 +30,21 @@ int EsbIO::ExportG4Volume(const std::string& path_to_file, G4VPhysicalVolume* g4
     if(fg4Parser == nullptr) return -1;
 
     fg4Parser->Write(path_to_file, g4Volume);
+}
+
+void EsbIO::ExportG4VolumeGVM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume)
+{
+    // Import Geant4 geometry to VGM
+    Geant4GM::Factory g4Factory;
+    g4Factory.SetDebug(1);
+    g4Factory.Import(g4Volume);
+    // 
+    // Export VGM geometry to Root
+    RootGM::Factory rtFactory;
+    rtFactory.SetDebug(1);
+    g4Factory.Export(&rtFactory);
+    gGeoManager->CloseGeometry();
+    gGeoManager->Export(path_to_file.c_str());
 }
 
 bool EsbIO::ImportTGeoVolume(const std::string& path_to_file){
@@ -54,6 +73,19 @@ void EsbIO::printG4Volume(G4VPhysicalVolume* g4vol, int tabs)
         std::cout << daug->GetName() << std::endl;
         printG4Volume(daug, ++tabs);
     }
+}
+
+bool EsbIO::deleteFile(const std::string& file_Path)
+{
+    std::filesystem::path fPath_remove{file_Path};
+    if(std::filesystem::exists(fPath_remove)){
+        bool isDeleted = std::filesystem::remove(fPath_remove);
+        LOG(info) << "Deleting: " << fPath_remove << " : [" << (isDeleted ? "true" : "false") << "]";
+        return isDeleted;
+    }
+
+    LOG(info) << "File: " << fPath_remove << " not found to be deleted. ";
+    return false;
 }
 
 } // namespace io
