@@ -390,8 +390,8 @@ else {
                                         WCIDRadius};
 
   G4Polyhedra* solidWCBarrelCellBlackSheet = new G4Polyhedra("WCBarrelCellBlackSheet",
-                                                   -dPhi/2., // phi start
-                                                   dPhi, //total phi
+                                                   0 , // phi start
+                                                   totalAngle, //total phi
                                                    1, //NPhi-gon
                                                    2,
                                                    RingZ,
@@ -775,7 +775,7 @@ If used here, uncomment the SetVisAttributes(WClogic) line, and comment out the 
 		    		new G4PVPlacement(	0,						// no rotation
 		    							cellpos,				// its position
 		    							logicWCPMT,				// its logical volume
-		    							"WCPMT",				// its name 
+		    							"WCPMT1",				// its name 
 		    							logicWCTopVeto,			// its mother volume
 		    							false,					// no boolean os
 		    							icopy);					// every PMT need a unique id.
@@ -800,7 +800,7 @@ If used here, uncomment the SetVisAttributes(WClogic) line, and comment out the 
   G4RotationMatrix* WCPMTRotation = new G4RotationMatrix;
   WCPMTRotation->rotateY(90.*deg);
 
-  G4double barrelCellWidth = 2.*WCIDRadius*tan(dPhi/2.);
+  G4double barrelCellWidth = 2.*WCIDRadius*tan(0);
   G4double horizontalSpacing   = barrelCellWidth/WCPMTperCellHorizontal;
   G4double verticalSpacing     = barrelCellHeight/WCPMTperCellVertical;
 
@@ -814,7 +814,7 @@ If used here, uncomment the SetVisAttributes(WClogic) line, and comment out the 
 	new G4PVPlacement(WCPMTRotation,              // its rotation
 			  PMTPosition, 
 			  logicWCPMT,                // its logical volume
-			  "WCPMT",             // its name
+			  "WCPMT2",             // its name
 			  logicWCBarrelCell,         // its mother volume
 			  false,                     // no boolean operations
 			  (int)(i*WCPMTperCellVertical+j),
@@ -853,7 +853,7 @@ If used here, uncomment the SetVisAttributes(WClogic) line, and comment out the 
 	  new G4PVPlacement(WCPMTRotation,             // its rotation
 			    PMTPosition, 
 			    logicWCPMT,                // its logical volume
-			    "WCPMT",             // its name
+			    "WCPMT3",             // its name
 			    logicWCExtraTowerCell,         // its mother volume
 			    false,                     // no boolean operations
 			    (int)(i*WCPMTperCellVertical+j),
@@ -947,8 +947,8 @@ If used here, uncomment the SetVisAttributes(WClogic) line, and comment out the 
 										  WCODRadius-WCODTyvekSheetThickness};
 
 		G4Polyhedra* solidWCBarrelCellODTyvek = new G4Polyhedra("WCBarrelCellODTyvek",
-																-dPhi/2., // phi start
-																dPhi, //total phi
+																0, // phi start
+																dPhi + dPhi/2., //total phi
 																1, //NPhi-gon
 																2,
 																RingZ,
@@ -1339,7 +1339,7 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
     new G4PVPlacement(0,
                       G4ThreeVector(0.,0.,0.),
                       logicWCBarrelCellBlackSheet,
-                      "WCBarrelCellBlackSheet",
+                      "WCBarrelCellBlackSheet_COpy",
                       logicWCBarrelBorderCell,
                       false,
                       0,true);
@@ -1647,7 +1647,7 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
 	  new G4PVPlacement(WCCapPMTRotation,
 			    cellpos,                   // its position
 			    logicWCPMT,                // its logical volume
-			    "WCPMT", // its name 
+			    "WCPMT4", // its name 
 			    logicWCCap,         // its mother volume
 			    false,                 // no boolean os
 			    icopy);               // every PMT need a unique id.
@@ -1668,7 +1668,7 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
   G4RotationMatrix* WCPMTRotation = new G4RotationMatrix;
   WCPMTRotation->rotateY(90.*deg);
 
-  G4double barrelCellWidth = 2.*WCIDRadius*tan(dPhi/2.);
+  G4double barrelCellWidth = 2*WCIDRadius*tan(0);
   G4double horizontalSpacing   = barrelCellWidth/WCPMTperCellHorizontal;
   G4double verticalSpacing     = barrelCellHeight/WCPMTperCellVertical;
 
@@ -1678,15 +1678,15 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
 						 -barrelCellWidth/2.+(i+0.5)*horizontalSpacing,
 						 (-barrelCellHeight/2.+(j+0.5)*verticalSpacing)*zflip);
 
-     G4VPhysicalVolume* physiWCBarrelBorderPMT =
-	new G4PVPlacement(WCPMTRotation,                      // its rotation
-			  PMTPosition,
-			  logicWCPMT,                // its logical volume
-			  "WCPMT",             // its name
-			  logicWCBarrelBorderCell,         // its mother volume
-			  false,                     // no boolean operations
-			  (int)(i*WCPMTperCellVertical+j)
-			  ,true);                      // no particular field
+  //    G4VPhysicalVolume* physiWCBarrelBorderPMT =
+	// new G4PVPlacement(WCPMTRotation,                      // its rotation
+	// 		  PMTPosition,
+	// 		  logicWCPMT,                // its logical volume
+	// 		  "WCPMT5",             // its name
+	// 		  logicWCBarrelBorderCell,         // its mother volume
+	// 		  false,                     // no boolean operations
+	// 		  (int)(i*WCPMTperCellVertical+j)
+	// 		  ,true);                      // no particular field
 
 
    // logicWCPMT->GetDaughter(0),physiCapPMT is the glass face. If you add more 
@@ -1722,7 +1722,7 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
 	  new G4PVPlacement(WCPMTRotation,                          // its rotation
 			    PMTPosition,
 			    logicWCPMT,                // its logical volume
-			    "WCPMT",             // its name
+			    "WCPMT6",             // its name
 			    logicWCExtraBorderCell,         // its mother volume
 			    false,                     // no boolean operations
 			    (int)(i*WCPMTperCellVertical+j)
