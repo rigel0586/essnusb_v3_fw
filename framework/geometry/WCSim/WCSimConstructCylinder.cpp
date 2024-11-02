@@ -339,10 +339,9 @@ else {
   // Subdivisions of the BarrelRings are cells
   //------------------------------------------------------
 
-
   G4Polyhedra* solidWCBarrelCell = new G4Polyhedra("WCBarrelCell",
-                                                   -dPhi/2.+0.*deg, // phi start
-                                                   dPhi, //total Phi
+                                                   0.*deg,//+dPhi/2., // phi start
+                                                   totalAngle/2, //phi end
                                                    1, //NPhi-gon
                                                    2,
                                                    RingZ,
@@ -1259,7 +1258,7 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
   G4LogicalVolume* logicWCBarrelBorderRing =
     new G4LogicalVolume(solidWCBarrelBorderRing,
                         G4Material::GetMaterial(water),
-                        "WCBarrelRing",
+                        "WCBarrelBorderRing",
                         0,0,0);
   //G4cout << *solidWCBarrelBorderRing << G4endl;
 
@@ -1279,8 +1278,8 @@ G4LogicalVolume* WCSimGeometry::ConstructCaps(G4int zflip)
   // Subdevide border rings into cells
   // --------------------------------------------------
   G4Polyhedra* solidWCBarrelBorderCell = new G4Polyhedra("WCBarrelBorderCell",
-                                                   -dPhi/2., // phi start
-                                                   dPhi, //total angle 
+                                                   0.*deg, // phi start
+                                                   totalAngle,
                                                    1, //NPhi-gon
                                                    3,
                                                    borderAnnulusZ,

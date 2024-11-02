@@ -1,7 +1,6 @@
 #include "EsbDetectorConstructor.hpp"
 ClassImp(esbroot::core::detector::EsbDetectorConstructor)
 
-#include <filesystem>
 #include <fairlogger/Logger.h>
 
 namespace esbroot {
@@ -38,27 +37,23 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
         d->PostConstructG4Geometry(convertedWorld); // Pass G4 world if any post convertion configuration is required
     }
 
-    std::string filePostGdml = fWorkDir + "/" + fPostgdml;
-    fIo.ExportG4Volume(filePostGdml, convertedWorld);
+    //std::string filePostGdml = fWorkDir + "/" + fPostgdml;
+    //fIo.ExportG4Volume(filePostGdml, convertedWorld);
+    std::string fileVGMWorld = fWorkDir + "/" + fPostVgmRoot;
+    fIo.ExportG4VolumeVGM(fileVGMWorld, convertedWorld);
 
-    if(!fIo.ImportTGeoVolume(filePostGdml)){
+    if(!fIo.ImportTGeoVolume(fileVGMWorld)){
         LOG(error) << "Unable to convert geometry to root format";
         exit(0);
     }
+
+    //fIo.deleteFile(filePostGdml);
 
     std::string fileFinalGdml = fWorkDir + "/" + fFinalgdml;
     fIo.ExportTGeoVolume(fileFinalGdml);
     std::string fileFinalRoot = fWorkDir + "/" + fFinalroot;
     fIo.ExportTGeoVolume(fileFinalRoot);
 
-    
-    // Remove gdml file from geant4 export since it is not overwritten
-    std::filesystem::path fPath_gdml_remove{filePostGdml};
-    if(std::filesystem::exists(fPath_gdml_remove)){
-        bool isDeleted = std::filesystem::remove(fPath_gdml_remove);
-        LOG(info) << "Deleting: " << fPath_gdml_remove << " : [" << (isDeleted ? "true" : "false") << "]";
-    }
-    
     std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)> f_sd = 
                     std::bind(&EsbDetectorConstructor::SetSensitiveHandler, this, _1, _2);
 

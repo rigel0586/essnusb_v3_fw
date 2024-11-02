@@ -123,10 +123,6 @@ void WCSimGeometry::UpdateGeometry()
 
 void WCSimGeometry::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 {
-    // if(!fexport_file_path.empty() && fphysiExpHall != nullptr){
-	// 	G4GDMLParser* g4Parser = new G4GDMLParser();
-    // 	g4Parser->Write(fexport_file_path, fphysiExpHall);
-	// }
     new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_Detector", G4World->GetLogicalVolume(), false, 0);
 }
 
@@ -486,10 +482,10 @@ WCSimPMTObject *WCSimGeometry::CreatePMTObject(G4String PMTType, G4String Collec
 
 void WCSimGeometry::EndOfRunAction(const G4Run* aRun)
 {
-	// if(!fexport_file_path.empty() && fphysiExpHall != nullptr){
-	// 	G4GDMLParser* g4Parser = new G4GDMLParser();
-    // 	g4Parser->Write(fexport_file_path, fphysiExpHall);
-	// }
+	if(!fexport_file_path.empty() && fphysiExpHall != nullptr){
+		G4GDMLParser* g4Parser = new G4GDMLParser();
+    	g4Parser->Write(fexport_file_path, fphysiExpHall);
+	}
 }
 
 
