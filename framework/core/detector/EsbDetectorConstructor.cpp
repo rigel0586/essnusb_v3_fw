@@ -50,14 +50,14 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
     } 
     else if(fConverter == GeomConverter::VGM){
         std::string fileVGMWorld = fWorkDir + "/" + fPostVgmRoot;
-        fIo.ExportG4VolumeVGM(fileVGMWorld, convertedWorld);
-        if(!fIo.ImportTGeoVolume(fileVGMWorld)){
-            LOG(error) << "Unable to convert geometry to root format";
-            exit(0);
-        }
+        fIo.ExportG4VolumeVGM(fileVGMWorld, convertedWorld); // Already imports into gGeoManager
+        // if(!fIo.ImportTGeoVolume(fileVGMWorld)){
+        //     LOG(error) << "Unable to convert geometry to root format";
+        //     exit(0);
+        // }
     }
     else{
-        LOG(error) << "COnverter Not supported! Exiting ...";
+        LOG(error) << "Converter Not supported! Exiting ...";
         exit(0);
     }
 
