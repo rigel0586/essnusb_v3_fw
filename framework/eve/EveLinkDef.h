@@ -18,4 +18,7 @@
 #pragma link C++ namespace esbroot::eve::emulsion+;
 #pragma link C++ class esbroot::eve::emulsion::EveEvent+;
 
+#pragma link C++ namespace esbroot::eve::wcsim+;
+#pragma link C++ class esbroot::eve::wcsim::EveEvent+;
+
 #endif

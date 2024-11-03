@@ -4,14 +4,16 @@ set(eve_Target essnusb_eve)
 
 set(eve_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EveEvent.hpp
                ${CMAKE_CURRENT_SOURCE_DIR}/NdCherenkov/EveEvent.hpp
-               ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EveEvent.hpp)
+               ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EveEvent.hpp
+               ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/EveEvent.hpp)
 
 add_library(${eve_Target} SHARED)
 
 target_sources(${eve_Target} PUBLIC 
             ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/EveEvent.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/NdCherenkov/EveEvent.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EveEvent.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EveEvent.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/EveEvent.cpp)
 
 target_include_directories(${eve_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD)
 
