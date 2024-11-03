@@ -42,6 +42,15 @@ public:
                   , Int_t maxEvents = 1
                   , Double_t maxEnergy = 2. /* GeV */);
 
+    // ~ctor
+    GenieFluxDriver(const char* nuFluxFile
+                  , std::vector<IFluxNextPosition*> ifluxpositions
+                  , unsigned int seed
+                  , TVector3 detPos
+                  , Bool_t uniformFlux
+                  , Int_t maxEvents = 1
+                  , Double_t maxEnergy = 2. /* GeV */);
+
     GenieFluxDriver(const GenieFluxDriver& gf);
 
     class FLuxNeutrino
@@ -92,6 +101,11 @@ public:
     GenieFluxDriver& operator=(const GenieFluxDriver& gf);
 
 protected:
+    enum class FluxDriverType{
+      Basic,
+      Composite
+    };
+
     virtual void CalculateNext4Momentum(Double_t energyOfNeutrino);
     virtual void CalculateNext4position();
 
@@ -108,6 +122,9 @@ protected:
     std::uniform_real_distribution<Double_t> fdis;//!<!
     TVector3 fdetPos;
     IFluxNextPosition* fFluxNextPosition{nullptr};
+    std::vector<IFluxNextPosition*> fFluxNextPositions;
+    FluxDriverType fType{FluxDriverType::Basic};
+    int f_generator_Id;
 
 
     PDGCodeList fPdgCList;

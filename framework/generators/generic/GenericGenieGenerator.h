@@ -51,6 +51,18 @@ public:
 									, TGeoManager* gm = nullptr
 									, Bool_t keepThrowingFluxNu = true);
 
+	// ! Composite constructor
+	GenericGenieGenerator(std::vector<IFluxNextPosition*> fluxPositions
+									, const std::string& volumeName
+									, const char* nuFluxFile
+									, unsigned int seed
+									, TVector3 detPos
+									, Int_t numEvents
+									, genie::GFluxI* extFlux = nullptr
+									, Bool_t uniformFlux = false
+									, TGeoManager* gm = nullptr
+									, Bool_t keepThrowingFluxNu = true);
+
 	//! Destructor
 	~GenericGenieGenerator();
 	
@@ -73,6 +85,11 @@ protected:
 	virtual void WriteToOutputFile(const genie::EventRecord* event, Bool_t flaGkeepThrowing ) override;
 
 private:
+	enum class GeneratorType{
+      Basic,
+      Composite
+    };
+
 	TGeoManager* fgm;//!<!
 	std::string fgeoConfigFile;//!<!
 	std::string fnuFluxFile;//!<!
@@ -85,7 +102,11 @@ private:
 	genie::GFluxI* fExtFlux;//!<!
 	Bool_t fUseUniformflux;//!<!
 	Bool_t fKeepThrowingFluxNu;//!<!
+
 	IFluxNextPosition* fFluxPosition;//!<!
+	std::vector<IFluxNextPosition*> fCompositeFluxPositions;//!<!
+	GeneratorType fGenType;
+
 	const std::string fvolumeName;//!<!
 
 	std::vector<genie::EventRecord> fGenieEvents;//!<!

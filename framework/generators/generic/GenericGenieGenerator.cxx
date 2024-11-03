@@ -42,6 +42,35 @@ GenericGenieGenerator::GenericGenieGenerator(IFluxNextPosition* fluxPosition
 									, Bool_t keepThrowingFluxNu)
 	 : esbroot::generators::generic::GenieGenerator()
 	 	, fFluxPosition(fluxPosition)
+		, fGenType(GeneratorType::Basic)
+		, fvolumeName(volumeName)
+		, fnuFluxFile(nuFluxFile)
+		, fseed(seed)
+		, fdetPos(detPos)
+		, fnumEvents(numEvents)
+		, fgm(gm)
+		, fExtFlux(extFlux)
+		, fCurrentEvent(0)
+		, fUseFixedVertex(false)
+		, fvertexPos(0,0,0)
+		, fUseUniformflux(uniformFlux)
+		, fKeepThrowingFluxNu(keepThrowingFluxNu)
+{
+}
+
+GenericGenieGenerator::GenericGenieGenerator(std::vector<IFluxNextPosition*> fluxPositions
+									, const std::string& volumeName
+									, const char* nuFluxFile
+									, unsigned int seed
+									, TVector3 detPos
+									, Int_t numEvents
+									, genie::GFluxI* extFlux
+									, Bool_t uniformFlux
+									, TGeoManager* gm
+									, Bool_t keepThrowingFluxNu)
+	 : esbroot::generators::generic::GenieGenerator()
+	 	, fCompositeFluxPositions(fluxPositions)
+		, fGenType(GeneratorType::Composite)
 		, fvolumeName(volumeName)
 		, fnuFluxFile(nuFluxFile)
 		, fseed(seed)
@@ -90,9 +119,19 @@ Bool_t GenericGenieGenerator::Configure()
 		fgdGeom->SetScannerNParticles(fnumEvents);
 		SetGeomI(fgdGeom);
 
-		auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fFluxPosition, fseed, fdetPos, fUseUniformflux);
-		gFluxD->SetMaxEvents(fnumEvents);
-		SetFluxI(gFluxD);
+		if(fGenType == GeneratorType::Basic){
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fFluxPosition, fseed, fdetPos, fUseUniformflux);
+			gFluxD->SetMaxEvents(fnumEvents);
+			SetFluxI(gFluxD);
+		} else if(fGenType == GeneratorType::Composite){
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fCompositeFluxPositions, fseed, fdetPos, fUseUniformflux);
+			gFluxD->SetMaxEvents(fnumEvents);
+			SetFluxI(gFluxD);
+		} else{
+			LOG(fatal) <<  "Unknown type of GeneratorType ...";
+        	exit(0);
+		}
+		
 
 		geomAnalyzer = dynamic_cast<GenericGeomAnalyzer*>(GetGeomI().get());
 		geomAnalyzer->SetScannerFlux(GetFluxI().get()); // Force to use MaxPathLengthsFluxMethod, otherwise it uses MaxPathLengthsBoxMethod

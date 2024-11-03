@@ -23,6 +23,38 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
                             , Double_t maxEnergy)
     :   fnuFluXFile(nuFluxFile)
         , fFluxNextPosition(ifluxposition)
+        , fType(FluxDriverType::Basic)
+        , f_generator_Id(0)
+        , fdetPos(detPos)
+        , frndGen(seed)
+        , frdnGenDeault(seed)
+        , fdis(0.0, 1.0)
+        , fpdgCode(0)
+        , fMaxEv(maxEnergy)
+        , fcurrentEvent(0)
+        , fmaxEvents(maxEvents)
+        , fUniformFlux(uniformFlux)
+{ 
+    InitPDGList();
+    Init4Momentum();
+    Init4Position();
+
+    ReadNuFluxFile(fnuFluXFile.c_str());
+    CalculateProbability();
+}
+
+
+GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
+                            , std::vector<IFluxNextPosition*> ifluxpositions
+                            , unsigned int seed
+                            , TVector3 detPos
+                            , Bool_t uniformFlux
+                            , Int_t maxEvents
+                            , Double_t maxEnergy)
+    :   fnuFluXFile(nuFluxFile)
+        , fFluxNextPositions(ifluxpositions)
+        , fType(FluxDriverType::Composite)
+        , f_generator_Id(0)
         , fdetPos(detPos)
         , frndGen(seed)
         , frdnGenDeault(seed)
@@ -46,6 +78,8 @@ GenieFluxDriver::GenieFluxDriver(const GenieFluxDriver& gf)
     this->fnuFluXFile = gf.fnuFluXFile;
     this->fdetPos = gf.fdetPos;
     this->fFluxNextPosition = gf.fFluxNextPosition;
+    this->fFluxNextPositions = gf.fFluxNextPositions;
+    this->f_generator_Id = gf.f_generator_Id;
     this->frndGen = gf.frndGen;
     this->fdis = gf.fdis;
     
@@ -72,6 +106,8 @@ GenieFluxDriver& GenieFluxDriver::operator=(const GenieFluxDriver& gf)
     this->fnuFluXFile = gf.fnuFluXFile;
     this->fdetPos = gf.fdetPos;
     this->fFluxNextPosition = gf.fFluxNextPosition;
+    this->fFluxNextPositions = gf.fFluxNextPositions;
+    this->f_generator_Id = gf.f_generator_Id;
     this->frndGen = gf.frndGen;
     this->fdis = gf.fdis;
 
@@ -148,12 +184,27 @@ void GenieFluxDriver::CalculateNext4position()
     // Double_t y_det = f_total_Y * ldis(frndGen);
     // Double_t z_det = f_total_Z * ldis(frndGen);
 
-    if(fFluxNextPosition == nullptr){
+    if(fType == FluxDriverType::Basic && fFluxNextPosition == nullptr){
         LOG(fatal) <<  "IFluxNextPosition is not set! Exiting ...";
         exit(0);
     }
 
-    TVector3 pos_det = fFluxNextPosition->NextVertexPosition();
+    if(fType == FluxDriverType::Composite && fFluxNextPositions.empty()){
+        LOG(fatal) <<  "IFluxNextPosition positions is not set! Exiting ...";
+        exit(0);
+    }
+
+    TVector3 pos_det;
+    
+    if(fType == FluxDriverType::Basic){
+        pos_det  = fFluxNextPosition->NextVertexPosition();
+    }
+
+    if(fType == FluxDriverType::Composite){
+        int id = f_generator_Id % fFluxNextPositions.size();
+        pos_det  = fFluxNextPositions[id]->NextVertexPosition();
+    }
+
     // Set the Position of the event
     Double_t rndm_X = fdetPos.X() + pos_det.X();
     Double_t rndm_Y = fdetPos.Y() + pos_det.Y();
@@ -176,6 +227,8 @@ void GenieFluxDriver::CalculateNext4position()
     // f4position.SetZ(z_det);
 
     f4position.SetT(0.);
+
+    ++f_generator_Id;
 }
 
 void GenieFluxDriver::CalculateNext4Momentum(Double_t energyOfNeutrino)
