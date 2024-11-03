@@ -300,18 +300,18 @@ void WCSimGeometry::ConstructGeometry()
 void WCSimGeometry::AddSensitiveDetector(G4VPhysicalVolume* topVolume 
 								, std::function<void(G4LogicalVolume*, G4VSensitiveDetector*)>& f_sd)
 {
-    // G4SDManager::GetSDMpointer()->AddNewDetector(this);
+    G4SDManager::GetSDMpointer()->AddNewDetector(this);
 
-    // std::vector<G4VPhysicalVolume*> sdVolumes;
-    // fut.findVolume("WaterWithGd", topVolume, sdVolumes, utility::VolumeSearchType::Contains);
+    std::vector<G4VPhysicalVolume*> sdVolumes;
+    fut.findVolume("WCBarrel", topVolume, sdVolumes, utility::VolumeSearchType::Contains);
 
-    // LOG(info) << "WaterWithGd" << " volumes found: " << sdVolumes.size();
-    // //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
-    // for(G4VPhysicalVolume * daug : sdVolumes){
-    //     // f_sd(daug->GetLogicalVolume(),this);
-    //     G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
-    //     dauLogol->SetSensitiveDetector(this);
-    // }
+    LOG(info) << "WCBarrel" << " volumes found: " << sdVolumes.size();
+    //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
+    for(G4VPhysicalVolume * daug : sdVolumes){
+        // f_sd(daug->GetLogicalVolume(),this);
+        G4LogicalVolume * dauLogol = daug->GetLogicalVolume();
+        dauLogol->SetSensitiveDetector(this);
+    }
 }
 
 G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
