@@ -7,8 +7,8 @@ namespace esbroot {
 namespace core {
 namespace detector {
 
-EsbDetectorConstructor::EsbDetectorConstructor(const std::string& workDir, std::vector<IDetector*>& detectors)
-    : fWorkDir(workDir), fDetectors(detectors)
+EsbDetectorConstructor::EsbDetectorConstructor(const std::string& workDir, std::vector<IDetector*>& detectors, GeomConverter converter)
+    : fWorkDir(workDir), fDetectors(detectors), fConverter(converter)
 {
 }
 
@@ -37,17 +37,29 @@ G4VPhysicalVolume* EsbDetectorConstructor::Construct()
         d->PostConstructG4Geometry(convertedWorld); // Pass G4 world if any post convertion configuration is required
     }
 
-    //std::string filePostGdml = fWorkDir + "/" + fPostgdml;
-    //fIo.ExportG4Volume(filePostGdml, convertedWorld);
-    std::string fileVGMWorld = fWorkDir + "/" + fPostVgmRoot;
-    fIo.ExportG4VolumeVGM(fileVGMWorld, convertedWorld);
+    if(fConverter == GeomConverter::G4Root){
+        std::string filePostGdml = fWorkDir + "/" + fPostgdml;
+        fIo.ExportG4Volume(filePostGdml, convertedWorld);
 
-    if(!fIo.ImportTGeoVolume(fileVGMWorld)){
-        LOG(error) << "Unable to convert geometry to root format";
+        if(!fIo.ImportTGeoVolume(filePostGdml)){
+            LOG(error) << "Unable to convert geometry to root format";
+            exit(0);
+        }
+
+        fIo.deleteFile(filePostGdml);
+    } 
+    else if(fConverter == GeomConverter::VGM){
+        std::string fileVGMWorld = fWorkDir + "/" + fPostVgmRoot;
+        fIo.ExportG4VolumeVGM(fileVGMWorld, convertedWorld);
+        if(!fIo.ImportTGeoVolume(fileVGMWorld)){
+            LOG(error) << "Unable to convert geometry to root format";
+            exit(0);
+        }
+    }
+    else{
+        LOG(error) << "COnverter Not supported! Exiting ...";
         exit(0);
     }
-
-    //fIo.deleteFile(filePostGdml);
 
     std::string fileFinalGdml = fWorkDir + "/" + fFinalgdml;
     fIo.ExportTGeoVolume(fileFinalGdml);

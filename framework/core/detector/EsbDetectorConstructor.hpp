@@ -20,10 +20,16 @@ namespace esbroot {
 namespace core {
 namespace detector{
 
+enum class GeomConverter : int
+{
+    G4Root = 0,
+    VGM = 1
+};
+
 class EsbDetectorConstructor : public TObject, public G4VUserDetectorConstruction
 {
 public:
-    EsbDetectorConstructor(const std::string& workDir, std::vector<IDetector*>& detectors);
+    EsbDetectorConstructor(const std::string& workDir, std::vector<IDetector*>& detectors , GeomConverter converter = GeomConverter::G4Root);
     ~EsbDetectorConstructor();
 
     // G4VUserDetectorConstruction
@@ -44,6 +50,8 @@ private:
     std::string fWorkDir{""};
     const std::string fgdml{"esbVolume.gdml"};
     const std::string froot{"esbVolume.root"};
+
+    GeomConverter fConverter;
 
     const std::string fPostgdml{"esbInterVolume.gdml"};
     const std::string fPostVgmRoot{"esbInterVolume.root"};

@@ -8,6 +8,7 @@ pythia6/
 fairlogger/
 pathfinder/
 clhep/
+vgm/
 framework/build
 framework/workspace
 framework/main.cpp

@@ -93,7 +93,7 @@ void EsbSimManager::run()
         //runManager->SetVerboseLevel(10);
 
         // set mandatory initialization classes
-        runManager->SetUserInitialization(new detector::EsbDetectorConstructor(fWorkindDir, fDetectors));
+        runManager->SetUserInitialization(new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter));
         runManager->SetUserInitialization(new physicsList::ESSnusbPhysicsList(fcustomProcesses));
 
         // set user actions

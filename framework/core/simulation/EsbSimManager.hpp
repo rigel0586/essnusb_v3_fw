@@ -86,6 +86,8 @@ public:
 
     void displayGeometry();
 
+    void setConverter(detector::GeomConverter c) {fConverter = c;};
+
 private:
 
     std::string fvisSessionTypes[5]={"qt" ,"xm", "win32", "tcsh" , "csh"};
@@ -95,6 +97,8 @@ private:
     int fEvents{0};
     std::string fvisMacro{""};
     std::string fvisMacroPath{""};
+
+    detector::GeomConverter fConverter{detector::GeomConverter::G4Root};
     
     std::vector<detector::IDetector*> fDetectors;
     std::vector<G4VPhysicsConstructor*> fcustomProcesses;

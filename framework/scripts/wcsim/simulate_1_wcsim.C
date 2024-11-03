@@ -7,6 +7,7 @@ void simulate_1_wcsim(Int_t nEvents = 3)
     esbSim->setLoggerSeverity(core::simulation::Severity::info);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
+    esbSim->setConverter(core::detector::GeomConverter::VGM);
     
     std::stringstream ssOut;
     ssOut << gSystem->Getenv("WORKSPACE_DIR");
