@@ -409,12 +409,15 @@ void WCSimGeometry::EndOfEventAction(const G4Event*)
 
 TVector3 WCSimGeometry::NextVertexPosition()
 {
-    // Double_t mag = fdis(frndGen) * fwater_radius;
-    // Double_t theta = fdis(frndGen) * 2 * TMath::Pi();
-    // Double_t phi = fdis(frndGen) * 2 * TMath::Pi();
-    
+    Double_t r = fdis(frndGen) * (WCRadius+1.*m);
+    Double_t z = fdis(frndGen) * (WCLength);
+    Double_t phi = fdis(frndGen) * 2 * TMath::Pi();
+
+    Double_t x = r * TMath::Cos(phi);
+    Double_t y = r * TMath::Sin(phi);
+
     TVector3 nextPosition;
-    // nextPosition.SetMagThetaPhi(mag, theta, phi);
+    nextPosition.SetXYZ(x , y, z);
 
     return nextPosition;
 }

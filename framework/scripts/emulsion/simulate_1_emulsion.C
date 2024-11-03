@@ -7,6 +7,7 @@ void simulate_1_emulsion(Int_t nEvents = 3)
     esbSim->setLoggerSeverity(core::simulation::Severity::info);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
+    // esbSim->setConverter(core::detector::GeomConverter::VGM);
     
     std::stringstream ssOut;
     ssOut << gSystem->Getenv("WORKSPACE_DIR");
@@ -55,12 +56,13 @@ void simulate_1_emulsion(Int_t nEvents = 3)
     generators::generic::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
 
     
+    TVector3 emulsionGunPosition(0,0,-550);
     generators::generic::GenericGenieGenerator* partGen = new generators::generic::GenericGenieGenerator(
             fluxPos // Vertex position generator
 		        , "ECCContainer"     // Name of the volume to generate the neutrino events
 		        , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
 	          , seed // uniform random number generator seed
-            , emulsionPosition
+            , emulsionGunPosition
             , nEvents
             , nullptr // external_fluxDriver
             , false // set to use uniformalize the flux (it loops around the neutrino records in the flux txt file regard)

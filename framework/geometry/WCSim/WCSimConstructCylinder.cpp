@@ -34,6 +34,8 @@
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 
+#include <fairlogger/Logger.h>
+
 /***********************************************************
  *
  * This file containts the functions which construct a 
@@ -142,6 +144,8 @@ G4LogicalVolume* WCSimGeometry::ConstructCylinder()
   //-----------------------------------------------------
   // everything else is contained in this water tubs
   //-----------------------------------------------------
+  LOG(info) << "WCBarrel" << " Rmax [m] " << WCRadius+1.*m;
+  LOG(info) << "WCBarrel" << " height (z) [m] " << .5*WCLength;
   G4Tubs* solidWCBarrel = new G4Tubs("WCBarrel",
 				     0.0*m,
 				     WCRadius+1.*m, // add a bit of extra space
