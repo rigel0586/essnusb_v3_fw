@@ -341,7 +341,7 @@ else {
 
   G4Polyhedra* solidWCBarrelCell = new G4Polyhedra("WCBarrelCell",
                                                    0.*deg,//+dPhi/2., // phi start
-                                                   totalAngle/2, //phi end
+                                                   totalAngle, //phi end
                                                    1, //NPhi-gon
                                                    2,
                                                    RingZ,
@@ -810,15 +810,15 @@ If used here, uncomment the SetVisAttributes(WClogic) line, and comment out the 
 						 -barrelCellWidth/2.+(i+0.5)*horizontalSpacing,
 						 -barrelCellHeight/2.+(j+0.5)*verticalSpacing);
 
-      G4VPhysicalVolume* physiWCBarrelPMT =
-	new G4PVPlacement(WCPMTRotation,              // its rotation
-			  PMTPosition, 
-			  logicWCPMT,                // its logical volume
-			  "WCPMT2",             // its name
-			  logicWCBarrelCell,         // its mother volume
-			  false,                     // no boolean operations
-			  (int)(i*WCPMTperCellVertical+j),
-			  true);                       
+  //     G4VPhysicalVolume* physiWCBarrelPMT =
+	// new G4PVPlacement(WCPMTRotation,              // its rotation
+	// 		  PMTPosition, 
+	// 		  logicWCPMT,                // its logical volume
+	// 		  "WCPMT2",             // its name
+	// 		  logicWCBarrelCell,         // its mother volume
+	// 		  false,                     // no boolean operations
+	// 		  (int)(i*WCPMTperCellVertical+j),
+	// 		  true);                       
 
    // logicWCPMT->GetDaughter(0),physiCapPMT is the glass face. If you add more 
      // daugter volumes to the PMTs (e.g. a acryl cover) you have to check, if
