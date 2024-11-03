@@ -8,7 +8,7 @@
 #include "geometry/WCSim/WCSimGeometry.hpp"
 ClassImp(esbroot::geometry::WCSimGeometry)
 
-// #include "data/NDCherenkov/NDCherenkovDataPoint.hpp"
+#include "data/WCSim/WCSimDataPoint.hpp"
 
 #include "TGeoManager.h"
 #include "TGraph.h"
@@ -97,10 +97,10 @@ WCSimGeometry::WCSimGeometry(double posX
 
 WCSimGeometry::~WCSimGeometry()
 {
-    // if (fDataPointCollection.fdata) {
-    //     fDataPointCollection.fdata->Delete();
-    //     delete fDataPointCollection.fdata;
-    // }
+    if (fDataPointCollection.fdata) {
+        fDataPointCollection.fdata->Delete();
+        delete fDataPointCollection.fdata;
+    }
 
     for (unsigned int i=0;i<fpmts.size();i++){
         delete fpmts.at(i);
@@ -181,12 +181,12 @@ void WCSimGeometry::init()
     //----------------------------------------------------- 
     // Make the detector messenger to allow changing geometry
 
-    // TClass* tCl = esbroot::data::ndcherenkov::NDCherenkovDataPoint::Class();
-    // fDataPointCollection 
-    //     = core::io::EsbWriterPersistency::Instance().Register(
-    //           "Gd_Cherenkov_Detector"
-    //         , "DataSimulationPoints"
-    //         , tCl);
+    TClass* tCl = esbroot::data::wcsim::WCSimDataPoint::Class();
+    fDataPointCollection 
+        = core::io::EsbWriterPersistency::Instance().Register(
+              "WCSim_Detector"
+            , "DataSimulationPoints"
+            , tCl);
 }
 
 void WCSimGeometry::ConstructGeometry()
@@ -316,95 +316,95 @@ void WCSimGeometry::AddSensitiveDetector(G4VPhysicalVolume* topVolume
 
 G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
 {
-	LOG(info) << "WCSimGeometry" << " ProcessHits ";
+	// LOG(info) << "WCSimGeometry" << " ProcessHits ";
 
     // Get the volume where the step occurs
-    //const G4LogicalVolume* volume = dynamic_cast<const 
-    //G4LogicalVolume*>(step->GetPreStepPoint()->GetTouchableHandle()->GetVolume());
+    // const G4LogicalVolume* volume = dynamic_cast<const 
+    // G4LogicalVolume*>(step->GetPreStepPoint()->GetTouchableHandle()->GetVolume());
 		
-    // const G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
-    // G4String volumeName = volume->GetName(); // Get the name of the volume
+    const G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
+    G4String volumeName = volume->GetName(); // Get the name of the volume
     
-    // // Check if the volume is not "Water" or "WaterWithGd"
-    // if (volumeName == "World" ) {
-    //     return true; // Skip processing steps outside of "Water" or "WaterWithGd"
-    // }
+    // Check if the volume is not "Water" or "WaterWithGd"
+    if (volumeName == "World" ) {
+        return true; // Skip processing steps outside of "Water" or "WaterWithGd"
+    }
     
-    // // Extract relevant information from the step
-    // const G4Track* track = step->GetTrack();
-    // G4int eventID = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
-    // G4int trackID = track->GetTrackID();
-    // G4int parentID = track->GetParentID(); // Get the parent ID
-    // //G4int particleID = track->GetParticleDefinition()->GetPDGEncoding();
-    // G4int particleID = track->GetDynamicParticle()->GetPDGcode();
-    // G4String particleName = track->GetDynamicParticle()->GetDefinition()->GetParticleName(); // Get the particle name
-    // G4ThreeVector position = step->GetPostStepPoint()->GetPosition();
-    // G4ThreeVector momentum = step->GetPostStepPoint()->GetMomentum();
-    // //G4double energyDeposit = step->GetTotalEnergyDeposit();
+    // Extract relevant information from the step
+    const G4Track* track = step->GetTrack();
+    G4int eventID = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
+    G4int trackID = track->GetTrackID();
+    G4int parentID = track->GetParentID(); // Get the parent ID
+    //G4int particleID = track->GetParticleDefinition()->GetPDGEncoding();
+    G4int particleID = track->GetDynamicParticle()->GetPDGcode();
+    G4String particleName = track->GetDynamicParticle()->GetDefinition()->GetParticleName(); // Get the particle name
+    G4ThreeVector position = step->GetPostStepPoint()->GetPosition();
+    G4ThreeVector momentum = step->GetPostStepPoint()->GetMomentum();
+    //G4double energyDeposit = step->GetTotalEnergyDeposit();
     
-    // // Timing information
-    // G4double stepTime = step->GetPreStepPoint()->GetGlobalTime();
+    // Timing information
+    G4double stepTime = step->GetPreStepPoint()->GetGlobalTime();
     
-    // // Process name
-    // G4String processName = step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
+    // Process name
+    G4String processName = step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
     
     
-    // // Calculate the free path taken by the particle
-    // G4double freePathLength = step->GetStepLength();
+    // Calculate the free path taken by the particle
+    G4double freePathLength = step->GetStepLength();
     
-    // // Get the material and its elements
-    // const G4Material* material = step->GetPreStepPoint()->GetMaterial();
-    // G4String materialName = material->GetName();
+    // Get the material and its elements
+    const G4Material* material = step->GetPreStepPoint()->GetMaterial();
+    G4String materialName = material->GetName();
     
-    // // Find the target nucleus for nCapture process
-    // G4String secName;
+    // Find the target nucleus for nCapture process
+    G4String secName;
     
-    // // Check if the process is neutron capture (get the secondary nucleus)
-    // if (processName == "nCapture") {
-    //     const G4HadronicProcess* hadronicProcess = dynamic_cast<const G4HadronicProcess*>(step->GetPostStepPoint()->GetProcessDefinedStep());
-    //     if (hadronicProcess) {
-    //         const std::vector<const G4Track*>* secondaries = step->GetSecondaryInCurrentStep();
-    //         for (const G4Track* secondary : *secondaries) {
-    //             if (secondary->GetParentID() == trackID) {
-    //                 const G4ParticleDefinition* particleDef = secondary->GetDefinition();
-    //                 if (particleDef->GetParticleType() == "nucleus") {
-    //                     secName = particleDef->GetParticleName();
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    // Check if the process is neutron capture (get the secondary nucleus)
+    if (processName == "nCapture") {
+        const G4HadronicProcess* hadronicProcess = dynamic_cast<const G4HadronicProcess*>(step->GetPostStepPoint()->GetProcessDefinedStep());
+        if (hadronicProcess) {
+            const std::vector<const G4Track*>* secondaries = step->GetSecondaryInCurrentStep();
+            for (const G4Track* secondary : *secondaries) {
+                if (secondary->GetParentID() == trackID) {
+                    const G4ParticleDefinition* particleDef = secondary->GetDefinition();
+                    if (particleDef->GetParticleType() == "nucleus") {
+                        secName = particleDef->GetParticleName();
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
-    // if(fDataPointCollection.fdata != nullptr)
-    // {
-    //     TClonesArray& clref = *fDataPointCollection.fdata;
-    //     Int_t size = clref.GetEntriesFast();
+    if(fDataPointCollection.fdata != nullptr)
+    {
+        TClonesArray& clref = *fDataPointCollection.fdata;
+        Int_t size = clref.GetEntriesFast();
 
-    //     new(clref[size]) data::ndcherenkov::NDCherenkovDataPoint(eventID
-    //                 , trackID
-    //                 , parentID
-    //                 , particleID
-    //                 , particleName
-    //                 , TVector3( (position.x() / cm) , (position.y() / cm) , (position.z() / cm))
-    //                 , TVector3( (momentum.x() / MeV) , (momentum.y() / MeV) , (momentum.z() / MeV))
-    //                 , stepTime
-    //                 , processName
-    //                 , freePathLength
-    //                 , secName
-    //     );
-    // }
+        new(clref[size]) data::wcsim::WCSimDataPoint(eventID
+                    , trackID
+                    , parentID
+                    , particleID
+                    , particleName
+                    , TVector3( (position.x() / cm) , (position.y() / cm) , (position.z() / cm))
+                    , TVector3( (momentum.x() / MeV) , (momentum.y() / MeV) , (momentum.z() / MeV))
+                    , stepTime
+                    , processName
+                    , freePathLength
+                    , secName
+        );
+    }
 
   
 }
 
 void WCSimGeometry::EndOfEventAction(const G4Event*)
 {
-    // if(fDataPointCollection.ftree != nullptr)
-    //     fDataPointCollection.ftree->Fill();
+    if(fDataPointCollection.ftree != nullptr)
+        fDataPointCollection.ftree->Fill();
 
-    // if(fDataPointCollection.fdata != nullptr)
-    //     fDataPointCollection.fdata->Clear();
+    if(fDataPointCollection.fdata != nullptr)
+        fDataPointCollection.fdata->Clear();
 }
 
 TVector3 WCSimGeometry::NextVertexPosition()

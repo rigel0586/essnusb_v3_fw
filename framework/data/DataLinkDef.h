@@ -20,4 +20,7 @@
 #pragma link C++ namespace esbroot::data::emulsion+;
 #pragma link C++ class esbroot::data::emulsion::EmulsionDataPoint+;
 
+#pragma link C++ namespace esbroot::data::wcsim+;
+#pragma link C++ class esbroot::data::wcsim::WCSimDataPoint+;
+
 #endif
