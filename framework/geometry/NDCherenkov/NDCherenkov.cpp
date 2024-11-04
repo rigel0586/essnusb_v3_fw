@@ -395,6 +395,12 @@ TVector3 NDCherenkov::NextVertexPosition()
     TVector3 nextPosition;
     nextPosition.SetMagThetaPhi(mag, theta, phi);
 
+    Double_t x = nextPosition.X() + fposX;
+    Double_t y = nextPosition.Y() + fposY;
+    Double_t z = nextPosition.Z() + fposZ;
+
+    nextPosition.SetXYZ(x,y,z);
+
     return nextPosition;
 }
 

@@ -417,7 +417,7 @@ TVector3 WCSimGeometry::NextVertexPosition()
     Double_t y = r * TMath::Sin(phi);
 
     TVector3 nextPosition;
-    nextPosition.SetXYZ(x , y, z);
+    nextPosition.SetXYZ( (x + fposX) , (y + fposY), (z + fposZ));
 
     return nextPosition;
 }

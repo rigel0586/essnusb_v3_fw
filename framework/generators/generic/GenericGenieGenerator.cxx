@@ -34,7 +34,6 @@ GenericGenieGenerator::GenericGenieGenerator(IFluxNextPosition* fluxPosition
 									, const std::string& volumeName
 									, const char* nuFluxFile
 									, unsigned int seed
-									, TVector3 detPos
 									, Int_t numEvents
 									, genie::GFluxI* extFlux
 									, Bool_t uniformFlux
@@ -46,7 +45,6 @@ GenericGenieGenerator::GenericGenieGenerator(IFluxNextPosition* fluxPosition
 		, fvolumeName(volumeName)
 		, fnuFluxFile(nuFluxFile)
 		, fseed(seed)
-		, fdetPos(detPos)
 		, fnumEvents(numEvents)
 		, fgm(gm)
 		, fExtFlux(extFlux)
@@ -62,7 +60,6 @@ GenericGenieGenerator::GenericGenieGenerator(std::vector<IFluxNextPosition*> flu
 									, const std::string& volumeName
 									, const char* nuFluxFile
 									, unsigned int seed
-									, TVector3 detPos
 									, Int_t numEvents
 									, genie::GFluxI* extFlux
 									, Bool_t uniformFlux
@@ -74,7 +71,6 @@ GenericGenieGenerator::GenericGenieGenerator(std::vector<IFluxNextPosition*> flu
 		, fvolumeName(volumeName)
 		, fnuFluxFile(nuFluxFile)
 		, fseed(seed)
-		, fdetPos(detPos)
 		, fnumEvents(numEvents)
 		, fgm(gm)
 		, fExtFlux(extFlux)
@@ -120,11 +116,11 @@ Bool_t GenericGenieGenerator::Configure()
 		SetGeomI(fgdGeom);
 
 		if(fGenType == GeneratorType::Basic){
-			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fFluxPosition, fseed, fdetPos, fUseUniformflux);
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fFluxPosition, fseed, fUseUniformflux);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
 		} else if(fGenType == GeneratorType::Composite){
-			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fCompositeFluxPositions, fseed, fdetPos, fUseUniformflux);
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fCompositeFluxPositions, fseed, fUseUniformflux);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
 		} else{

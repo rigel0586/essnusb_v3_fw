@@ -37,7 +37,6 @@ public:
     GenieFluxDriver(const char* nuFluxFile
                   , IFluxNextPosition* ifluxposition
                   , unsigned int seed
-                  , TVector3 detPos
                   , Bool_t uniformFlux
                   , Int_t maxEvents = 1
                   , Double_t maxEnergy = 2. /* GeV */);
@@ -46,7 +45,6 @@ public:
     GenieFluxDriver(const char* nuFluxFile
                   , std::vector<IFluxNextPosition*> ifluxpositions
                   , unsigned int seed
-                  , TVector3 detPos
                   , Bool_t uniformFlux
                   , Int_t maxEvents = 1
                   , Double_t maxEnergy = 2. /* GeV */);
@@ -120,7 +118,6 @@ protected:
     std::mt19937 frndGen;//!<!
     std::default_random_engine frdnGenDeault; //!<!
     std::uniform_real_distribution<Double_t> fdis;//!<!
-    TVector3 fdetPos;
     IFluxNextPosition* fFluxNextPosition{nullptr};
     std::vector<IFluxNextPosition*> fFluxNextPositions;
     FluxDriverType fType{FluxDriverType::Basic};

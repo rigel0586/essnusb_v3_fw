@@ -50,10 +50,9 @@ void simulate_1_nu_flux_ndcherenkov(Int_t nEvents = 3)
 
     generators::generic::GenericGenieGenerator* partGen = new generators::generic::GenericGenieGenerator(
             fluxPos // Vertex position generator
-		    , "WaterWithGd"     // Name of the volume to generate the neutrino events
-		    , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
-	        , seed // uniform random number generator seed
-            , ndCherenvkoPosition
+		        , "WaterWithGd"     // Name of the volume to generate the neutrino events
+		        , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
+	          , seed // uniform random number generator seed
             , nEvents
             , nullptr // external_fluxDriver
             , false // set to use uniformalize the flux (it loops around the neutrino records in the flux txt file regard)
@@ -65,7 +64,7 @@ void simulate_1_nu_flux_ndcherenkov(Int_t nEvents = 3)
     esbSim->setGenerator(partGen);
 
     esbroot::geometry::ndcherenkov::NeutronHPphysics* np_ptr = new esbroot::geometry::ndcherenkov::NeutronHPphysics("neutronHP");
-    //esbSim->AddCustomPhysicsList(np_ptr);
+    esbSim->AddCustomPhysicsList(np_ptr);
 
     esbSim->run();
 }

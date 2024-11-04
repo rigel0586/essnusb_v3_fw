@@ -17,7 +17,6 @@ namespace generic {
 GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
                             , IFluxNextPosition* ifluxposition
                             , unsigned int seed
-                            , TVector3 detPos
                             , Bool_t uniformFlux
                             , Int_t maxEvents
                             , Double_t maxEnergy)
@@ -25,7 +24,6 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
         , fFluxNextPosition(ifluxposition)
         , fType(FluxDriverType::Basic)
         , f_generator_Id(0)
-        , fdetPos(detPos)
         , frndGen(seed)
         , frdnGenDeault(seed)
         , fdis(0.0, 1.0)
@@ -47,7 +45,6 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
 GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
                             , std::vector<IFluxNextPosition*> ifluxpositions
                             , unsigned int seed
-                            , TVector3 detPos
                             , Bool_t uniformFlux
                             , Int_t maxEvents
                             , Double_t maxEnergy)
@@ -55,7 +52,6 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
         , fFluxNextPositions(ifluxpositions)
         , fType(FluxDriverType::Composite)
         , f_generator_Id(0)
-        , fdetPos(detPos)
         , frndGen(seed)
         , frdnGenDeault(seed)
         , fdis(0.0, 1.0)
@@ -76,7 +72,6 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
 GenieFluxDriver::GenieFluxDriver(const GenieFluxDriver& gf)
 {
     this->fnuFluXFile = gf.fnuFluXFile;
-    this->fdetPos = gf.fdetPos;
     this->fFluxNextPosition = gf.fFluxNextPosition;
     this->fFluxNextPositions = gf.fFluxNextPositions;
     this->f_generator_Id = gf.f_generator_Id;
@@ -104,7 +99,6 @@ GenieFluxDriver::GenieFluxDriver(const GenieFluxDriver& gf)
 GenieFluxDriver& GenieFluxDriver::operator=(const GenieFluxDriver& gf)
 {
     this->fnuFluXFile = gf.fnuFluXFile;
-    this->fdetPos = gf.fdetPos;
     this->fFluxNextPosition = gf.fFluxNextPosition;
     this->fFluxNextPositions = gf.fFluxNextPositions;
     this->f_generator_Id = gf.f_generator_Id;
@@ -206,9 +200,9 @@ void GenieFluxDriver::CalculateNext4position()
     }
 
     // Set the Position of the event
-    Double_t rndm_X = fdetPos.X() + pos_det.X();
-    Double_t rndm_Y = fdetPos.Y() + pos_det.Y();
-    Double_t rndm_Z = fdetPos.Z() + pos_det.Z();
+    Double_t rndm_X = pos_det.X();
+    Double_t rndm_Y = pos_det.Y();
+    Double_t rndm_Z = pos_det.Z();
 
     // Double_t rndm_X = pos_det.X();
     // Double_t rndm_Y = pos_det.Y();

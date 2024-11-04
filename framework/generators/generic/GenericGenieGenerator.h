@@ -44,7 +44,6 @@ public:
 									, const std::string& volumeName
 									, const char* nuFluxFile
 									, unsigned int seed
-									, TVector3 detPos
 									, Int_t numEvents
 									, genie::GFluxI* extFlux = nullptr
 									, Bool_t uniformFlux = false
@@ -56,7 +55,6 @@ public:
 									, const std::string& volumeName
 									, const char* nuFluxFile
 									, unsigned int seed
-									, TVector3 detPos
 									, Int_t numEvents
 									, genie::GFluxI* extFlux = nullptr
 									, Bool_t uniformFlux = false
@@ -94,7 +92,6 @@ private:
 	std::string fgeoConfigFile;//!<!
 	std::string fnuFluxFile;//!<!
 	unsigned int fseed;//!<!
-	TVector3 fdetPos;//!<!
 	Int_t fnumEvents;//!<!
 	Int_t fCurrentEvent;//!<!
 	Bool_t fUseFixedVertex;//!<!

@@ -58,13 +58,11 @@ void simulate_1_wcsim(Int_t nEvents = 3)
     std::string eventsDataPath = seventsData.str();
     generators::generic::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
 
-    TVector3 wcsimGunPosition(0,0,-550);
     generators::generic::GenericGenieGenerator* partGen = new generators::generic::GenericGenieGenerator(
             fluxPos // Vertex position generator
-		    , "WCBarrel"     // Name of the volume to generate the neutrino events
-		    , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
-	        , seed // uniform random number generator seed
-            , wcsimGunPosition
+		        , "WCBarrel"     // Name of the volume to generate the neutrino events
+		        , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
+	          , seed // uniform random number generator seed
             , nEvents
             , nullptr // external_fluxDriver
             , false // set to use uniformalize the flux (it loops around the neutrino records in the flux txt file regard)
