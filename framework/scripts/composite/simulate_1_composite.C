@@ -18,6 +18,23 @@ void simulate_1_composite(Int_t nEvents = 5)
     esbroot::geometry::Cave* cave = new esbroot::geometry::Cave();
     esbSim->setTopVolume(cave->getVolume());
 
+    // Fgd
+    unsigned int fgdseed = 42;
+    TVector3 fgdPosition(0,0,-300);
+    std::stringstream ss;
+    ss << gSystem->Getenv("ESB_BASE_DIR");
+    ss << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
+    std::string fgdconfig = ss.str();
+    geometry::FgdDetector* fgdDetector = new geometry::FgdDetector(fgdconfig.c_str()
+                                                                                        ,fgdPosition.X()
+                                                                                        ,fgdPosition.Y()
+                                                                                        ,fgdPosition.Z()
+                                                                                        ,fgdseed);
+
+    esbSim->AddDetector(static_cast<core::detector::IDetector*>(fgdDetector));
+    esbroot::generators::generic::IFluxNextPosition* fluxFgdPos = static_cast<esbroot::generators::generic::IFluxNextPosition*>(fgdDetector); 
+    // ==============================
+
     // Emulsion
     unsigned int seed = 42;
     TVector3 emulsionPosition(0,0,-200);
@@ -44,6 +61,7 @@ void simulate_1_composite(Int_t nEvents = 5)
     //=======================================
 
     std::vector<esbroot::generators::generic::IFluxNextPosition*> fluPos;
+    fluPos.emplace_back(fluxFgdPos);
     fluPos.emplace_back(fluxEmulsionPos);
     fluPos.emplace_back(fluxWCSimPos);
 

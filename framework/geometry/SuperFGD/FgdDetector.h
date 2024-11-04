@@ -16,6 +16,7 @@
 #include "geometry/SuperFGD/EsbSuperFGD/SuperFGDDetectorConstruction.h"
 #include "data/SuperFGD/FgdDetectorPoint.hpp"
 #include "core/io/EsbWriterPersistency.hpp"
+#include "generators/generic/IFluxNextPosition.h"
 
 #include "G4VSensitiveDetector.hh"
 #include "G4VUserDetectorConstruction.hh"
@@ -23,16 +24,19 @@
 #include "utility/Utility.hpp" 
 
 #include <set>
+#include <random>
 
 namespace esbroot {
 namespace geometry {
 
-class FgdDetector : public esbroot::core::detector::IDetector,
-					public G4VSensitiveDetector
+class FgdDetector : public esbroot::core::detector::IDetector
+					, public G4VSensitiveDetector
+					, public esbroot::generators::generic::IFluxNextPosition
 {
 public:
 	FgdDetector();
-	FgdDetector(const char* geoConfigFile, double posX, double posY, double posZ);
+	FgdDetector(const char* geoConfigFile, double posX, double posY, double posZ, unsigned int seed = 42);
+	
 	virtual ~FgdDetector();
 
 	// IDetector interface
@@ -64,6 +68,10 @@ public:
   	virtual G4bool  ProcessHits(G4Step* astep,G4TouchableHistory* ROHist) override;
   	virtual void    EndOfEvent(G4HCofThisEvent*) override;
 	// ============================
+
+	// IFluxNextPosition interface
+	TVector3 NextVertexPosition() override;
+	//	============================
 
 	TVector3 getDetectorPosition();
 
@@ -101,6 +109,11 @@ private:
 	core::io::WriterInfo  fFgdDetectorPointCollection;  //! 
 	TGeoVolume* fsuperFgdVol;//!<!
 	esbroot::geometry::superfgd::SuperFGDDetectorConstruction    fgdConstructor;	   //! SuperFgd Detector Constructor
+
+	Double_t f_total_X{0.};
+    Double_t f_total_Y{0.};
+    Double_t f_total_Z{0.};
+	std::mt19937 frndGen;//!<!
 
     utility::Utility fut;
 

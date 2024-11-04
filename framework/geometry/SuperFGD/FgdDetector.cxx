@@ -48,14 +48,26 @@ FgdDetector::FgdDetector()
 {
 }
 
-FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, double posZ)
+FgdDetector::FgdDetector(const char* geoConfigFile, double posX, double posY, double posZ, unsigned int seed)
   : G4VSensitiveDetector("FgdDetector"), fgdConstructor(geoConfigFile),
     fposX(posX),
     fposY(posY),
     fposZ(posZ),
     fsuperFgdVol(nullptr),
-    fFgdDetectorPointCollection()
+    fFgdDetectorPointCollection(),
+    frndGen(seed)
 {
+    Double_t lunit = fgdConstructor.GetLengthUnit(); // [cm]
+    Double_t edge  = fgdConstructor.GetEdge() * lunit;
+
+    Int_t bin_X = fgdConstructor.GetCubeNX();
+    Int_t bin_Y = fgdConstructor.GetCubeNY();
+    Int_t bin_Z = fgdConstructor.GetCubeNZ();
+
+    f_total_X = edge * bin_X;
+    f_total_Y = edge * bin_Y;
+    f_total_Z = edge * bin_Z;
+
     TClass* tCl = esbroot::data::superfgd::FgdDetectorPoint::Class();
     fFgdDetectorPointCollection 
         = core::io::EsbWriterPersistency::Instance().Register(
@@ -347,6 +359,25 @@ void FgdDetector::EndOfRunAction(const G4Run* aRun)
 void FgdDetector::EndOfEvent(G4HCofThisEvent*)
 {
   // TODO
+}
+
+TVector3 FgdDetector::NextVertexPosition()
+{
+    static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
+    Double_t x_det = f_total_X * ldis(frndGen);
+    Double_t y_det = f_total_Y * ldis(frndGen);
+    Double_t z_det = f_total_Z * ldis(frndGen);
+
+    // Set the Position of the event
+    Double_t rndm_X = fposX + x_det;
+    Double_t rndm_Y = fposY + y_det;
+    Double_t rndm_Z = fposZ + z_det;
+
+    TVector3 nextPosition;
+    nextPosition.SetXYZ(rndm_X, rndm_Y, fposZ - f_total_Z/2 - 10);
+
+    return nextPosition;
+
 }
 
 }
