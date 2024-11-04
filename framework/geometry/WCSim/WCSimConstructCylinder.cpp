@@ -105,7 +105,7 @@ G4LogicalVolume* WCSimGeometry::ConstructCylinder()
   }
 
   // now we know the extend of the detector and are able to tune the tolerance
-  G4GeometryManager::GetInstance()->SetWorldMaximumExtent(WCLength > WCRadius ? WCLength : WCRadius);
+  // G4GeometryManager::GetInstance()->SetWorldMaximumExtent(WCLength > WCRadius ? WCLength : WCRadius);
   G4cout << "Computed tolerance = "
          << G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()/mm
          << " mm" << G4endl;
