@@ -40,6 +40,7 @@
 #pragma link C++ class esbroot::core::eve::ITrackPoint+;
 #pragma link C++ class esbroot::core::eve::EsbEveManager+;
 #pragma link C++ class esbroot::core::eve::EsbEveEventManager+;
+#pragma link C++ class esbroot::core::eve::EsbViewerManager+;
 
 #endif
 
