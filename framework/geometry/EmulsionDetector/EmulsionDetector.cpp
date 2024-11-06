@@ -258,7 +258,7 @@ void EmulsionDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume
 
 G4bool  EmulsionDetector::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
 {
-	LOG(debug3) << "EmulsionDetector::ProcessHits";
+	LOG(debug2) << "EmulsionDetector::ProcessHits";
 
     const G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
     G4String volumeName = volume->GetName(); // Get the name of the volume
@@ -329,6 +329,7 @@ void EmulsionDetector::EndOfRunAction(const G4Run* aRun)
 
 TVector3 EmulsionDetector::NextVertexPosition()
 {
+	LOG(debug2) << "  EmulsionDetector::NextVertexPosition ";
 	static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
     Double_t x_det = WorldSizeX * 2 * ldis(frndGen);
     Double_t y_det = WorldSizeY * 2 * ldis(frndGen);

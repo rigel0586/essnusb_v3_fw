@@ -240,6 +240,7 @@ void FgdDetector::Initialize(G4HCofThisEvent*)
 
 G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
 {
+  LOG(debug2) << "  FgdDetector::ProcessHits ";
   if ( astep->IsFirstStepInVolume ()) {
     G4Track* track = astep->GetTrack();
     fELoss  = 0.;
@@ -363,6 +364,7 @@ void FgdDetector::EndOfEvent(G4HCofThisEvent*)
 
 TVector3 FgdDetector::NextVertexPosition()
 {
+    LOG(debug2) << "  FgdDetector::NextVertexPosition ";
     static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
     Double_t x_det = f_total_X * ldis(frndGen);
     Double_t y_det = f_total_Y * ldis(frndGen);

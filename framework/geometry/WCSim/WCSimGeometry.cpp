@@ -238,7 +238,7 @@ void WCSimGeometry::ConstructGeometry()
     // Now set the visualization attributes of the logical volumes.
 
     //   logicWCBox->SetVisAttributes(G4VisAttributes::Invisible);
-    logicExpHall->SetVisAttributes(G4VisAttributes(false));
+    logicExpHall->SetVisAttributes(G4VisAttributes(true));
 
     //-----------------------------------------------------
     // Create and place the physical Volumes
@@ -316,7 +316,7 @@ void WCSimGeometry::AddSensitiveDetector(G4VPhysicalVolume* topVolume
 
 G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
 {
-	// LOG(info) << "WCSimGeometry" << " ProcessHits ";
+	LOG(debug2) << "WCSimGeometry::ProcessHits ";
 
     // Get the volume where the step occurs
     // const G4LogicalVolume* volume = dynamic_cast<const 
@@ -409,6 +409,7 @@ void WCSimGeometry::EndOfEventAction(const G4Event*)
 
 TVector3 WCSimGeometry::NextVertexPosition()
 {
+    LOG(debug2) << "  WCSimGeometry::NextVertexPosition ";
     Double_t r = fdis(frndGen) * (WCRadius+1.*m);
     Double_t z = fdis(frndGen) * (WCLength);
     Double_t phi = fdis(frndGen) * 2 * TMath::Pi();

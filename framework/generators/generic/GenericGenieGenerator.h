@@ -101,6 +101,7 @@ private:
 	Bool_t fKeepThrowingFluxNu;//!<!
 
 	IFluxNextPosition* fFluxPosition;//!<!
+	CompositeIFluxNextPosition* fCompositeFlux{nullptr};
 	std::vector<IFluxNextPosition*> fCompositeFluxPositions;//!<!
 	GeneratorType fGenType;
 

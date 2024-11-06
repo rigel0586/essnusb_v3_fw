@@ -22,35 +22,6 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
                             , Double_t maxEnergy)
     :   fnuFluXFile(nuFluxFile)
         , fFluxNextPosition(ifluxposition)
-        , fType(FluxDriverType::Basic)
-        , f_generator_Id(0)
-        , frndGen(seed)
-        , frdnGenDeault(seed)
-        , fdis(0.0, 1.0)
-        , fpdgCode(0)
-        , fMaxEv(maxEnergy)
-        , fcurrentEvent(0)
-        , fmaxEvents(maxEvents)
-        , fUniformFlux(uniformFlux)
-{ 
-    InitPDGList();
-    Init4Momentum();
-    Init4Position();
-
-    ReadNuFluxFile(fnuFluXFile.c_str());
-    CalculateProbability();
-}
-
-
-GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
-                            , std::vector<IFluxNextPosition*> ifluxpositions
-                            , unsigned int seed
-                            , Bool_t uniformFlux
-                            , Int_t maxEvents
-                            , Double_t maxEnergy)
-    :   fnuFluXFile(nuFluxFile)
-        , fFluxNextPositions(ifluxpositions)
-        , fType(FluxDriverType::Composite)
         , f_generator_Id(0)
         , frndGen(seed)
         , frdnGenDeault(seed)
@@ -178,26 +149,12 @@ void GenieFluxDriver::CalculateNext4position()
     // Double_t y_det = f_total_Y * ldis(frndGen);
     // Double_t z_det = f_total_Z * ldis(frndGen);
 
-    if(fType == FluxDriverType::Basic && fFluxNextPosition == nullptr){
+    if(fFluxNextPosition == nullptr){
         LOG(fatal) <<  "IFluxNextPosition is not set! Exiting ...";
         exit(0);
     }
 
-    if(fType == FluxDriverType::Composite && fFluxNextPositions.empty()){
-        LOG(fatal) <<  "IFluxNextPosition positions is not set! Exiting ...";
-        exit(0);
-    }
-
-    TVector3 pos_det;
-    
-    if(fType == FluxDriverType::Basic){
-        pos_det  = fFluxNextPosition->NextVertexPosition();
-    }
-
-    if(fType == FluxDriverType::Composite){
-        int id = f_generator_Id % fFluxNextPositions.size();
-        pos_det  = fFluxNextPositions[id]->NextVertexPosition();
-    }
+    TVector3 pos_det = fFluxNextPosition->NextVertexPosition();
 
     // Set the Position of the event
     Double_t rndm_X = pos_det.X();

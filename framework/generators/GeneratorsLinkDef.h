@@ -22,6 +22,7 @@
 #pragma link C++ class esbroot::generators::generic::GenericGeomAnalyzer+;
 #pragma link C++ class esbroot::generators::generic::GenericGenieGenerator+;
 #pragma link C++ class esbroot::generators::generic::IFluxNextPosition+;
+#pragma link C++ class esbroot::generators::generic::CompositeIFluxNextPosition+;
 
 #pragma link C++ class esbroot::generators::ndcherenkov::NDSimpleGenerator+;
 

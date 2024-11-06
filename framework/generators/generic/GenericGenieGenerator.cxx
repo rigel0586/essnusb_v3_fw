@@ -27,6 +27,7 @@ GenericGenieGenerator::GenericGenieGenerator()
 
 GenericGenieGenerator::~GenericGenieGenerator()
 {
+	delete fCompositeFlux;
     delete fparticleGun;
 }
 
@@ -120,7 +121,8 @@ Bool_t GenericGenieGenerator::Configure()
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
 		} else if(fGenType == GeneratorType::Composite){
-			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fCompositeFluxPositions, fseed, fUseUniformflux);
+			fCompositeFlux = new CompositeIFluxNextPosition(fCompositeFluxPositions);
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), static_cast<IFluxNextPosition*>(fCompositeFlux), fseed, fUseUniformflux);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
 		} else{
@@ -246,6 +248,8 @@ void GenericGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 			delete event;
         }
     }
+
+	if(fCompositeFlux!=nullptr) fCompositeFlux->increment();
     return;
 }
 
