@@ -383,6 +383,15 @@ TVector3 FgdDetector::NextVertexPosition()
     nextPosition.SetXYZ(rndm_X, rndm_Y, rndm_Z);
     LOG(debug2) << "  FgdDetector::NextVertexPosition " << " [ x = " << rndm_X << " y = " << rndm_Y << " z = " << rndm_Z << "]";
 
+    Double_t rotToG4Coeff = fut.rootToG4CoeffLength();
+    Double_t rndm_X_Converted = rndm_X * rotToG4Coeff;
+    Double_t rndm_Y_Converted = rndm_Y * rotToG4Coeff;
+    Double_t rndm_Z_Converted = rndm_Z * rotToG4Coeff;
+
+    TVector3 nextPositionConverted;
+    nextPositionConverted.SetXYZ(rndm_X_Converted, rndm_Y_Converted, rndm_Z_Converted);
+    LOG(debug2) << "  FgdDetector::NextVertexPosition (Converted)" << " [ x = " << rndm_X_Converted << " y = " << rndm_Y_Converted << " z = " << rndm_Z_Converted << "]";
+
     return nextPosition;
 }
 
