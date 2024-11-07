@@ -47,6 +47,16 @@ void EsbIO::ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume
     gGeoManager->Export(path_to_file.c_str());
 }
 
+void EsbIO::ConvertGDMLToRoorVGM(const std::string& in_path_to_gdml_file, const std::string& out_path_to_root_file)
+{
+    G4GDMLParser parser;
+    parser.SetOverlapCheck(true);
+    parser.Read(in_path_to_gdml_file.c_str(), false);
+    G4VPhysicalVolume* g4Volume = parser.GetWorldVolume();
+
+    ExportG4VolumeVGM(out_path_to_root_file, g4Volume);
+}
+
 bool EsbIO::ImportTGeoVolume(const std::string& path_to_file){
     auto geoMng = gGeoManager->Import(path_to_file.c_str());
     return (geoMng != nullptr);

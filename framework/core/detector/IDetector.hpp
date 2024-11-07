@@ -39,6 +39,8 @@ class IDetector : public TObject
         virtual void BeginOfRunAction(const G4Run* aRun) {}
         virtual void EndOfRunAction(const G4Run* aRun) {}
 
+        virtual std::string GetName(){return "";}
+
 private:
 
     ClassDef(IDetector, 2);

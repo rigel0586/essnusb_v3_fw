@@ -24,7 +24,7 @@ namespace geometry {
 //___________________________________________________________________
 Cave::Cave()
 {
-    int lBox = 20000; // length in cm
+    int lBox = 20000*cm; // length in cm
 
     TGeoBBox* caveBox = new TGeoBBox("caveBox", lBox, lBox, lBox);
 

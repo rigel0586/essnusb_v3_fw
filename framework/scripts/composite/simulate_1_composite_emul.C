@@ -1,17 +1,17 @@
-void simulate_1_composite(Int_t nEvents = 5)
+void simulate_1_composite_emul(Int_t nEvents = 3)
 {
     using namespace esbroot;
 
     core::simulation::EsbSimManager* esbSim = new core::simulation::EsbSimManager();
 
-    esbSim->setLoggerSeverity(core::simulation::Severity::info);
+    esbSim->setLoggerSeverity(core::simulation::Severity::debug2);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
     esbSim->setConverter(core::detector::GeomConverter::VGM);
     
     std::stringstream ssOut;
     ssOut << gSystem->Getenv("WORKSPACE_DIR");
-    ssOut << "/simulation/composite_sim_output.root";
+    ssOut << "/simulation/composite_sim_emul_output.root";
     std::string outputFile = ssOut.str();
     esbSim->setOutputFile(outputFile);
 
@@ -20,7 +20,7 @@ void simulate_1_composite(Int_t nEvents = 5)
 
     // Fgd
     unsigned int fgdseed = 42;
-    TVector3 fgdPosition(0,0,-300);
+    TVector3 fgdPosition(0,0,-2*m);
     std::stringstream ss;
     ss << gSystem->Getenv("ESB_BASE_DIR");
     ss << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
@@ -37,7 +37,7 @@ void simulate_1_composite(Int_t nEvents = 5)
 
     // Emulsion
     unsigned int seed = 42;
-    TVector3 emulsionPosition(0,0,-200);
+    TVector3 emulsionPosition(0, 0, 0);
     geometry::EmulsionDetector* emulsionDetector = new geometry::EmulsionDetector( emulsionPosition.X()
                                                                                         , emulsionPosition.Y()
                                                                                         , emulsionPosition.Z()
@@ -47,7 +47,7 @@ void simulate_1_composite(Int_t nEvents = 5)
     // ==============================
 
     // WCSim
-    TVector3 wcsimPosition(0,0,0);
+    TVector3 wcsimPosition(0,0,50*m);
     G4int DetConfig = 1;
     WCSimTuningParameters* WCSimTuningPars = new WCSimTuningParameters();
     geometry::WCSimGeometry* wcsimDetector = new geometry::WCSimGeometry(wcsimPosition.X()
@@ -61,9 +61,9 @@ void simulate_1_composite(Int_t nEvents = 5)
     //=======================================
 
     std::vector<esbroot::generators::generic::IFluxNextPosition*> fluPos;
-    fluPos.emplace_back(fluxFgdPos);
+    // fluPos.emplace_back(fluxFgdPos);
     fluPos.emplace_back(fluxEmulsionPos);
-    fluPos.emplace_back(fluxWCSimPos);
+    // fluPos.emplace_back(fluxWCSimPos);
 
     std::stringstream sflux;
     sflux << gSystem->Getenv("ESB_BASE_DIR");
@@ -80,14 +80,14 @@ void simulate_1_composite(Int_t nEvents = 5)
     // File containing interaction data
     std::stringstream seventsData;
     seventsData << gSystem->Getenv("WORKSPACE_DIR");
-    seventsData << "/simulation/composite_eventsData.dat";
+    seventsData << "/simulation/composite_emil_eventsData.dat";
     std::string eventsDataPath = seventsData.str();
     generators::generic::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
 
     
     generators::generic::GenericGenieGenerator* partGen = new generators::generic::GenericGenieGenerator(
             fluPos // Vertex position generator
-		        , "caveVol"     // Name of the volume to generate the neutrino events
+		        , emulsionDetector->GetName()    // Name of the volume to generate the neutrino events
 		        , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
 	          , seed // uniform random number generator seed
             , nEvents

@@ -48,6 +48,7 @@ public:
 
 	// IFluxNextPosition interface
 	TVector3 NextVertexPosition() override;
+	std::string GetName() override;
 	//	============================
 
 	// G4VSensitiveDetector
@@ -57,6 +58,7 @@ public:
 	// ============================
 private:
 
+	const std::string fName{"WaterWithGd"};
 	// Detector position
 	double fposX;
 	double fposY;

@@ -157,7 +157,7 @@ void NDCherenkov::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 	/// Create a mixture representing water with gadolinium
     G4double fractionMass = 0.000211;  // fraction
     //G4Material* waterWithGd = new G4Material("WaterWithGd", 1.0 * g/cm3, 2);
-    G4Material* waterWithGd = new G4Material("WaterWithGd", 1.0 * g/cm3, 2, kStateLiquid, temperature_water, pressure_water);
+    G4Material* waterWithGd = new G4Material(fName.c_str(), 1.0 * g/cm3, 2, kStateLiquid, temperature_water, pressure_water);
     waterWithGd->AddMaterial(waterMat, (1.0 - fractionMass));
     waterWithGd->AddMaterial(gadoliniumSulfate, fractionMass);
     //waterWithGd->AddMaterial(gadoliniumMat, fractionMass);
@@ -174,7 +174,7 @@ void NDCherenkov::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
     fwater_radius = water_radius;
     G4Sphere *solidWater = new G4Sphere("WaterSphere", 0, water_radius, 0, 360 * deg, 0, 180 * deg);
     //G4LogicalVolume *logicWater = new G4LogicalVolume(solidWater, waterMat, "Water");
-    G4LogicalVolume *logicWater = new G4LogicalVolume(solidWater, waterWithGd, "WaterWithGd");
+    G4LogicalVolume *logicWater = new G4LogicalVolume(solidWater, waterWithGd, fName.c_str());
     
     //WCSim materials table
     G4MaterialPropertiesTable *myMPT1 = new G4MaterialPropertiesTable();
@@ -264,7 +264,7 @@ void NDCherenkov::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
     new G4PVPlacement(	0, 					// no rotation
 						G4ThreeVector(),	// translation position
 						logicWater,			// its logical volume
-						"WaterWithGd",			// its name
+						fName.c_str(),			// its name
 						//"Water",			// its name
 						logicalWorld,		// its mother (logical) volume
 						false,				// no boolean operations
@@ -284,9 +284,9 @@ void NDCherenkov::AddSensitiveDetector(G4VPhysicalVolume* topVolume
     G4SDManager::GetSDMpointer()->AddNewDetector(this);
 
     std::vector<G4VPhysicalVolume*> sdVolumes;
-    fut.findVolume("WaterWithGd", topVolume, sdVolumes, utility::VolumeSearchType::Contains);
+    fut.findVolume(fName, topVolume, sdVolumes, utility::VolumeSearchType::Contains);
 
-    LOG(info) << "WaterWithGd" << " volumes found: " << sdVolumes.size();
+    LOG(info) << fName << " volumes found: " << sdVolumes.size();
     //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
     for(G4VPhysicalVolume * daug : sdVolumes){
         // f_sd(daug->GetLogicalVolume(),this);
@@ -402,6 +402,11 @@ TVector3 NDCherenkov::NextVertexPosition()
     nextPosition.SetXYZ(x,y,z);
 
     return nextPosition;
+}
+
+std::string NDCherenkov::GetName()
+{
+    return fName;
 }
 
 

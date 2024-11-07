@@ -17,6 +17,7 @@ class IFluxNextPosition : public TObject {
 
 public:
   
+    // Return values are interpreted as meters!
     virtual TVector3 NextVertexPosition() = 0;
 private:
 

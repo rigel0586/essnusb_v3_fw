@@ -236,16 +236,16 @@ void EmulsionDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume
 {
     G4SDManager::GetSDMpointer()->AddNewDetector(this);
 
-	std::string emulsionDetectorName = "ECCContainer"; 
+	femulsionDetectorName = "ECCContainer"; 
     std::vector<G4VPhysicalVolume*> sdVolumes;
-	fut.findVolume(emulsionDetectorName, topVolume, sdVolumes, utility::VolumeSearchType::Contains);
+	fut.findVolume(femulsionDetectorName, topVolume, sdVolumes, utility::VolumeSearchType::Contains);
 	
 
 	if(sdVolumes.empty()){
-		LOG(error) << "No " << emulsionDetectorName << " volumes found: " << sdVolumes.size();
+		LOG(error) << "No " << femulsionDetectorName << " volumes found: " << sdVolumes.size();
 		exit(0);
 	}else{
-		LOG(info) << emulsionDetectorName << " volumes found: " << sdVolumes.size();
+		LOG(info) << femulsionDetectorName << " volumes found: " << sdVolumes.size();
 	}
 
     //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
@@ -329,11 +329,12 @@ void EmulsionDetector::EndOfRunAction(const G4Run* aRun)
 
 TVector3 EmulsionDetector::NextVertexPosition()
 {
-	LOG(debug2) << "  EmulsionDetector::NextVertexPosition ";
+	Double_t coeff = mm / m;
+	LOG(debug2) << "  EmulsionDetector::coeff " << coeff << "  size" << WorldSizeX  << "  size" << WorldSizeY  << "  size" << WorldSizeZ;
 	static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
-    Double_t x_det = WorldSizeX * 2 * ldis(frndGen);
-    Double_t y_det = WorldSizeY * 2 * ldis(frndGen);
-    Double_t z_det = WorldSizeZ * 2 * ldis(frndGen);
+    Double_t x_det = coeff * WorldSizeX * ldis(frndGen);
+    Double_t y_det = coeff * WorldSizeY * ldis(frndGen);
+    Double_t z_det = coeff * WorldSizeZ * ldis(frndGen);
 
     // Set the Position of the event
     Double_t rndm_X = fposX + x_det;
@@ -342,9 +343,34 @@ TVector3 EmulsionDetector::NextVertexPosition()
 
 	TVector3 nextPosition;
     nextPosition.SetXYZ(rndm_X, rndm_Y, rndm_Z);
+	LOG(debug2) << "  EmulsionDetector::NextVertexPosition " << " [ x = " << rndm_X << " y = " << rndm_Y << " z = " << rndm_Z << "]";
 
     return nextPosition;
+
+
+
+	// static std::uniform_real_distribution<Double_t> ldis(-1,1);
+    // Double_t x_det = solidECCContainer->GetXHalfLength() * ldis(frndGen);
+    // Double_t y_det = solidECCContainer->GetYHalfLength() * ldis(frndGen);
+    // Double_t z_det = solidECCContainer->GetZHalfLength() * ldis(frndGen);
+
+    // // Set the Position of the event
+    // Double_t rndm_X = fposX + x_det;
+    // Double_t rndm_Y = fposY + y_det;
+    // Double_t rndm_Z = fposZ + z_det + thickdb["ECCContainer"];
+
+	// TVector3 nextPosition;
+    // nextPosition.SetXYZ(rndm_X, rndm_Y, rndm_Z);
+	// LOG(debug2) << "  EmulsionDetector::NextVertexPosition " << " [ x = " << rndm_X << " y = " << rndm_Y << " z = " << rndm_Z << "]";
+	
+    // return nextPosition;
 }
+
+std::string EmulsionDetector::GetName()
+{
+	return femulsionDetectorName;
+}
+
 
 void EmulsionDetector::ConstructECCItem() {
 	solidAbsorber =

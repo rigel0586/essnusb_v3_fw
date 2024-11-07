@@ -9,6 +9,7 @@
 ClassImp(esbroot::geometry::WCSimGeometry)
 
 #include "data/WCSim/WCSimDataPoint.hpp"
+#include "core/io/EsbIO.hpp"
 
 #include "TGeoManager.h"
 #include "TGraph.h"
@@ -303,9 +304,9 @@ void WCSimGeometry::AddSensitiveDetector(G4VPhysicalVolume* topVolume
     G4SDManager::GetSDMpointer()->AddNewDetector(this);
 
     std::vector<G4VPhysicalVolume*> sdVolumes;
-    fut.findVolume("WCBarrel", topVolume, sdVolumes, utility::VolumeSearchType::Contains);
+    fut.findVolume(fName, topVolume, sdVolumes, utility::VolumeSearchType::Contains);
 
-    LOG(info) << "WCBarrel" << " volumes found: " << sdVolumes.size();
+    LOG(info) << fName << " volumes found: " << sdVolumes.size();
     //f_sd(sdVolumes[0]->GetLogicalVolume(),this);
     for(G4VPhysicalVolume * daug : sdVolumes){
         // f_sd(daug->GetLogicalVolume(),this);
@@ -409,7 +410,6 @@ void WCSimGeometry::EndOfEventAction(const G4Event*)
 
 TVector3 WCSimGeometry::NextVertexPosition()
 {
-    LOG(debug2) << "  WCSimGeometry::NextVertexPosition ";
     Double_t r = fdis(frndGen) * (WCRadius+1.*m);
     Double_t z = fdis(frndGen) * (WCLength);
     Double_t phi = fdis(frndGen) * 2 * TMath::Pi();
@@ -419,8 +419,14 @@ TVector3 WCSimGeometry::NextVertexPosition()
 
     TVector3 nextPosition;
     nextPosition.SetXYZ( (x + fposX) , (y + fposY), (z + fposZ));
+    LOG(debug2) << "  WCSimGeometry::NextVertexPosition " << " [ x = " << (x + fposX)  << " y = " << (y + fposY) << " z = " << (z + fposZ) << "]";
 
     return nextPosition;
+}
+
+std::string WCSimGeometry::GetName()
+{
+    return fName;
 }
 
 WCSimPMTObject *WCSimGeometry::CreatePMTObject(G4String PMTType, G4String CollectionName)
@@ -487,6 +493,8 @@ WCSimPMTObject *WCSimGeometry::CreatePMTObject(G4String PMTType, G4String Collec
 void WCSimGeometry::EndOfRunAction(const G4Run* aRun)
 {
 	if(!fexport_file_path.empty() && fphysiExpHall != nullptr){
+        // core::io::EsbIO io;
+        // io.ExportG4VolumeVGM(fexport_file_path, fphysiExpHall);
 		G4GDMLParser* g4Parser = new G4GDMLParser();
     	g4Parser->Write(fexport_file_path, fphysiExpHall);
 	}

@@ -364,22 +364,30 @@ void FgdDetector::EndOfEvent(G4HCofThisEvent*)
 
 TVector3 FgdDetector::NextVertexPosition()
 {
-    LOG(debug2) << "  FgdDetector::NextVertexPosition ";
     static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
     Double_t x_det = f_total_X * ldis(frndGen);
     Double_t y_det = f_total_Y * ldis(frndGen);
     Double_t z_det = f_total_Z * ldis(frndGen);
 
     // Set the Position of the event
-    Double_t rndm_X = fposX + x_det;
-    Double_t rndm_Y = fposY + y_det;
-    Double_t rndm_Z = fposZ + z_det;
+    // Double_t rndm_X = (fposX + x_det) * fut.rootToG4CoeffLength();
+    // Double_t rndm_Y = (fposY + y_det) * fut.rootToG4CoeffLength();
+    // Double_t rndm_Z = (fposZ - f_total_Z/2 - 10) * fut.rootToG4CoeffLength();
+
+    Double_t rndm_X = (fposX + x_det);
+    Double_t rndm_Y = (fposY + y_det);
+    Double_t rndm_Z = (fposZ - f_total_Z/2 - 10);
 
     TVector3 nextPosition;
-    nextPosition.SetXYZ(rndm_X, rndm_Y, fposZ - f_total_Z/2 - 10);
+    nextPosition.SetXYZ(rndm_X, rndm_Y, rndm_Z);
+    LOG(debug2) << "  FgdDetector::NextVertexPosition " << " [ x = " << rndm_X << " y = " << rndm_Y << " z = " << rndm_Z << "]";
 
     return nextPosition;
+}
 
+std::string FgdDetector::GetName()
+{
+  return fCubeName;
 }
 
 }

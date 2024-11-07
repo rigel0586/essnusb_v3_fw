@@ -71,6 +71,7 @@ public:
 
 	// IFluxNextPosition interface
 	TVector3 NextVertexPosition() override;
+	std::string GetName() override;
 	//	============================
 
 	TVector3 getDetectorPosition();

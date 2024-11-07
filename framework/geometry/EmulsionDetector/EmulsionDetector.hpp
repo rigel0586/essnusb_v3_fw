@@ -68,6 +68,7 @@ public:
 
 	// IFluxNextPosition interface
 	TVector3 NextVertexPosition() override;
+    std::string GetName() override;
 	//	============================
 
 	// G4VSensitiveDetector
@@ -100,6 +101,7 @@ public:
 
 private:
 
+    std::string femulsionDetectorName{""};
 	// Detector position
 	double fposX;
 	double fposY;

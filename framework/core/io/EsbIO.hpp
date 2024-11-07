@@ -54,14 +54,24 @@ public:
     /**
       @brief Exports to out file using G4GDMLParser->Write
       @param[in]  path_to_file to export the Top geant4 volume to
+      @param[in]  g4Volume g4 volume to export
     */
     int ExportG4Volume(const std::string& path_to_file, G4VPhysicalVolume* g4Volume);
 
     /**
       @brief Exports to out file using VGM
       @param[in]  path_to_file to export the Top geant4 volume to (will be converted to root file)
+      @param[in]  path_to_file g4 volume to export
     */
     void ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume);
+
+
+    /**
+      @brief Read gdml file and Exports it to out root file using VGM
+      @param[in]  in_path_to_gdml_file  Path to gdml file to read g4 volume
+      @param[in]  out_path_to_root_file path to export to root format)
+    */
+    void ConvertGDMLToRoorVGM(const std::string& in_path_to_gdml_file, const std::string& out_path_to_root_file);
 
     G4VPhysicalVolume* readGdmlToGeant4(const std::string& gdml_file);
 

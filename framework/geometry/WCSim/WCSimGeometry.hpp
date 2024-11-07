@@ -93,6 +93,7 @@ public:
 
 	// IFluxNextPosition interface
 	TVector3 NextVertexPosition() override;
+	std::string GetName() override;
 	//	============================
 
 	// G4VSensitiveDetector
@@ -206,6 +207,7 @@ public: // From WCSimDetectorConstruction
 
 private:
 
+	std::string fName{"WCBarrel"};
 	// Detector position
 	double fposX;
 	double fposY;
