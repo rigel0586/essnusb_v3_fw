@@ -24,9 +24,7 @@ void simulate_4_visualize(Int_t nEvents = 15)
   ssInput << gSystem->Getenv("WORKSPACE_DIR");
   ssInput << "/simulation/sim_output.root";
   std::string inputFile = ssInput.str();
-  core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile 
-          , geometry::superfgd::DP::FGD_DETECTOR_NAME.c_str()
-          , geometry::superfgd::DP::FGD_BRANCH.c_str());
+  core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile);
   
   fRun->setNumberOfEvents(nEvents);   
   fRun->setLoggerSeverity(core::eve::Severity::debug2);
@@ -42,10 +40,12 @@ void simulate_4_visualize(Int_t nEvents = 15)
   ssConf << gSystem->Getenv("ESB_BASE_DIR");
   ssConf << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
   std::string fgdConfig = ssConf.str();
-  core::eve::IEvent* event = new eve::superfgd::EveEvent(fgdConfig.c_str());
+  core::eve::IEvent* event = new eve::superfgd::EveEvent(fgdConfig.c_str()
+          , geometry::superfgd::DP::FGD_DETECTOR_NAME.c_str()
+          , geometry::superfgd::DP::FGD_BRANCH.c_str());
   fRun->addEvent(event);   
   fRun->run();
 
-  fRun->goToEvent(9);
+  fRun->goToEvent(12);
   fRun->visualize();
 }

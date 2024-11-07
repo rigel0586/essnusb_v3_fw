@@ -27,20 +27,19 @@ namespace eve {
 using TEvePathMarkD = TEvePathMarkT<double>;
 
 EsbEveManager::EsbEveManager(const std::string& inputGeomFile
-                    , const std::string& inputFile
-                    , const std::string& tree
-                    , const std::string& branch) 
+                    , const std::string& inputFile) 
     : finputGeomFile(inputGeomFile),
-        finputFile(inputFile),
-        fTree(tree),
-        fBranch(branch)
+        finputFile(inputFile)
 {
     io::EsbReaderPersistency::Instance().setInFile(finputFile);
-    io::EsbReaderPersistency::Instance().Register(fTree.c_str(), fBranch.c_str(), &fReadItem);
 }
 
 EsbEveManager::~EsbEveManager()
 {
+    for(auto ri : fReadItem)
+        delete ri;
+
+    fReadItem.clear();
 }
 
 void EsbEveManager::setLoggerSeverity(Severity sev){
@@ -112,13 +111,13 @@ void EsbEveManager::run()
 
     bool rc{true};
     for(int event = fStartEvents; rc && (event < fEvents); ++event){
-        TTree* ptr_tree = fReadItem.fTree;
-        ptr_tree->GetEntry(event);
-
         std::vector<ITrack> ltracks;
         for(int i = 0; rc && (i < fIEvents.size()); ++i){
+            TTree* ptr_tree = fReadItem[i]->fTree;
+            ptr_tree->GetEntry(event);
+
             fIEvents[i]->beforeEvent();
-            rc = fIEvents[i]->Exec(event, fReadItem.fColl, ltracks);
+            rc = fIEvents[i]->Exec(event, fReadItem[i]->fColl, ltracks);
             fIEvents[i]->afterEvent();
 
             if(!rc){
@@ -176,16 +175,21 @@ void EsbEveManager::visualize()
 void EsbEveManager::addEvent(IEvent* event)
 {
     fIEvents.emplace_back(event);
+    io::EsbReaderPersistency::ReadItem* ri = new io::EsbReaderPersistency::ReadItem();
+    io::EsbReaderPersistency::Instance().Register(event->getTree().c_str(), event->getBranch().c_str(), ri);
+    fReadItem.emplace_back(ri);
 }
 
 bool EsbEveManager::Init()
 {
-   if(fReadItem.fEntries < fEvents){
-       LOG(fatal) << "Input file  " << finputFile << " has fewer entries than requested" 
-                   << "[ Requested " << fEvents << " , available " << fReadItem.fEntries;
-       return false;
-   }
-
+    for(io::EsbReaderPersistency::ReadItem* ri : fReadItem){
+        if(ri->fEntries < fEvents){
+        LOG(fatal) << "Input file  " << finputFile << " has fewer entries than requested" 
+                    << "[ Requested " << fEvents << " , available " << ri->fEntries;
+        return false;
+        }
+    }
+   
     bool rc{true};
     for(int i = 0; rc && (i < fIEvents.size()); ++i)
     {

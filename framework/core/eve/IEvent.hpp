@@ -18,6 +18,8 @@ class IEvent: public TObject
 {
     public:
         IEvent() {}
+
+        IEvent(const std::string& tree, const std::string& branch) : fTree(tree), fBranch(branch)  {}
         
         virtual bool Init() {return true;};
 
@@ -33,8 +35,16 @@ class IEvent: public TObject
         void  setName(std::string n){fname = n;}
         std::string  getName(){return fname;}
 
+        std::string  getTree(){return fTree;}
+        void  setTree(std::string n){fTree = n;}
+
+        std::string  getBranch(){return fBranch;}
+        void  setBranch(std::string n){fBranch = n;}
+
 private:
     std::string fname;
+    std::string fTree;
+    std::string fBranch;
 
     ClassDef(IEvent, 2);
 };

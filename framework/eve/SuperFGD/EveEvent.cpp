@@ -26,7 +26,12 @@ EveEvent::EveEvent()
 // -----   Constructor   -------------------------------------------
 EveEvent::EveEvent(const char* geoConfigFile) 
 { 
-  fParams.LoadPartParams(geoConfigFile);
+    fParams.LoadPartParams(geoConfigFile);
+}
+
+EveEvent::EveEvent(const char* geoConfigFile, const std::string& tree, const std::string& branch):IEvent(tree, branch)
+{ 
+    fParams.LoadPartParams(geoConfigFile);
 }
 // -------------------------------------------------------------------------
 
@@ -102,7 +107,26 @@ bool EveEvent::Exec(int eventId, TClonesArray* data, std::vector<core::eve::ITra
     auto it = trackMap.begin();
     while(it != trackMap.end())
     {
-        tracks.emplace_back(it->second);
+        Int_t trackId = it->first; 
+        core::eve::ITrack mapTrack = it->second;
+        const std::vector<core::eve::ITrackPoint>& mapTrackPoints = mapTrack.getPoints();
+        bool isExisting{false};
+        for(int j = 0; j < tracks.size(); ++j)
+        {
+            core::eve::ITrack& tr = tracks[j];
+            const std::vector<core::eve::ITrackPoint>& trPoints = tr.getPoints();
+            if(!trPoints.empty() && trPoints[0].GetTrackId() == trackId){
+                for(int p = 0; p < mapTrackPoints.size(); ++p)
+                {
+                    tr.addPoint(const_cast<core::eve::ITrackPoint&>(mapTrackPoints[p]));
+                }
+                isExisting = true;
+            }
+        }
+
+        if(!isExisting)
+            tracks.emplace_back(mapTrack);
+
         ++it;
     }
 

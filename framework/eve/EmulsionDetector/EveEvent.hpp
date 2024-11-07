@@ -21,6 +21,7 @@ class EveEvent : public core::eve::IEvent
  public:
 
   EveEvent();
+  EveEvent(const std::string& tree, const std::string& branch);
 
   /** Destructor **/
   ~EveEvent();

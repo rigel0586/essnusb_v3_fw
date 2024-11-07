@@ -11,9 +11,7 @@ void simulate_4_visualize(Int_t nEvents = 3)
   ssInput << gSystem->Getenv("WORKSPACE_DIR");
   ssInput << "/simulation/wcsim_sim_output.root";
   std::string inputFile = ssInput.str();
-  core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile 
-          , "WCSim_Detector"
-          , "DataSimulationPoints");
+  core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile );
 
   fRun->setNumberOfEvents(nEvents);   
   fRun->setLoggerSeverity(core::eve::Severity::debug2);
@@ -25,7 +23,7 @@ void simulate_4_visualize(Int_t nEvents = 3)
   fRun->setOutputFile(outputFile);
 
   // Set IEvents 
-  core::eve::IEvent* event = new eve::wcsim::EveEvent();
+  core::eve::IEvent* event = new eve::wcsim::EveEvent("WCSim_Detector", "DataSimulationPoints");
   fRun->addEvent(event);   
   fRun->run();
 

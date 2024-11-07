@@ -39,10 +39,7 @@ enum class Severity : int
 class EsbEveManager : public TObject
 {
 public:
-    EsbEveManager(const std::string& inputGeomFile
-                    , const std::string& inputFile
-                    , const std::string& tree
-                    , const std::string& branch);
+    EsbEveManager(const std::string& inputGeomFile , const std::string& inputFile);
     ~EsbEveManager();
 
     void setLoggerSeverity(Severity sev);
@@ -63,10 +60,8 @@ private:
     std::vector<IEvent*> fIEvents;
     const std::string finputFile;
     const std::string finputGeomFile;
-    const std::string fTree;
-    const std::string fBranch;
 
-    io::EsbReaderPersistency::ReadItem fReadItem;
+    std::vector<io::EsbReaderPersistency::ReadItem*> fReadItem;
     EsbEveEventManager m_esbEveEventManager;
 
     bool Init();

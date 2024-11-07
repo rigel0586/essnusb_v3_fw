@@ -26,6 +26,8 @@ class EveEvent : public core::eve::IEvent
 
   EveEvent(const char* geoConfigFile);
 
+  EveEvent(const char* geoConfigFile, const std::string& tree, const std::string& branch);
+
   /** Destructor **/
   ~EveEvent();
 
