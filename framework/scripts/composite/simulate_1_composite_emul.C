@@ -80,7 +80,7 @@ void simulate_1_composite_emul(Int_t nEvents = 3)
     // File containing interaction data
     std::stringstream seventsData;
     seventsData << gSystem->Getenv("WORKSPACE_DIR");
-    seventsData << "/simulation/composite_emil_eventsData.dat";
+    seventsData << "/simulation/composite_emul_eventsData.dat";
     std::string eventsDataPath = seventsData.str();
     generators::generic::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
 

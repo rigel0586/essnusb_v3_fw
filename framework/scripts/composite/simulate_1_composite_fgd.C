@@ -63,18 +63,18 @@ void simulate_1_composite_fgd(Int_t nEvents = 1)
     std::string neutrinoFluxPath = sflux.str();
 
     
-    generators::generic::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
+    generators::superfgd::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
     //File with cross-section splines (see: http://scisoft.fnal.gov/scisoft/packages/genie_xsec/)
-    std::string genieXCrossPath = gSystem->Getenv("GENIE_XCROSS");
+    std::string genieXCrossPath = gSystem->Getenv("GENIE_XCROSS_BIG");
 
     
-    generators::generic::GenieGenerator::GlobalState.fXsecSplineFileName = genieXCrossPath; 
+    generators::superfgd::GenieGenerator::GlobalState.fXsecSplineFileName = genieXCrossPath; 
     // File containing interaction data
     std::stringstream seventsData;
     seventsData << gSystem->Getenv("WORKSPACE_DIR");
     seventsData << "/simulation/composite_fgd_eventsData.dat";
     std::string eventsDataPath = seventsData.str();
-    generators::generic::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
+    generators::superfgd::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
 
     
     generators::superfgd::FgdGenieGenerator* partGen = new generators::superfgd::FgdGenieGenerator(

@@ -364,6 +364,7 @@ void FgdDetector::EndOfEvent(G4HCofThisEvent*)
 
 TVector3 FgdDetector::NextVertexPosition()
 {
+  Double_t coeff = cm / m;
     static std::uniform_real_distribution<Double_t> ldis(-0.5,0.5);
     Double_t x_det = f_total_X * ldis(frndGen);
     Double_t y_det = f_total_Y * ldis(frndGen);
@@ -374,9 +375,9 @@ TVector3 FgdDetector::NextVertexPosition()
     // Double_t rndm_Y = (fposY + y_det) * fut.rootToG4CoeffLength();
     // Double_t rndm_Z = (fposZ - f_total_Z/2 - 10) * fut.rootToG4CoeffLength();
 
-    Double_t rndm_X = (fposX + x_det);
-    Double_t rndm_Y = (fposY + y_det);
-    Double_t rndm_Z = (fposZ - f_total_Z/2 - 10);
+    Double_t rndm_X = (fposX + x_det*coeff);
+    Double_t rndm_Y = (fposY + y_det*coeff);
+    Double_t rndm_Z = (fposZ - coeff*f_total_Z/2 - 10);
 
     TVector3 nextPosition;
     nextPosition.SetXYZ(rndm_X, rndm_Y, rndm_Z);

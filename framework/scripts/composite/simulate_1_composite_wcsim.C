@@ -47,7 +47,7 @@ void simulate_1_composite_wcsim(Int_t nEvents = 3)
     // ==============================
 
     // WCSim
-    TVector3 wcsimPosition(0,0,50*m);
+    TVector3 wcsimPosition(0,0,100*m);
     G4int DetConfig = 1;
     WCSimTuningParameters* WCSimTuningPars = new WCSimTuningParameters();
     geometry::WCSimGeometry* wcsimDetector = new geometry::WCSimGeometry(wcsimPosition.X()
