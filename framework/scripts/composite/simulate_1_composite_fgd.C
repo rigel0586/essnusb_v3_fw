@@ -1,4 +1,4 @@
-void simulate_1_composite_fgd(Int_t nEvents = 1)
+void simulate_1_composite_fgd(Int_t nEvents = 10)
 {
     using namespace esbroot;
 
@@ -32,6 +32,7 @@ void simulate_1_composite_fgd(Int_t nEvents = 1)
                                                                                         ,fgdseed);
 
     esbSim->AddDetector(static_cast<core::detector::IDetector*>(fgdDetector));
+    esbroot::generators::generic::IFluxNextPosition* fluxFgdPos = static_cast<esbroot::generators::generic::IFluxNextPosition*>(fgdDetector); 
     // ==============================
 
     // Emulsion
@@ -42,6 +43,7 @@ void simulate_1_composite_fgd(Int_t nEvents = 1)
                                                                                         , emulsionPosition.Z()
                                                                                         , seed);
     esbSim->AddDetector(static_cast<core::detector::IDetector*>(emulsionDetector)); 
+    esbroot::generators::generic::IFluxNextPosition* fluxEmulsionPos = static_cast<esbroot::generators::generic::IFluxNextPosition*>(emulsionDetector); 
     // ==============================
 
     // WCSim
@@ -55,7 +57,13 @@ void simulate_1_composite_fgd(Int_t nEvents = 1)
                                                                                         , WCSimTuningPars
                                                                                         , seed);
     esbSim->AddDetector(static_cast<core::detector::IDetector*>(wcsimDetector));
+    esbroot::generators::generic::IFluxNextPosition* fluxWCSimPos = static_cast<esbroot::generators::generic::IFluxNextPosition*>(wcsimDetector);
     //=======================================
+
+    std::vector<esbroot::generators::generic::IFluxNextPosition*> fluPos;
+    fluPos.emplace_back(fluxFgdPos);
+    // fluPos.emplace_back(fluxEmulsionPos);
+    // fluPos.emplace_back(fluxWCSimPos);
 
     std::stringstream sflux;
     sflux << gSystem->Getenv("ESB_BASE_DIR");
@@ -63,25 +71,25 @@ void simulate_1_composite_fgd(Int_t nEvents = 1)
     std::string neutrinoFluxPath = sflux.str();
 
     
-    generators::superfgd::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
+    generators::generic::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
     //File with cross-section splines (see: http://scisoft.fnal.gov/scisoft/packages/genie_xsec/)
     std::string genieXCrossPath = gSystem->Getenv("GENIE_XCROSS_BIG");
 
     
-    generators::superfgd::GenieGenerator::GlobalState.fXsecSplineFileName = genieXCrossPath; 
+    generators::generic::GenieGenerator::GlobalState.fXsecSplineFileName = genieXCrossPath; 
     // File containing interaction data
     std::stringstream seventsData;
     seventsData << gSystem->Getenv("WORKSPACE_DIR");
-    seventsData << "/simulation/composite_fgd_eventsData.dat";
+    seventsData << "/simulation/composite_emul_eventsData.dat";
     std::string eventsDataPath = seventsData.str();
-    generators::superfgd::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
+    generators::generic::GenieGenerator::GlobalState.fOutputFileName = eventsDataPath;
 
     
-    generators::superfgd::FgdGenieGenerator* partGen = new generators::superfgd::FgdGenieGenerator(
-		        fgdconfig.c_str()  //File with detector configuration
+    generators::generic::GenericGenieGenerator* partGen = new generators::generic::GenericGenieGenerator(
+            fluPos // Vertex position generator
+		        , fgdDetector->GetName()    // Name of the volume to generate the neutrino events
 		        , neutrinoFluxPath.c_str()  // File with neutrino flux to use if the external flux driver is not passed
 	          , seed // uniform random number generator seed
-            , fgdPosition
             , nEvents
             , nullptr // external_fluxDriver
             , false // set to use uniformalize the flux (it loops around the neutrino records in the flux txt file regard)
@@ -89,14 +97,8 @@ void simulate_1_composite_fgd(Int_t nEvents = 1)
             , false // fkeepThrowingFluxNu -> flag to GMCJDriver indicating to continue throwing a neutrino until it interacts or to stop if no interaction has occured 
       );
 
-    
-    partGen->UseFixVertex(false);
-
-    TVector3 verPosition(fgdPosition.X() ,fgdPosition.Y(), fgdPosition.Z());
-    partGen->SetVertexPos(verPosition);
-
     //Add to list of generators
-    esbSim->setGenerator(static_cast<core::generator::IGenerator*>(partGen));
+    esbSim->setGenerator(partGen);
 
     esbSim->run();
 }
