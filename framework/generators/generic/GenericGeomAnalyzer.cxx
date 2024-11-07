@@ -53,18 +53,18 @@ const genie::PathLengthList & GenericGeomAnalyzer::ComputePathLengths(const TLor
 
 const TVector3 & GenericGeomAnalyzer::GenerateVertex(const TLorentzVector &x, const TLorentzVector &p, int tgtpdg)
 {
-    TVector3 geomVec = ROOTGeomAnalyzer::GenerateVertex(x, p, tgtpdg);
+    //TVector3 geomVec = ROOTGeomAnalyzer::GenerateVertex(x, p, tgtpdg);
     LOG(debug2) << "GenericGeomAnalyzer::GenerateVertex TLorentzVector &x " << " x " << x.X() 
                                                 << " y " << x.Y() 
                                                 << " z " << x.Z();
 
-    LOG(debug2) << "GenericGeomAnalyzer::GenerateVertex geomVec " << " x " << geomVec.X()
-                                                << " y " << geomVec.Y() 
-                                                << " z " << geomVec.Z();
+    // LOG(debug2) << "GenericGeomAnalyzer::GenerateVertex geomVec " << " x " << geomVec.X()
+    //                                             << " y " << geomVec.Y() 
+    //                                             << " z " << geomVec.Z();
 
-    LOG(debug2) << "GenericGeomAnalyzer::GenerateVertex rootToG4CoeffLength " << " x " << geomVec.X() * f_util.rootToG4CoeffLength()
-                                                << " y " << geomVec.Y() * f_util.rootToG4CoeffLength() 
-                                                << " z " << geomVec.Z() * f_util.rootToG4CoeffLength();
+    // LOG(debug2) << "GenericGeomAnalyzer::GenerateVertex rootToG4CoeffLength " << " x " << geomVec.X() * f_util.rootToG4CoeffLength()
+    //                                             << " y " << geomVec.Y() * f_util.rootToG4CoeffLength() 
+    //                                             << " z " << geomVec.Z() * f_util.rootToG4CoeffLength();
 
     fposVec.SetXYZ( x.X() , x.Y(), x.Z() );
     // fposVec = geomVec;
