@@ -20,7 +20,7 @@ void simulate_1_composite_fgd_gen(Int_t nEvents = 10)
 
     // Fgd
     unsigned int fgdseed = 42;
-    TVector3 fgdPosition(0,0,-2*m);
+    TVector3 fgdPosition(0,0, -1.5);
     std::stringstream ss;
     ss << gSystem->Getenv("ESB_BASE_DIR");
     ss << "/geometry/SuperFGD/EsbSuperFGD/EsbConfig/fgdconfig";
@@ -47,7 +47,7 @@ void simulate_1_composite_fgd_gen(Int_t nEvents = 10)
     // ==============================
 
     // WCSim
-    TVector3 wcsimPosition(0,0,50*m);
+    TVector3 wcsimPosition(0,0,100*m);
     G4int DetConfig = 1;
     WCSimTuningParameters* WCSimTuningPars = new WCSimTuningParameters();
     geometry::WCSimGeometry* wcsimDetector = new geometry::WCSimGeometry(wcsimPosition.X()
