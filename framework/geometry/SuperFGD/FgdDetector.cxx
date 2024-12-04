@@ -294,7 +294,7 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     LOG(debug) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
     LOG(debug) << "  fELoss " << fELoss;
 
-    double g4ToRootEnergy = 1; //fut.g4ToRootCoeffEnergy();
+    double g4ToRootEnergy = fut.g4ToRootCoeffEnergy();
     double g4toRootCoeff = fut.g4ToRootCoeffLength();
     AddHit(fTrackID, fVolumeID
           ,TVector3(fposX,       fposY,       fposZ)
