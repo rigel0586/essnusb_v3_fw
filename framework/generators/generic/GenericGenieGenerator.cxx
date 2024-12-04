@@ -206,9 +206,9 @@ void GenericGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 
                         // Set momentum
                         G4ParticleMomentum parMomentum;
-                        parMomentum.setX(par->Px());
-                        parMomentum.setY(par->Py());
-                        parMomentum.setZ(par->Pz());
+                        parMomentum.setX(par->Px() * f_util.rootToG4CoeffEnergy());
+                        parMomentum.setY(par->Py() * f_util.rootToG4CoeffEnergy());
+                        parMomentum.setZ(par->Pz() * f_util.rootToG4CoeffEnergy());
 						fparticleGun->SetParticleMomentum(parMomentum);
 
                         // Set position
