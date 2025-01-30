@@ -259,7 +259,7 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
 
   // Sum energy loss for all steps in the active volume
   fELoss += astep->GetTotalEnergyDeposit();
-  fLength += astep->GetStepLength();
+  fLength += (astep->GetStepLength() * fut.g4ToRootCoeffLength());
 
   // Create FairTutorialDet1Point at exit of active volume
   if ( astep->IsLastStepInVolume() ) 
@@ -281,21 +281,23 @@ G4bool FgdDetector::ProcessHits(G4Step* astep,G4TouchableHistory* ROHist)
     // === Print info
     G4ParticleDefinition* parDef = 	track->GetDefinition();
 
+    double g4ToRootEnergy = fut.g4ToRootCoeffEnergy();
+    double g4toRootCoeff = fut.g4ToRootCoeffLength();
+
     LOG(debug) << "  TrackPid " << track->GetTrackID();
     LOG(debug) << "  TrackCharge " << parDef->GetPDGCharge();
     LOG(debug) << "  PDG " << parDef->GetPDGEncoding();
     LOG(debug) << "  ParticleName " << parDef->GetParticleName();
     LOG(debug) << "  vol->getCopyNo() " << fVolumeID;
     LOG(debug) << "  vol->getVolumeId() " << fVolumeName;
-    LOG(debug) << "  fPos.X() " << fPos.X();
-    LOG(debug) << "  fPos.Y() " << fPos.Y();
-    LOG(debug) << "  fPos.Z() " << fPos.Z();
-    LOG(debug) << "  TrackLength " << track->GetTrackLength();
+    LOG(debug) << "  fPos.X() " << fPos.X() << " [cm]";
+    LOG(debug) << "  fPos.Y() " << fPos.Y() << " [cm]";
+    LOG(debug) << "  fPos.Z() " << fPos.Z() << " [cm]";
+    LOG(debug) << "  TrackLength " << track->GetTrackLength()*fut.g4ToRootCoeffLength()  << " [cm]";
     LOG(debug) << "  GetCurrentTrackNumber " << track->GetCurrentStepNumber();
     LOG(debug) << "  fELoss " << fELoss;
 
-    double g4ToRootEnergy = fut.g4ToRootCoeffEnergy();
-    double g4toRootCoeff = fut.g4ToRootCoeffLength();
+    
     AddHit(fTrackID, fVolumeID
           ,TVector3(fposX,       fposY,       fposZ)
           ,TVector3(fPos.X() * g4toRootCoeff,       fPos.Y() * g4toRootCoeff,       fPos.Z() * g4toRootCoeff)
@@ -317,11 +319,12 @@ data::superfgd::FgdDetectorPoint* FgdDetector::AddHit(Int_t trackID, Int_t detID
     LOG(debug2) << "FgdDetector::AddHit";
     LOG(debug2) << "trackID " << trackID;
     LOG(debug2) << "detID " << detID;
-    LOG(debug2) << "pos.X() " << pos.X() << "; pos.Y() " << pos.Y()<< "; pos.Z() " << pos.Z();
+    LOG(debug2) << "pos.X() " << pos.X() << "; pos.Y() " << pos.Y()<< "; pos.Z() " << pos.Z() << " [cm]";
     LOG(debug2) << "mom.Px() " << mom.Px() << "; mom.Py() " << mom.Py() << "; mom.Pz() " << mom.Pz();
     LOG(debug2) << "time " << time;
     LOG(debug2) << "edep " << edep;
     LOG(debug2) << "pdg " << pdg;
+    LOG(debug2) << " AddHit::TrackLength " << trackLength  << " [cm]";
 
   if(fFgdDetectorPointCollection.fdata == nullptr) return nullptr;
 
