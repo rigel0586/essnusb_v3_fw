@@ -33,7 +33,7 @@
 <br/>
 <br/>
 <br/>
-## Known build issues: <br/>
+# Known build issues: <br/>
 1. On linux mint 21.3 during compilation of cern root you can get Segmentation fault <br/>
     **durint IPA pass: ifc**<br/>
     **... internal compiler error: Segmentation fault**<br/>
@@ -47,7 +47,7 @@
    b) lhapdf 5 to be removed during compilation of geant4 (TODO) - this also has to be tested<br/>
 <br/>
 <br/>
-## Known framework simulation issues: <br/>
+# Known framework simulation issues: <br/>
 1. WCSim geometry crashes when displaying it.<br/>
 Since we use cern root`s TEveManager to display geometries (ref: https://root.cern/doc/master/classTEveManager.html)<br/>
 We do a convertion from geant4 and root geometries - for various reasons, from display geometry and tracks to using genie rootalyzer (which works only with cern root geometry)<br/>
@@ -70,7 +70,7 @@ Solution: For the moment either to modify the geometry or to remove the problema
 
 
 <br/>
-## Reference used for display examples:<br/>
+# Reference used for display examples:<br/>
 1. Event display tutorials -> https://root.cern/doc/v628/group__tutorial__eve.html <br/>
 
 
