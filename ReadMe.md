@@ -33,6 +33,7 @@
 <br/>
 <br/>
 <br/>
+
 # Known build issues: <br/>
 1. On linux mint 21.3 during compilation of cern root you can get Segmentation fault <br/>
     **durint IPA pass: ifc**<br/>
@@ -47,6 +48,7 @@
    b) lhapdf 5 to be removed during compilation of geant4 (TODO) - this also has to be tested<br/>
 <br/>
 <br/>
+
 # Known framework simulation issues: <br/>
 1. WCSim geometry crashes when displaying it.<br/>
 Since we use cern root`s TEveManager to display geometries (ref: https://root.cern/doc/master/classTEveManager.html)<br/>
@@ -59,15 +61,14 @@ For WCSim there is a an erorr e.g.:<br/>
 <br/>
 This is caused by using geant4 replica e.g.
 G4VPhysicalVolume* physiWCBarrelRing = <br/>
-    new G4PVReplica("WCBarrelRing",<br/>
-		    logicWCBarrelRing,<br/>
-		    logicWCBarrelAnnulus,<br/>
-		    kZAxis,<br/>
-		    (G4int)WCBarrelNRings-2,<br/>
-		    barrelCellHeight);<br/>
+    new G4PVReplica("WCBarrelRing", <br/>
+            logicWCBarrelRing,<br/>
+            logicWCBarrelAnnulus,<br/>
+            **kZAxis**, -> replicas (in this case by Z axis) cause the error<br/>
+            (G4int)WCBarrelNRings-2,<br/>
+            barrelCellHeight);<br/>
 <br/>
 Solution: For the moment either to modify the geometry or to remove the problematic geometry feature.<br/>
-
 
 <br/>
 # Reference used for display examples:<br/>
