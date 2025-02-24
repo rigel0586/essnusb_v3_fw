@@ -33,13 +33,13 @@
 <br/>
 <br/>
 <br/>
-## Known build issues:
+## Known build issues: <br/>
 1. On linux mint 21.3 during compilation of cern root you can get Segmentation fault <br/>
     **durint IPA pass: ifc**<br/>
     **... internal compiler error: Segmentation fault**<br/>
     **}**<br/>
 <br/>
-    Solution: Add **-DNO_IPO=TRUE** to the cmake file (source: https://github.com/COMBINE-lab/salmon/issues/664).<br/>
+    Solution: Add **-DNO_IPO=TRUE** to the cmake file (source: https://github.com/COMBINE-lab/salmon/issues/664 ).<br/>
 <br/>
 2. On Linux Mint 22.1 Python 2 is not available, which causes lhapdf 5 error during compilation (lhapdf 5 requires python 2)<br/>
    Solution: <br/>
@@ -47,7 +47,7 @@
    b) lhapdf 5 to be removed during compilation of geant4 (TODO) - this also has to be tested<br/>
 <br/>
 <br/>
-## Known framework simulation issues:<br/>
+## Known framework simulation issues: <br/>
 1. WCSim geometry crashes when displaying it.<br/>
 Since we use cern root`s TEveManager to display geometries (ref: https://root.cern/doc/master/classTEveManager.html)<br/>
 We do a convertion from geant4 and root geometries - for various reasons, from display geometry and tracks to using genie rootalyzer (which works only with cern root geometry)<br/>
