@@ -34,7 +34,7 @@
 <br/>
 <br/>
 
-# Known issues for Linux Mint 21.2 (21.3)
+# Known issues for Linux Mint 21.2 (21.3) and 22.1 for essnusb versions < 3.0.0
 ## Known build issues: <br/>
 1. On linux mint 21.3 during compilation of cern root you can get Segmentation fault <br/>
     **durint IPA pass: ifc**<br/>
@@ -48,7 +48,7 @@
 3. On Linux Mint 22.1 Python 2 is not available, which causes lhapdf 5 error during compilation (lhapdf 5 requires python 2)<br/>
    Solution: <br/>
    a) Python has to be installed manually or with penv<br/>
-   b) lhapdf 5 to be removed during compilation of geant4 (TODO) - this also has to be tested<br/>
+   b) lhapdf 5 to be removed during compilation of genie (TODO) - this also has to be tested<br/>
 <br/>
 <br/>
 
