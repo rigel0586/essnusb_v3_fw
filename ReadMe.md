@@ -41,7 +41,7 @@
     **... internal compiler error: Segmentation fault**<br/>
     **}**<br/>
 <br/>
-    Solution: Add **-DNO_IPO=TRUE** to the cmake file (source: https://github.com/COMBINE-lab/salmon/issues/664 ).<br/>
+    Solution: Add __-DNO_IPO=TRUE__ to the cmake file (source: https://github.com/COMBINE-lab/salmon/issues/664 ).<br/>
 <br/>
 2. On Linux Mint 22.1 Python 2 is not available, which causes lhapdf 5 error during compilation (lhapdf 5 requires python 2)<br/>
    Solution: <br/>
@@ -65,7 +65,7 @@ G4VPhysicalVolume* physiWCBarrelRing = <br/>
     new G4PVReplica("WCBarrelRing", <br/>
             logicWCBarrelRing,<br/>
             logicWCBarrelAnnulus,<br/>
-            **kZAxis**, -> replicas (in this case by Z axis) cause the error<br/>
+            __kZAxis__ , -> replicas (in this case by Z axis) cause the error<br/>
             (G4int)WCBarrelNRings-2,<br/>
             barrelCellHeight);<br/>
 <br/>
