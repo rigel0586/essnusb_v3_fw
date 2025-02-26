@@ -20,7 +20,7 @@ third_party_dir=third_party
 
 root_dir=${base_directory}/${third_party_dir}/cern_root
 dependencies_dir=${base_directory}/${third_party_dir}/dependencies
-geant4_dir=${base_directory}/${third_party_dir}/geant4_11_1
+geant4_dir=${base_directory}/${third_party_dir}/geant4_11_3
 genfit_dir=${base_directory}/${third_party_dir}/genfit
 genie_dir=${base_directory}/${third_party_dir}/genie
 googletest_dir=${base_directory}/${third_party_dir}/googletest
