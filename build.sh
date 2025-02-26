@@ -272,15 +272,15 @@ mkdir genie
 cd genie
 mkdir download
 cd download
-curl -O https://scisoft.fnal.gov/scisoft/packages/genie_xsec/v3_04_00/genie_xsec-3.04.00-noarch-G1802a00000-k250-e1000.tar.bz2
-tar -xf genie_xsec-3.04.00-noarch-G1802a00000-k250-e1000.tar.bz2
+curl -O https://scisoft.fnal.gov/scisoft/packages/genie_xsec/v3_06_00/genie_xsec-3.06.00-noarch-G1802a00000-k250-e1000.tar.bz2
+tar -xf genie_xsec-3.06.00-noarch-G1802a00000-k250-e1000.tar.bz2
 
-genie_xcross=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-FNALsmall.xml
+genie_xcross=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_06_00/NULL/G1802a00000-k250-e1000/data/gxspl-FNALsmall.xml
 check_lib_exists ${genie_xcross}
 
-cd ${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data
+cd ${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_06_00/NULL/G1802a00000-k250-e1000/data
 gzip -dk gxspl-NUbig.xml.gz
-genie_xcross_big=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_04_00/NULL/G1802a00000-k250-e1000/data/gxspl-NUbig.xml
+genie_xcross_big=${fw_directory}/framework/workspace/genie/download/genie_xsec/v3_06_00/NULL/G1802a00000-k250-e1000/data/gxspl-NUbig.xml
 check_lib_exists ${genie_xcross_big}
 
 cd ${fw_directory}
