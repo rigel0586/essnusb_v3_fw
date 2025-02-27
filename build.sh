@@ -220,7 +220,7 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${
 --disable-profiler \
 --disable-validation-tools \
 --enable-cernlib \
---disable-lhapdf \
+--disable-lhapdf5 \
 --enable-flux-drivers \
 --enable-geom-drivers \
 --disable-doxygen \
