@@ -43,9 +43,7 @@ cd cern_root
 mkdir build
 mkdir install
 cd build
-pythia6_inc=${dependencies_dir}/genie/pythia6/v6_428/inc/
-pythia6_lib=${dependencies_dir}/genie/pythia6/v6_428/lib/libPythia6.so
-cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/install -Dmathmore=ON -Dtmva-sofie=ON -Dopengl=ON -Dpythia6=pythia6 -DPYTHIA6_INCLUDE_DIR=${pythia6_inc} -DPYTHIA6_LIBRARY=${pythia6_lib}
+cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/install -Dmathmore=ON -Dtmva-sofie=ON -Dopengl=ON
 cmake --build . 
 cmake --install .
 
