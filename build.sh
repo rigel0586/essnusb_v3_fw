@@ -189,7 +189,7 @@ cd genfit
 mkdir build
 mkdir install
 cd build
-cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install -DCMAKE_SYSTEM_PREFIX_PATH="${fw_directory}/cern_root/build;${fw_directory}/googletest/install/lib/cmake"
+cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install -DCMAKE_SYSTEM_PREFIX_PATH="${fw_directory}/cern_root/build" -DBUILD_TESTING=OFF
 cmake --build . 
 cmake --install .
 
