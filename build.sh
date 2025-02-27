@@ -181,6 +181,8 @@ cmake --install .
 vgm_check_lib=${fw_directory}/vgm/install/lib/libGeant4GM.so
 check_lib_exists ${vgm_check_lib}
 
+cd ${fw_directory}
+
 # Genfit
 mkdir genfit
 cd genfit
