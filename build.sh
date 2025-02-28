@@ -1,7 +1,7 @@
 #!/bin/bash
 # functions
 check_lib_exists(){
- if [[ -f "$1" ]]; then
+ if [ -f "$1" ]; then
     echo "$1 exists. Build is successful"
  else 
     echo "$1 does not exist. Exiting installation ..."
