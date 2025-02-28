@@ -43,6 +43,8 @@ cd cern_root
 mkdir build
 mkdir install
 cd build
+pythia6_inc=${dependencies_dir}/genie/pythia6/v6_428/inc/
+pythia6_lib=${dependencies_dir}/genie/pythia6/v6_428/lib/libPythia6.so
 cmake -S ${root_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/cern_root/install -Dmathmore=ON -Dtmva-sofie=ON -Dopengl=ON -Dpythia6=pythia6 -DPYTHIA6_INCLUDE_DIR=${pythia6_inc} -DPYTHIA6_LIBRARY=${pythia6_lib}
 cmake --build . 
 cmake --install .
@@ -181,8 +183,6 @@ cmake --install .
 vgm_check_lib=${fw_directory}/vgm/install/lib/libGeant4GM.so
 check_lib_exists ${vgm_check_lib}
 
-cd ${fw_directory}
-
 # Genfit
 mkdir genfit
 cd genfit
@@ -211,16 +211,20 @@ export GENIE=${fw_directory}/genie/build/genie
 export ROOTSYS=${fw_directory}/cern_root/install
 export PATH=$PATH:${fw_directory}/cern_root/install/bin
 export PYTHIA6=${dependencies_dir}/genie/pythia6/v6_428/lib/
+export LHAPDF5_INC=${dependencies_dir}/genie/lhapdf-5.9.1/install/include/
+export LHAPDF5_LIB=${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/ 
+export LHAPDF6_INC=${dependencies_dir}/genie/LHAPDF-6.5.4/install/include/
+export LHAPDF6_LIB=${dependencies_dir}/genie/LHAPDF-6.5.4/install/lib/ 
 export GEANT4_INC=${fw_directory}/geant4/install/include/
 export GEANT4_LIB=${fw_directory}/geant4/install/lib/ 
 
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/
 
 ./configure --prefix=${fw_directory}/genie/install \
 --disable-profiler \
 --disable-validation-tools \
---enable-cernlib \
---disable-lhapdf5 \
+--disable-cernlib \
+--enable-lhapdf \
 --enable-flux-drivers \
 --enable-geom-drivers \
 --disable-doxygen \
@@ -238,6 +242,8 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${
 --with-pythia6-lib=${dependencies_dir}/genie/pythia6/v6_428/lib/  \
 --with-log4cpp-inc=${dependencies_dir}/genie/log4cpp/install/include/  \
 --with-log4cpp-lib=${dependencies_dir}/genie/log4cpp/install/lib/  \
+--lhapdf5-inc=${dependencies_dir}/genie/lhapdf-5.9.1/install/include/  \
+--lhapdf5-lib=${dependencies_dir}/genie/lhapdf-5.9.1/install/lib/ \
 --geant4-inc=${fw_directory}/geant4/install/include/ \
 --geant4-lib=${fw_directory}/geant4/install/lib/ \
 
