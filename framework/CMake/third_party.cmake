@@ -10,20 +10,29 @@ set(FW_BASE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(ROOT_CONFIG "${FW_BASE}/cern_root/install/cmake/")
 set(GEANT4_CONFIG "${FW_BASE}/geant4/install/lib/cmake/Geant4/")
 set(GOOGLE_CONFIG "${FW_BASE}/googletest/install/lib/cmake/GTest/")
-set(FAIRROOT_CONFIG "${FW_BASE}/fairlogger/install/lib/cmake/FairLogger-1.11.1/")
+set(FAIRROOT_CONFIG "${FW_BASE}/fairlogger/install/lib/cmake/FairLogger-2.1.0/")
 set(PATHFINDER_CONFIG "${FW_BASE}/pathfinder/install/")
 set(CLHEP_CONFIG "${FW_BASE}/clhep/lib/CLHEP-2.4.6.4/")
-set(VGM_CONFIG "${FW_BASE}/vgm/install/lib/VGM-5.3.0/")
+set(VGM_CONFIG "${FW_BASE}/vgm/install/lib/VGM-5.3.1/")
 
 set(ROOT_ROOTCLING_DIR "${FW_BASE}/cern_root/install/lib")
 
 
+get_filename_component(VDT_INCLUDE_DIR ${FW_BASE}/cern_root/install/include ABSOLUTE)
+get_filename_component(VDT_LIBRARY ${FW_BASE}/cern_root/install/lib/libvdt.so ABSOLUTE)
 find_package(ROOT   REQUIRED COMPONENTS EG EGPythia6 Geom Eve RGL ROOTEve PATHS   ${ROOT_CONFIG}   NO_DEFAULT_PATH)
 #add ROOT macros to have ROOT_GENERATE_DICTIONARY available
 include(${ROOT_USE_FILE})
+
+
+get_filename_component(XercesC_ROOT_DIR "${FW_BASE}/../../third_party/dependencies/geant4/xerces-c-3.2.5/install/lib/cmake/XercesC/XercesCConfig.cmake" ABSOLUTE)
+include(${XercesC_ROOT_DIR})
+set(XercesC_INCLUDE_DIR ${XercesC_INCLUDE_DIRS})
+set(XercesC_LIBRARY ${XercesC_LIBRARIES})
+
+find_package(VGM REQUIRED PATHS ${VGM_CONFIG} NO_DEFAULT_PATH)
 find_package(Geant4 REQUIRED COMPONENTS gdml qt ui_all vis_all PATHS   ${GEANT4_CONFIG} NO_DEFAULT_PATH)
 find_package(GTest  REQUIRED PATHS   ${GOOGLE_CONFIG} NO_DEFAULT_PATH)
-find_package(VGM REQUIRED PATHS ${VGM_CONFIG} NO_DEFAULT_PATH)
 
 #==== Genie dependencies import
 file(GLOB log4cpp_so_files "${FW_BASE}/log4cpp/lib/*.so")
