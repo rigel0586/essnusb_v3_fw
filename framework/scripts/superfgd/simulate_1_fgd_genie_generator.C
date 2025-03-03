@@ -49,8 +49,7 @@ void simulate_1_fgd_genie_generator(Int_t nEvents = 15)
 
     std::stringstream sflux;
     sflux << gSystem->Getenv("ESB_BASE_DIR");
-    //sflux << "/neutrino_flux/essnusb_v1/nuFlux/nuFlux100km_250kAm.txt";
-    sflux << "/neutrino_flux/essnusb_v1/nuFlux/uni1gev.txt";
+    sflux << "/neutrino_flux/essnusb_v1/nuFlux/nuFlux100km_250kAm.txt";
     std::string neutrinoFluxPath = sflux.str();
 
     generators::superfgd::GenieGenerator::GlobalState.fGenieTune = "G18_02a_00_000";
