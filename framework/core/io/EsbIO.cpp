@@ -44,7 +44,8 @@ void EsbIO::ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume
     rtFactory.SetDebug(1);
     g4Factory.Export(&rtFactory);
     gGeoManager->CloseGeometry();
-    gGeoManager->Export(path_to_file.c_str());
+    if(!path_to_file.empty())
+        gGeoManager->Export(path_to_file.c_str());
 }
 
 void EsbIO::ConvertGDMLToRoorVGM(const std::string& in_path_to_gdml_file, const std::string& out_path_to_root_file)

@@ -11,8 +11,13 @@ ClassImp(esbroot::core::simulation::EsbSimManager)
 #include <fairlogger/Logger.h>
 #include "EsbActionInitializer.hpp"
 #include "ESSnusbPhysicsList.hpp"
+#include "EsbIO.hpp"
 
 #include "EsbWriterPersistency.hpp"
+
+#include "EmptyPrimaryGenerator.hpp"
+
+#include "G4UIQt.hh"
 
 namespace esbroot {
 namespace core {
@@ -155,12 +160,74 @@ void EsbSimManager::run()
     return;
 }
 
-void EsbSimManager::displayGeometry()
+
+void EsbSimManager::displayGeometry(DisplayOption opt)
 {
-    for(detector::IDetector* d : fDetectors)
-    {
-        d->ConstructGeometry(); // Every detector constructs its volumes and add it to the Top volume
-    }
+    if(opt == DisplayOption::ROOT)
+        displayGeometryUsingRoot();
+
+    if(opt == DisplayOption::G4)
+        displayGeometryUsingG4();
+
+    return;
+}
+
+
+
+
+
+void EsbSimManager::displayGeometryUsingG4()
+{
+    G4RunManager* rm = new G4RunManager;
+    detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
+    rm->SetUserInitialization(dc);
+    rm->SetUserInitialization(new physicsList::ESSnusbPhysicsList(fcustomProcesses));
+    rm->SetUserAction(new generator::EmptyPrimaryGenerator());
+    rm->Initialize();
+
+    // Visualization
+    G4VisManager* vm = new G4VisExecutive("quiet");
+    vm->Initialize();
+
+    // Start user interface
+    G4UIQt* ui = new G4UIQt(0, NULL);
+    ui->GetUserInterfaceWidget()->setVisible(false);
+    ui->GetCoutDockWidget()->setVisible(false);
+    G4UImanager* um = G4UImanager::GetUIpointer();
+    um->ApplyCommand("/vis/open OGLSQt 1200x800");
+    um->ApplyCommand("/vis/drawVolume worlds");
+    um->ApplyCommand("/vis/scene/add/axes 0 0 0");
+    ui->AddMenu("views", "Views");
+    ui->AddButton("views", "Front view (+Z)", "/vis/viewer/set/viewpointThetaPhi 180   0 deg");
+    ui->AddButton("views", "Rear view (-Z)",  "/vis/viewer/set/viewpointThetaPhi   0   0 deg");
+    ui->AddButton("views", "Right view (+X)", "/vis/viewer/set/viewpointThetaPhi +90 180 deg");
+    ui->AddButton("views", "Left view (-X)",  "/vis/viewer/set/viewpointThetaPhi -90 180 deg");
+    ui->AddButton("views", "Bottom view (+Y)","/vis/viewer/set/viewpointThetaPhi -90  90 deg");
+    ui->AddButton("views", "Top view (-Y)",   "/vis/viewer/set/viewpointThetaPhi +90  90 deg");
+    ui->AddMenu("options", "Options");
+    ui->AddButton("options", "NbOfSides 24","/vis/viewer/set/lineSegmentsPerCircle 24");
+    ui->AddButton("options", "NbOfSides 360","/vis/viewer/set/lineSegmentsPerCircle 360");
+    ui->AddMenu("axes", "Axes");
+    ui->AddButton("axes", "Add axes", "/vis/scene/add/axes 0 0 0");
+    ui->AddButton("axes", "Hide axes", "/vis/scene/activateModel G4AxesModel false");
+    ui->AddIcon("Front view (+Z)",  "user_icon", "/vis/viewer/set/viewpointThetaPhi 180   0 deg \n /vis/viewer/set/upVector 0 1 0", "TechDraw_ProjFront.xpm");
+    ui->AddIcon("Rear view (-Z)",   "user_icon", "/vis/viewer/set/viewpointThetaPhi   0   0 deg \n /vis/viewer/set/upVector 0 1 0", "TechDraw_ProjRear.xpm");
+    ui->AddIcon("Right view (+X)",  "user_icon", "/vis/viewer/set/viewpointThetaPhi +90 180 deg \n /vis/viewer/set/upVector 0 1 0", "TechDraw_ProjRight.xpm");
+    ui->AddIcon("Left view (-X)",   "user_icon", "/vis/viewer/set/viewpointThetaPhi -90 180 deg \n /vis/viewer/set/upVector 0 1 0", "TechDraw_ProjLeft.xpm");
+    ui->AddIcon("Bottom view (+Y)", "user_icon", "/vis/viewer/set/viewpointThetaPhi -90  90 deg \n /vis/viewer/set/upVector 1 0 0", "TechDraw_ProjBottom.xpm");
+    ui->AddIcon("Top view (-Y)",    "user_icon", "/vis/viewer/set/viewpointThetaPhi +90  90 deg \n /vis/viewer/set/upVector 1 0 0", "TechDraw_ProjTop.xpm");
+    ui->SessionStart();
+
+    delete ui; delete vm; delete rm;
+}
+
+void EsbSimManager::displayGeometryUsingRoot()
+{
+    detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
+    G4VPhysicalVolume* g4worldVol = dc->Create();
+
+    io::EsbIO fio;
+    fio.ExportG4VolumeVGM("", g4worldVol); // Empty path exports into root only, no file
 
     TEveManager::Create();
 

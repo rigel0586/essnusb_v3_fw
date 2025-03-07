@@ -26,6 +26,7 @@
 #pragma link C++ class esbroot::core::detector::IDetector+;
 
 #pragma link C++ class esbroot::core::generator::IGenerator+;
+#pragma link C++ class esbroot::core::generator::EmptyPrimaryGenerator+;
 
 #pragma link C++ class esbroot::core::simulation::EsbSimManager+;
 #pragma link C++ class esbroot::core::simulation::EsbRunAction+;

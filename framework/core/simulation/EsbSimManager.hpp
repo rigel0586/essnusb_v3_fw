@@ -59,6 +59,12 @@ enum class G4_vis : int
     none = 42
 };
 
+enum class DisplayOption : int
+{
+    G4 = 0,
+    ROOT = 1
+};
+
 class EsbSimManager : public TObject
 {
 public:
@@ -84,7 +90,7 @@ public:
 
     void run();
 
-    void displayGeometry();
+    void displayGeometry(DisplayOption opt = DisplayOption::ROOT);
 
     void setConverter(detector::GeomConverter c) {fConverter = c;};
 
@@ -106,6 +112,10 @@ private:
     std::string fWorkindDir{""};
     generator::IGenerator* fIGenerator{nullptr};
     
+    void displayGeometryUsingRoot();
+    void displayGeometryUsingG4();
+
+
     ClassDef(EsbSimManager, 2);
 };
 
