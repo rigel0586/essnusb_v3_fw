@@ -110,6 +110,7 @@ private:
     std::vector<G4VPhysicsConstructor*> fcustomProcesses;
     
     std::string fWorkindDir{""};
+    std::string fDisplayFile{"display.root"};
     generator::IGenerator* fIGenerator{nullptr};
     
     void displayGeometryUsingRoot();

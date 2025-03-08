@@ -11,6 +11,7 @@ ClassImp(esbroot::core::simulation::EsbSimManager)
 #include <fairlogger/Logger.h>
 #include "EsbActionInitializer.hpp"
 #include "ESSnusbPhysicsList.hpp"
+#include "EmptyPhysicsList.hpp"
 #include "EsbIO.hpp"
 
 #include "EsbWriterPersistency.hpp"
@@ -180,8 +181,9 @@ void EsbSimManager::displayGeometryUsingG4()
 {
     G4RunManager* rm = new G4RunManager;
     detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
+    dc->isView(true);
     rm->SetUserInitialization(dc);
-    rm->SetUserInitialization(new physicsList::ESSnusbPhysicsList(fcustomProcesses));
+    rm->SetUserInitialization(new physicsList::EmptyPhysicsList());
     rm->SetUserAction(new generator::EmptyPrimaryGenerator());
     rm->Initialize();
 
@@ -227,7 +229,13 @@ void EsbSimManager::displayGeometryUsingRoot()
     G4VPhysicalVolume* g4worldVol = dc->Create();
 
     io::EsbIO fio;
-    fio.ExportG4VolumeVGM("", g4worldVol); // Empty path exports into root only, no file
+    std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
+    fio.ExportG4VolumeVGM(fileRoot, g4worldVol); // Empty path exports into root only, no file
+    if(!fio.ImportTGeoVolume(fileRoot))
+    {
+         LOG(error) << "Unable to create root geometry for display...";
+         return;
+    }
 
     TEveManager::Create();
 

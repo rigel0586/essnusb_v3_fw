@@ -7,6 +7,7 @@ target_sources(${core_Target} PUBLIC
                 ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbWriterPersistency.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbReaderPersistency.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/physicsList/ESSnusbPhysicsList.cpp
+                ${CMAKE_CURRENT_SOURCE_DIR}/physicsList/EmptyPhysicsList.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/detector/EsbDetectorConstructor.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/generator/IGenerator.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/generator/EmptyPrimaryGenerator.cpp
@@ -23,6 +24,7 @@ set(core_headers ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbIO.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbWriterPersistency.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/io/EsbReaderPersistency.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/physicsList/ESSnusbPhysicsList.hpp 
+                 ${CMAKE_CURRENT_SOURCE_DIR}/physicsList/EmptyPhysicsList.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/detector/EsbDetectorConstructor.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/detector/IDetector.hpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/generator/IGenerator.hpp
