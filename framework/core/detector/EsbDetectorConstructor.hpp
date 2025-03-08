@@ -61,7 +61,7 @@ private:
     const std::string fFinalgdml{"esbFinalVolume.gdml"};
     const std::string fFinalroot{"esbFinalVolume.root"};
 
-    const std::string& f_dgml_view_File{""};
+    std::string f_dgml_view_File{""};
     bool f_isView{false};
     bool fOverlapCheck{false};
     
