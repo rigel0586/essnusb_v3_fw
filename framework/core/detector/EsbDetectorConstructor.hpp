@@ -47,6 +47,9 @@ public:
     void SetSensitiveHandler(G4LogicalVolume* logVol, G4VSensitiveDetector* aSD);
     void SetMultiSensitiveHandler(std::string logVolName, G4VSensitiveDetector* aSD, bool multi);
 
+    std::string getRootGeomFile(){return (fWorkDir + "/" + fFinalroot);}
+    std::string getGDMLGeomFile(){return (fWorkDir + "/" + fFinalgdml);}
+
 private:
     std::vector<IDetector*> fDetectors;
     

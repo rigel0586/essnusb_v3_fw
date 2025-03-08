@@ -187,9 +187,12 @@ void EsbSimManager::displayGeometryUsingG4()
     rm->SetUserAction(new generator::EmptyPrimaryGenerator());
     rm->Initialize();
 
+    LOG(error) << "1 ";
     // Visualization
     G4VisManager* vm = new G4VisExecutive("quiet");
     vm->Initialize();
+
+    LOG(error) << "2 ";
 
     // Start user interface
     G4UIQt* ui = new G4UIQt(0, NULL);
@@ -220,6 +223,8 @@ void EsbSimManager::displayGeometryUsingG4()
     ui->AddIcon("Top view (-Y)",    "user_icon", "/vis/viewer/set/viewpointThetaPhi +90  90 deg \n /vis/viewer/set/upVector 1 0 0", "TechDraw_ProjTop.xpm");
     ui->SessionStart();
 
+    LOG(error) << "3 ";
+
     delete ui; delete vm; delete rm;
 }
 
@@ -228,10 +233,16 @@ void EsbSimManager::displayGeometryUsingRoot()
     detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
     G4VPhysicalVolume* g4worldVol = dc->Create();
 
+    if(g4worldVol == nullptr)
+    {
+         LOG(error) << "Unable to create root geometry for display...";
+         return;
+    }
+
     io::EsbIO fio;
-    std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
-    fio.ExportG4VolumeVGM(fileRoot, g4worldVol); // Empty path exports into root only, no file
-    if(!fio.ImportTGeoVolume(fileRoot))
+    // std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
+    // fio.ExportG4VolumeVGM(fileRoot, g4worldVol); // Empty path exports into root only, no file
+    if(!fio.ImportTGeoVolume(dc->getRootGeomFile()))
     {
          LOG(error) << "Unable to create root geometry for display...";
          return;
