@@ -1,4 +1,4 @@
-#sudo apt-get install -y libboost-program-options-dev
+sudo apt-get install -y libboost-program-options-dev
 
 cd ../
 
