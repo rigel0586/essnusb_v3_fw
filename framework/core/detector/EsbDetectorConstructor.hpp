@@ -49,6 +49,7 @@ public:
 
     std::string getRootGeomFile(){return (fWorkDir + "/" + fFinalroot);}
     std::string getGDMLGeomFile(){return (fWorkDir + "/" + fFinalgdml);}
+    std::string getG4GDMLGeomFile(){return (fWorkDir + "/" + fg4Finalgdml);}
 
 private:
     std::vector<IDetector*> fDetectors;
@@ -62,6 +63,7 @@ private:
     const std::string fPostgdml{"esbInterVolume.gdml"};
     const std::string fPostVgmRoot{"esbInterVolume.root"};
     const std::string fFinalgdml{"esbFinalVolume.gdml"};
+    const std::string fg4Finalgdml{"esbFinalG4Volume.gdml"};
     const std::string fFinalroot{"esbFinalVolume.root"};
 
     std::string f_dgml_view_File{""};

@@ -174,9 +174,6 @@ void EsbSimManager::displayGeometry(DisplayOption opt)
 }
 
 
-
-
-
 void EsbSimManager::displayGeometryUsingG4()
 {
     G4RunManager* rm = new G4RunManager;
@@ -187,15 +184,18 @@ void EsbSimManager::displayGeometryUsingG4()
     rm->SetUserAction(new generator::EmptyPrimaryGenerator());
     rm->Initialize();
 
-    LOG(error) << "1 ";
     // Visualization
     G4VisManager* vm = new G4VisExecutive("quiet");
     vm->Initialize();
 
-    LOG(error) << "2 ";
+    G4int argc = 1;
+    char **argv{nullptr};
+    int visId = static_cast<int>(core::simulation::G4_vis::qt);
+    char* type = const_cast<char*>(fvisSessionTypes[visId].c_str());
+    argv = &type;
 
     // Start user interface
-    G4UIQt* ui = new G4UIQt(0, NULL);
+    G4UIQt* ui = new G4UIQt(argc, argv);
     ui->GetUserInterfaceWidget()->setVisible(false);
     ui->GetCoutDockWidget()->setVisible(false);
     G4UImanager* um = G4UImanager::GetUIpointer();
@@ -223,9 +223,9 @@ void EsbSimManager::displayGeometryUsingG4()
     ui->AddIcon("Top view (-Y)",    "user_icon", "/vis/viewer/set/viewpointThetaPhi +90  90 deg \n /vis/viewer/set/upVector 1 0 0", "TechDraw_ProjTop.xpm");
     ui->SessionStart();
 
-    LOG(error) << "3 ";
-
-    delete ui; delete vm; delete rm;
+    delete ui;
+    delete vm;
+    delete rm;
 }
 
 void EsbSimManager::displayGeometryUsingRoot()
