@@ -81,8 +81,6 @@ public:
 
 private:
 
-    G4GDMLParser* fg4Parser{nullptr};
-
     ClassDef(EsbIO, 2);
 };
 

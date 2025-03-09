@@ -126,6 +126,10 @@ G4VPhysicalVolume* EsbDetectorConstructor::Create()
         sd->AddMultiSensitiveDetector(convertedWorld, f_sd_multi); // Every detector should find its sensitive volume
     }
 
+    std::string fileg4FinalGdml = fWorkDir + "/" + fg4Finalgdml;
+    if(fIo.deleteFile(fileg4FinalGdml))
+        fIo.ExportG4Volume(fileg4FinalGdml, convertedWorld);
+
     return convertedWorld;
 }
 

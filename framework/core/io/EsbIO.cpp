@@ -15,7 +15,6 @@ namespace io {
 
 EsbIO::EsbIO()
 {
-    fg4Parser = new G4GDMLParser();
 }
 
 EsbIO::~EsbIO()
@@ -27,9 +26,10 @@ int EsbIO::ExportTGeoVolume(const std::string& path_to_file){
 }
 
 int EsbIO::ExportG4Volume(const std::string& path_to_file, G4VPhysicalVolume* g4Volume){
-    if(fg4Parser == nullptr) return -1;
+    G4GDMLParser parser;
+    parser.Write(path_to_file, g4Volume);
 
-    fg4Parser->Write(path_to_file, g4Volume);
+    return 0;
 }
 
 void EsbIO::ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume)
@@ -96,7 +96,7 @@ bool EsbIO::deleteFile(const std::string& file_Path)
     }
 
     LOG(info) << "File: " << fPath_remove << " not found to be deleted. ";
-    return false;
+    return true;
 }
 
 } // namespace io
