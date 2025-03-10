@@ -165,19 +165,38 @@ void EsbSimManager::run()
 void EsbSimManager::displayGeometry(DisplayOption opt)
 {
     if(opt == DisplayOption::ROOT)
-        displayGeometryUsingRoot();
+        constructDisplayGeometryRoot();
 
     if(opt == DisplayOption::G4)
-        displayGeometryUsingG4();
+        constructDisplayGeometryG4();
 
     return;
 }
 
+void EsbSimManager::displayGeometry_fromFile(DisplayOption opt, const std::string& file)
+{
+    if(opt == DisplayOption::ROOT)
+        displayGeometryUsingRoot(file);
 
-void EsbSimManager::displayGeometryUsingG4()
+    if(opt == DisplayOption::G4)
+    {
+        detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(file);
+        displayGeometryUsingG4(dc);
+    }
+
+    return;
+}
+
+void EsbSimManager::constructDisplayGeometryG4()
+{
+    detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
+    displayGeometryUsingG4(dc);
+}
+
+
+void EsbSimManager::displayGeometryUsingG4(detector::EsbDetectorConstructor* dc)
 {
     G4RunManager* rm = new G4RunManager;
-    detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
     dc->isView(true);
     rm->SetUserInitialization(dc);
     rm->SetUserInitialization(new physicsList::EmptyPhysicsList());
@@ -228,7 +247,9 @@ void EsbSimManager::displayGeometryUsingG4()
     delete rm;
 }
 
-void EsbSimManager::displayGeometryUsingRoot()
+
+
+void EsbSimManager::constructDisplayGeometryRoot()
 {
     detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
     G4VPhysicalVolume* g4worldVol = dc->Create();
@@ -239,10 +260,16 @@ void EsbSimManager::displayGeometryUsingRoot()
          return;
     }
 
+    displayGeometryUsingRoot(dc->getRootGeomFile());
+}
+
+
+void EsbSimManager::displayGeometryUsingRoot(const std::string& file)
+{
     io::EsbIO fio;
     // std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
     // fio.ExportG4VolumeVGM(fileRoot, g4worldVol); // Empty path exports into root only, no file
-    if(!fio.ImportTGeoVolume(dc->getRootGeomFile()))
+    if(!fio.ImportTGeoVolume(file))
     {
          LOG(error) << "Unable to create root geometry for display...";
          return;
