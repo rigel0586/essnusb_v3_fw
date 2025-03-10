@@ -91,6 +91,7 @@ public:
     void run();
 
     void displayGeometry(DisplayOption opt = DisplayOption::ROOT);
+    void displayGeometry_fromFile(DisplayOption opt, const std::string& file);
 
     void setConverter(detector::GeomConverter c) {fConverter = c;};
 
@@ -113,8 +114,11 @@ private:
     std::string fDisplayFile{"display.root"};
     generator::IGenerator* fIGenerator{nullptr};
     
-    void displayGeometryUsingRoot();
-    void displayGeometryUsingG4();
+    void displayGeometryUsingRoot(const std::string& file);
+    void constructDisplayGeometryRoot();
+
+    void displayGeometryUsingG4(detector::EsbDetectorConstructor* dc);
+    void constructDisplayGeometryG4();
 
 
     ClassDef(EsbSimManager, 2);
