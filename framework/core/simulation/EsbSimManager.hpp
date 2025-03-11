@@ -61,8 +61,9 @@ enum class G4_vis : int
 
 enum class DisplayOption : int
 {
-    G4 = 0,
-    ROOT = 1
+    GEANT4 = 0,
+    ROOT_OGL = 1,
+    ROOT_TEVE = 2
 };
 
 class EsbSimManager : public TObject
@@ -90,7 +91,7 @@ public:
 
     void run();
 
-    void displayGeometry(DisplayOption opt = DisplayOption::ROOT);
+    void displayGeometry(DisplayOption opt = DisplayOption::ROOT_TEVE);
     void displayGeometry_fromFile(DisplayOption opt, const std::string& file);
 
     void setConverter(detector::GeomConverter c) {fConverter = c;};
@@ -114,8 +115,8 @@ private:
     std::string fDisplayFile{"display.root"};
     generator::IGenerator* fIGenerator{nullptr};
     
-    void displayGeometryUsingRoot(const std::string& file);
-    void constructDisplayGeometryRoot();
+    void displayGeometryUsingRoot(const std::string& file, DisplayOption opt = DisplayOption::ROOT_TEVE);
+    void constructDisplayGeometryRoot(DisplayOption opt);
 
     void displayGeometryUsingG4(detector::EsbDetectorConstructor* dc);
     void constructDisplayGeometryG4();
