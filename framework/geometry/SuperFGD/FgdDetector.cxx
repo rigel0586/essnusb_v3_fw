@@ -131,6 +131,8 @@ void FgdDetector::AddSensitiveDetector(G4VPhysicalVolume* topVolume,
     LOG(debug3) << superfgd::fgdnames::superFGDName  << " volumes found: " << sdVolumes.size();
     if(!sdVolumes.empty())
       AddMagneticField(sdVolumes[0]);
+
+    AddVisAttr(topVolume);
 }
 
 void FgdDetector::AddMultiSensitiveDetector(G4VPhysicalVolume* topVolume 
@@ -225,12 +227,12 @@ void FgdDetector::AddVisAttr(G4VPhysicalVolume* topVolume)
         lVol->SetVisAttributes(LensVisAtt);
     }
 
-    std::vector<G4VPhysicalVolume*> invVolumes;
-    fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, invVolumes, utility::VolumeSearchType::Excludes);
-    for(G4VPhysicalVolume* pv : invVolumes){
-        G4LogicalVolume * lpv = pv->GetLogicalVolume();
-        lpv->SetVisAttributes (G4VisAttributes::GetInvisible());
-    }
+    // std::vector<G4VPhysicalVolume*> invVolumes;
+    // fut.findVolume(superfgd::fgdnames::superFGDName, topVolume, invVolumes, utility::VolumeSearchType::Excludes);
+    // for(G4VPhysicalVolume* pv : invVolumes){
+    //     G4LogicalVolume * lpv = pv->GetLogicalVolume();
+    //     lpv->SetVisAttributes (G4VisAttributes::GetInvisible());
+    // }
 }
 
 void FgdDetector::Initialize(G4HCofThisEvent*)

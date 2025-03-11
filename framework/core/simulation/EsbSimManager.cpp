@@ -161,13 +161,12 @@ void EsbSimManager::run()
     return;
 }
 
-
 void EsbSimManager::displayGeometry(DisplayOption opt)
 {
-    if(opt == DisplayOption::ROOT)
-        constructDisplayGeometryRoot();
+    if(opt == DisplayOption::ROOT_OGL || opt == DisplayOption::ROOT_TEVE )
+        constructDisplayGeometryRoot(opt);
 
-    if(opt == DisplayOption::G4)
+    if(opt == DisplayOption::GEANT4)
         constructDisplayGeometryG4();
 
     return;
@@ -175,10 +174,10 @@ void EsbSimManager::displayGeometry(DisplayOption opt)
 
 void EsbSimManager::displayGeometry_fromFile(DisplayOption opt, const std::string& file)
 {
-    if(opt == DisplayOption::ROOT)
-        displayGeometryUsingRoot(file);
+    if(opt == DisplayOption::ROOT_OGL || opt == DisplayOption::ROOT_TEVE )
+        displayGeometryUsingRoot(file, opt);
 
-    if(opt == DisplayOption::G4)
+    if(opt == DisplayOption::GEANT4)
     {
         detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(file);
         displayGeometryUsingG4(dc);
@@ -249,7 +248,7 @@ void EsbSimManager::displayGeometryUsingG4(detector::EsbDetectorConstructor* dc)
 
 
 
-void EsbSimManager::constructDisplayGeometryRoot()
+void EsbSimManager::constructDisplayGeometryRoot(DisplayOption opt)
 {
     detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(fWorkindDir, fDetectors, fConverter);
     G4VPhysicalVolume* g4worldVol = dc->Create();
@@ -260,11 +259,11 @@ void EsbSimManager::constructDisplayGeometryRoot()
          return;
     }
 
-    displayGeometryUsingRoot(dc->getRootGeomFile());
+    displayGeometryUsingRoot(dc->getRootGeomFile(), opt);
 }
 
 
-void EsbSimManager::displayGeometryUsingRoot(const std::string& file)
+void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOption opt)
 {
     io::EsbIO fio;
     // std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
@@ -275,25 +274,35 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file)
          return;
     }
 
-    TEveManager::Create();
+    if(opt == DisplayOption::ROOT_TEVE)
+    {
+        TEveManager::Create();
 
-    TFile::SetCacheFileDir(".");
-    gGeoManager->DefaultColors();
+        TFile::SetCacheFileDir(".");
+        gGeoManager->DefaultColors();
 
-    auto node1 = gGeoManager->GetTopNode();
-    TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
-    gEve->AddGlobalElement(inn);
+        auto node1 = gGeoManager->GetTopNode();
+        TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
+        gEve->AddGlobalElement(inn);
 
-    gEve->FullRedraw3D(kTRUE);
+        gEve->FullRedraw3D(kTRUE);
 
-    // EClipType not exported to CINT (see TGLUtil.h):
-    // 0 - no clip, 1 - clip plane, 2 - clip box
-    auto v = gEve->GetDefaultGLViewer();
-    v->GetClipSet()->SetClipType(TGLClip::EType(1));
-    v->RefreshPadEditor(v);
+        // EClipType not exported to CINT (see TGLUtil.h):
+        // 0 - no clip, 1 - clip plane, 2 - clip box
+        auto v = gEve->GetDefaultGLViewer();
+        v->GetClipSet()->SetClipType(TGLClip::EType(1));
+        v->RefreshPadEditor(v);
 
-    v->CurrentCamera().RotateRad(-.7, 0.5);
-    v->DoDraw();
+        v->CurrentCamera().RotateRad(-.7, 0.5);
+        v->DoDraw();
+    }
+
+    if(opt == DisplayOption::ROOT_OGL)
+    {
+        TGeoVolume *top = gGeoManager->GetTopVolume();
+        top->Draw("ogl");
+    }
+    
 
 }
 
