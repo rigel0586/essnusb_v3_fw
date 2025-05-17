@@ -48,6 +48,20 @@ void EsbIO::ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume
         gGeoManager->Export(path_to_file.c_str());
 }
 
+G4VPhysicalVolume* EsbIO::ExportRootToG4VGM()
+{
+    // Import geometry from Root to VGM
+    RootGM::Factory rtFactory;
+    rtFactory.SetDebug(1);
+    rtFactory.Import(gGeoManager->GetTopNode());
+
+    // Export VGM geometry to Geant4
+    Geant4GM::Factory g4Factory;
+    g4Factory.SetDebug(1);
+    rtFactory.Export(&g4Factory);
+    return g4Factory.World();
+}
+
 void EsbIO::ConvertGDMLToRoorVGM(const std::string& in_path_to_gdml_file, const std::string& out_path_to_root_file)
 {
     G4GDMLParser parser;
