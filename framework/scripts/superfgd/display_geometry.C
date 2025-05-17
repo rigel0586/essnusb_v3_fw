@@ -4,6 +4,7 @@ void display_geometry()
 
     core::simulation::EsbSimManager* esbSim = new core::simulation::EsbSimManager();
 
+    esbSim->setConverter(core::detector::GeomConverter::G4Root);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
 
     esbroot::geometry::Cave* cave = new esbroot::geometry::Cave();
@@ -22,5 +23,7 @@ void display_geometry()
 
     esbSim->AddDetector(fgdDetector);
 
-    esbSim->displayGeometry();
+    core::simulation::DisplayOption opt;
+    opt.renderOpt = core::simulation::RenderOption::ROOT_OGL;
+    esbSim->displayGeometry(opt);
 }

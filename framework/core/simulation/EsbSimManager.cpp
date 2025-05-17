@@ -163,10 +163,10 @@ void EsbSimManager::run()
 
 void EsbSimManager::displayGeometry(DisplayOption opt)
 {
-    if(opt == DisplayOption::ROOT_OGL || opt == DisplayOption::ROOT_TEVE )
+    if(opt.renderOpt == RenderOption::ROOT_OGL || opt.renderOpt == RenderOption::ROOT_TEVE )
         constructDisplayGeometryRoot(opt);
 
-    if(opt == DisplayOption::GEANT4)
+    if(opt.renderOpt == RenderOption::GEANT4)
         constructDisplayGeometryG4();
 
     return;
@@ -174,11 +174,14 @@ void EsbSimManager::displayGeometry(DisplayOption opt)
 
 void EsbSimManager::displayGeometry_fromFile(DisplayOption opt, const std::string& file)
 {
-    if(opt == DisplayOption::ROOT_OGL || opt == DisplayOption::ROOT_TEVE )
+    if(opt.renderOpt == RenderOption::ROOT_OGL || opt.renderOpt == RenderOption::ROOT_TEVE )
         displayGeometryUsingRoot(file, opt);
 
-    if(opt == DisplayOption::GEANT4)
+    if(opt.renderOpt == RenderOption::GEANT4)
     {
+        if(!opt.volumeName.empty()) {
+            LOG(warning) << "Geant4 rendering does not support volume selection";
+        }
         detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(file);
         displayGeometryUsingG4(dc);
     }
@@ -274,7 +277,7 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOpt
          return;
     }
 
-    if(opt == DisplayOption::ROOT_TEVE)
+    if(opt.renderOpt == RenderOption::ROOT_TEVE)
     {
         TEveManager::Create();
 
@@ -282,9 +285,12 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOpt
         gGeoManager->DefaultColors();
 
         auto node1 = gGeoManager->GetTopNode();
-        TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
-        gEve->AddGlobalElement(inn);
 
+        TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
+        inn->SetVisLevel(0);
+        inn->SetVisOption(0);
+
+        gEve->AddGlobalElement(inn);
         gEve->FullRedraw3D(kTRUE);
 
         // EClipType not exported to CINT (see TGLUtil.h):
@@ -297,10 +303,22 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOpt
         v->DoDraw();
     }
 
-    if(opt == DisplayOption::ROOT_OGL)
+    if(opt.renderOpt == RenderOption::ROOT_OGL)
     {
-        TGeoVolume *top = gGeoManager->GetTopVolume();
-        top->Draw("ogl");
+        TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
+
+        if(!opt.volumeName.empty()){
+            auto* newVolume = gGeoManager->FindVolumeFast(opt.volumeName.c_str());
+            if(newVolume == nullptr){
+                LOG(error) << opt.volumeName << " was not found. Aborting rendering ...";
+                return;
+            }
+            else{
+                volumeToDisplay = newVolume;
+            }
+        }
+         
+        volumeToDisplay->Draw("ogl");
     }
     
 
