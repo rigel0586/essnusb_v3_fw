@@ -268,43 +268,64 @@ void EsbSimManager::constructDisplayGeometryRoot(DisplayOption opt)
 
 void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOption opt)
 {
-    io::EsbIO fio;
-    // std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
-    // fio.ExportG4VolumeVGM(fileRoot, g4worldVol); // Empty path exports into root only, no file
-    if(!fio.ImportTGeoVolume(file))
-    {
-         LOG(error) << "Unable to create root geometry for display...";
-         return;
-    }
-
     if(opt.renderOpt == RenderOption::ROOT_TEVE)
     {
-        TEveManager::Create();
+        // TEveManager::Create();
 
+        // TFile::SetCacheFileDir(".");
+        // gGeoManager = gEve->GetGeometry(file);
+        // gGeoManager->DefaultColors();
+
+        // auto node1 = gGeoManager->GetTopNode();
+        // TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
+        // //inn->SetVisLevel(0);
+        // //inn->SetVisOption(0);
+
+        // gEve->AddGlobalElement(inn);
+        // gEve->FullRedraw3D(kTRUE);
+
+        // // EClipType not exported to CINT (see TGLUtil.h):
+        // // 0 - no clip, 1 - clip plane, 2 - clip box
+        // auto v = gEve->GetDefaultGLViewer();
+        // v->GetClipSet()->SetClipType(TGLClip::EType(1));
+        // v->RefreshPadEditor(v);
+
+        // v->CurrentCamera().RotateRad(-.7, 0.5);
+        // v->DoDraw();
+
+        TEveManager::Create();
         TFile::SetCacheFileDir(".");
+        gGeoManager = gEve->GetGeometry(file);
         gGeoManager->DefaultColors();
 
         auto node1 = gGeoManager->GetTopNode();
-
         TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
-        inn->SetVisLevel(0);
-        inn->SetVisOption(0);
-
         gEve->AddGlobalElement(inn);
+
         gEve->FullRedraw3D(kTRUE);
 
-        // EClipType not exported to CINT (see TGLUtil.h):
-        // 0 - no clip, 1 - clip plane, 2 - clip box
-        auto v = gEve->GetDefaultGLViewer();
-        v->GetClipSet()->SetClipType(TGLClip::EType(1));
-        v->RefreshPadEditor(v);
 
-        v->CurrentCamera().RotateRad(-.7, 0.5);
-        v->DoDraw();
+        TEveViewer *ev = gEve->GetDefaultViewer();
+        TGLViewer  *gv = ev->GetGLViewer();
+        gv->SetGuideState(TGLUtil::kAxesOrigin, kTRUE, kFALSE, nullptr);
+        
+        gEve->Redraw3D(kTRUE);
+        gSystem->ProcessEvents();
+        
+        gv->CurrentCamera().RotateRad(-0.5, 1.4);
+        gv->RequestDraw();
     }
 
     if(opt.renderOpt == RenderOption::ROOT_OGL)
     {
+        io::EsbIO fio;
+        // std::string fileRoot = fWorkindDir + "/" + fDisplayFile;
+        // fio.ExportG4VolumeVGM(fileRoot, g4worldVol); // Empty path exports into root only, no file
+        if(!fio.ImportTGeoVolume(file))
+        {
+            LOG(error) << "Unable to create root geometry for display...";
+            return;
+        }
         TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
 
         if(!opt.volumeName.empty()){
