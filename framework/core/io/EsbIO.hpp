@@ -65,6 +65,11 @@ public:
     */
     void ExportG4VolumeVGM(const std::string& path_to_file, G4VPhysicalVolume* g4Volume);
 
+    /**
+      @brief Exports the current root geometry to Geant4 Geometry
+      @returns The converted current root geometry to Geant4 geometry
+    */
+    G4VPhysicalVolume* ExportRootToG4VGM();
 
     /**
       @brief Read gdml file and Exports it to out root file using VGM
