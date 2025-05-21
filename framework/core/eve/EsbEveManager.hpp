@@ -40,6 +40,7 @@ class EsbEveManager : public TObject
 {
 public:
     EsbEveManager(const std::string& inputGeomFile , const std::string& inputFile);
+    EsbEveManager(const std::string& inputGeomFile , const std::string& inputFile , const std::string& selectedVolume);
     ~EsbEveManager();
 
     void setLoggerSeverity(Severity sev);
@@ -54,6 +55,7 @@ public:
     void visualize();
 private:
 
+    std::string fSelectedDisplayVolume{""};
     int fEvents{0};
     int fStartEvents{0};
     

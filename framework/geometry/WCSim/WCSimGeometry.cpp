@@ -51,6 +51,8 @@ ClassImp(esbroot::geometry::WCSimGeometry)
 
 #include <CLHEP/Units/SystemOfUnits.h>
 
+#include "Framework/ParticleData/PDGCodes.h"
+
 #include <iostream>
 #include <vector>
 
@@ -124,7 +126,7 @@ void WCSimGeometry::UpdateGeometry()
 
 void WCSimGeometry::PostConstructG4Geometry(G4VPhysicalVolume* G4World)
 {
-    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_Detector", G4World->GetLogicalVolume(), false, 0);
+    // new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_Detector", G4World->GetLogicalVolume(), false, 0);
 }
 
 void WCSimGeometry::init()
@@ -296,6 +298,12 @@ void WCSimGeometry::ConstructGeometry()
 
     flogicExpHall = logicExpHall;
     fphysiExpHall = physiExpHall;
+
+    core::io::EsbIO io;
+    G4VPhysicalVolume* currentWorld = io.ExportRootToG4VGM();
+    new G4PVPlacement(0, G4ThreeVector(fposX, fposY, fposZ), flogicExpHall, "G4V_WCSimGeometry_Detector", currentWorld->GetLogicalVolume(), false, 0);
+
+    io.ExportG4VolumeVGM("", currentWorld);
 }
 
 void WCSimGeometry::AddSensitiveDetector(G4VPhysicalVolume* topVolume 
@@ -338,6 +346,9 @@ G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
     G4int parentID = track->GetParentID(); // Get the parent ID
     //G4int particleID = track->GetParticleDefinition()->GetPDGEncoding();
     G4int particleID = track->GetDynamicParticle()->GetPDGcode();
+    
+    if(genie::kPdgGamma == particleID) return true; // Skip photons
+
     G4String particleName = track->GetDynamicParticle()->GetDefinition()->GetParticleName(); // Get the particle name
     G4ThreeVector position = step->GetPostStepPoint()->GetPosition();
     G4ThreeVector momentum = step->GetPostStepPoint()->GetMomentum();

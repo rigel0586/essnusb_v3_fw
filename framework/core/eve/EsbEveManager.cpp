@@ -34,6 +34,16 @@ EsbEveManager::EsbEveManager(const std::string& inputGeomFile
     io::EsbReaderPersistency::Instance().setInFile(finputFile);
 }
 
+EsbEveManager::EsbEveManager(const std::string& inputGeomFile 
+            , const std::string& inputFile 
+            , const std::string& selectedVolume)
+    : finputGeomFile(inputGeomFile),
+        finputFile(inputFile),
+        fSelectedDisplayVolume(selectedVolume)
+{
+    io::EsbReaderPersistency::Instance().setInFile(finputFile);
+}
+
 EsbEveManager::~EsbEveManager()
 {
     for(auto ri : fReadItem)
@@ -144,6 +154,11 @@ void EsbEveManager::visualize()
 {
     TFile::SetCacheFileDir(".");
     gGeoManager = gEve->GetGeometry(finputGeomFile);
+    TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
+    if(!fSelectedDisplayVolume.empty()){
+        auto* newVolume = gGeoManager->FindVolumeFast(fSelectedDisplayVolume.c_str());
+        gGeoManager->SetTopVolume(newVolume);
+    }
     gGeoManager->DefaultColors();
 
     auto node1 = gGeoManager->GetTopNode();
