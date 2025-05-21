@@ -194,6 +194,8 @@ cd build
 cmake -S ${genfit_dir} -B . -DCMAKE_INSTALL_PREFIX=${fw_directory}/genfit/install -DCMAKE_SYSTEM_PREFIX_PATH="${fw_directory}/cern_root/build" -DBUILD_TESTING=OFF
 cmake --build . 
 cmake --install .
+cp *.rootmap ${fw_directory}/genfit/install/lib
+cp *.pcm ${fw_directory}/genfit/install/lib
 
 genfit_check_lib=${fw_directory}/genfit/install/lib/libgenfit2.so
 check_lib_exists ${genfit_check_lib}
