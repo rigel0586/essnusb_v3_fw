@@ -296,6 +296,12 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOpt
         TEveManager::Create();
         TFile::SetCacheFileDir(".");
         gGeoManager = gEve->GetGeometry(file);
+        TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
+
+        if(!opt.volumeName.empty()){
+            auto* newVolume = gGeoManager->FindVolumeFast(opt.volumeName.c_str());
+            gGeoManager->SetTopVolume(newVolume);
+        }
         gGeoManager->DefaultColors();
 
         auto node1 = gGeoManager->GetTopNode();
