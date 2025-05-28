@@ -338,7 +338,7 @@ G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
     if (volumeName == "World" ) {
         return true; // Skip processing steps outside of "Water" or "WaterWithGd"
     }
-    
+
     // Extract relevant information from the step
     const G4Track* track = step->GetTrack();
     G4int eventID = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
@@ -359,7 +359,6 @@ G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
     
     // Process name
     G4String processName = step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
-    
     
     // Calculate the free path taken by the particle
     G4double freePathLength = step->GetStepLength();
@@ -407,7 +406,7 @@ G4bool  WCSimGeometry::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
         );
     }
 
-  
+    return true;
 }
 
 void WCSimGeometry::EndOfEventAction(const G4Event*)

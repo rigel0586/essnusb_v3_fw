@@ -4,7 +4,7 @@ void simulate_1_wcsim(Int_t nEvents = 3)
 
     core::simulation::EsbSimManager* esbSim = new core::simulation::EsbSimManager();
 
-    esbSim->setLoggerSeverity(core::simulation::Severity::info);
+    esbSim->setLoggerSeverity(core::simulation::Severity::debug2);
     esbSim->setNumberOfEvents(nEvents);
     esbSim->setWorkingDir(gSystem->Getenv("WORKSPACE_DIR"));
     esbSim->setConverter(core::detector::GeomConverter::VGM);

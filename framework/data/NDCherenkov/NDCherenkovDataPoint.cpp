@@ -49,6 +49,52 @@ NDCherenkovDataPoint::NDCherenkovDataPoint(Int_t eventID
   SetPosition(position);
   SetMomentum(momentum);
 }
+
+NDCherenkovDataPoint::NDCherenkovDataPoint(const NDCherenkovDataPoint& point)
+{
+  fEventId = point.fEventId;
+  fTrackID = point.fTrackID;
+  fParentID = point.fParentID;
+  fpdg = point.fpdg;
+  fparticleName = point.fparticleName;
+  fposition = point.fposition;
+  fmomentum = point.fmomentum;
+  fstepTime = point.fstepTime;
+  fprocessName = point.fprocessName;
+  fFreePathLength = point.fFreePathLength;
+  fsecName = point.fsecName;                           
+
+  fPx =  point.fPx ; 
+  fPy =  point.fPy ; 
+  fPz =  point.fPz ; 
+  fX =  point.fX ; 
+  fY =  point.fY ; 
+  fZ =  point.fZ ; 
+}
+
+NDCherenkovDataPoint NDCherenkovDataPoint::operator=(const NDCherenkovDataPoint& point)
+{
+  fEventId = point.fEventId;
+  fTrackID = point.fTrackID;
+  fParentID = point.fParentID;
+  fpdg = point.fpdg;
+  fparticleName = point.fparticleName;
+  fposition = point.fposition;
+  fmomentum = point.fmomentum;
+  fstepTime = point.fstepTime;
+  fprocessName = point.fprocessName;
+  fFreePathLength = point.fFreePathLength;
+  fsecName = point.fsecName;                           
+
+  fPx =  point.fPx ; 
+  fPy =  point.fPy ; 
+  fPz =  point.fPz ; 
+  fX =  point.fX ; 
+  fY =  point.fY ; 
+  fZ =  point.fZ ; 
+
+  return *this;
+}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------

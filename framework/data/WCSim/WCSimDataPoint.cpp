@@ -49,6 +49,50 @@ WCSimDataPoint::WCSimDataPoint(Int_t eventID
   SetPosition(position);
   SetMomentum(momentum);
 }
+
+WCSimDataPoint::WCSimDataPoint(const WCSimDataPoint& point)
+{
+  fEventId =  point.fEventId ;  
+  fParentID =  point.fParentID ; 
+  fpdg =  point.fpdg ; 
+  fparticleName =  point.fparticleName ; 
+  fposition =  point.fposition ; 
+  fmomentum =  point.fmomentum ; 
+  fstepTime =  point.fstepTime ; 
+  fprocessName =  point.fprocessName ; 
+  fFreePathLength =  point.fFreePathLength ;                 
+  fsecName =  point.fsecName ; 
+
+  fPx =  point.fPx ; 
+  fPy =  point.fPy ; 
+  fPz =  point.fPz ; 
+  fX =  point.fX ; 
+  fY =  point.fY ; 
+  fZ =  point.fZ ; 
+}
+
+WCSimDataPoint WCSimDataPoint::operator=(const WCSimDataPoint& point)
+{
+  fEventId =  point.fEventId ;  
+  fParentID =  point.fParentID ; 
+  fpdg =  point.fpdg ; 
+  fparticleName =  point.fparticleName ; 
+  fposition =  point.fposition ; 
+  fmomentum =  point.fmomentum ; 
+  fstepTime =  point.fstepTime ; 
+  fprocessName =  point.fprocessName ; 
+  fFreePathLength =  point.fFreePathLength ;                 
+  fsecName =  point.fsecName ; 
+
+  fPx =  point.fPx ; 
+  fPy =  point.fPy ; 
+  fPz =  point.fPz ; 
+  fX =  point.fX ; 
+  fY =  point.fY ; 
+  fZ =  point.fZ ; 
+
+  return *this;
+}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------

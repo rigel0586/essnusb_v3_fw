@@ -45,6 +45,48 @@ EmulsionDataPoint::EmulsionDataPoint(Int_t eventID
   SetPosition(position);
   SetMomentum(momentum);
 }
+
+EmulsionDataPoint::EmulsionDataPoint(const EmulsionDataPoint& point)
+{
+  fEventId = point.fEventId;
+  fTrackID = point.fTrackID;
+  fParentID = point.fParentID;
+  fpdg = point.fpdg;
+  fparticleName = point.fparticleName;
+  fposition = point.fposition;
+  fmomentum = point.fmomentum;
+  fTime = point.fTime;
+  fFreePathLength = point.fFreePathLength;
+
+  fPx =  point.fPx ; 
+  fPy =  point.fPy ; 
+  fPz =  point.fPz ; 
+  fX =  point.fX ; 
+  fY =  point.fY ; 
+  fZ =  point.fZ ; 
+}
+
+EmulsionDataPoint EmulsionDataPoint::operator=(const EmulsionDataPoint& point)
+{
+  fEventId = point.fEventId;
+  fTrackID = point.fTrackID;
+  fParentID = point.fParentID;
+  fpdg = point.fpdg;
+  fparticleName = point.fparticleName;
+  fposition = point.fposition;
+  fmomentum = point.fmomentum;
+  fTime = point.fTime;
+  fFreePathLength = point.fFreePathLength;
+
+  fPx =  point.fPx ; 
+  fPy =  point.fPy ; 
+  fPz =  point.fPz ; 
+  fX =  point.fX ; 
+  fY =  point.fY ; 
+  fZ =  point.fZ ; 
+
+  return *this;
+}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------

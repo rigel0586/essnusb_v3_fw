@@ -374,7 +374,7 @@ G4bool  NDCherenkov::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
         );
     }
 
-  
+    return true;
 }
 
 void NDCherenkov::EndOfEventAction(const G4Event*)

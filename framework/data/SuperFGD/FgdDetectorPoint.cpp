@@ -38,6 +38,52 @@ FgdDetectorPoint::FgdDetectorPoint(Int_t trackID, Int_t detID,
 {
   SetPosition(pos);
 }
+
+FgdDetectorPoint::FgdDetectorPoint(const FgdDetectorPoint& point)
+{
+  fposExit =  point.fposExit ;
+  fdetectorPos =  point.fdetectorPos ;
+  fmomExit =  point.fmomExit ;
+  ftrackLenght =  point.ftrackLenght ;
+  ftrackLenghtFromOrigin =  point.ftrackLenghtFromOrigin ;
+  fpdg =  point.fpdg ;
+  fTrackID =  point.fTrackID ;
+  fEventId =  point.fEventId ;
+  fPx =  point.fPx ;
+  fPy =  point.fPy ;
+  fPz =  point.fPz ;
+  fTime =  point.fTime ;
+  fLength =  point.fLength ;
+  fELoss =  point.fELoss ;
+  fDetectorID =  point.fDetectorID ;
+  fX =  point.fX ;
+  fY =  point.fY ;
+  fZ =  point.fZ ;
+}
+
+FgdDetectorPoint FgdDetectorPoint::operator=(const FgdDetectorPoint& point)
+{
+  fposExit =  point.fposExit ;
+  fdetectorPos =  point.fdetectorPos ;
+  fmomExit =  point.fmomExit ;
+  ftrackLenght =  point.ftrackLenght ;
+  ftrackLenghtFromOrigin =  point.ftrackLenghtFromOrigin ;
+  fpdg =  point.fpdg ;
+  fTrackID =  point.fTrackID ;
+  fEventId =  point.fEventId ;
+  fPx =  point.fPx ;
+  fPy =  point.fPy ;
+  fPz =  point.fPz ;
+  fTime =  point.fTime ;
+  fLength =  point.fLength ;
+  fELoss =  point.fELoss ;
+  fDetectorID =  point.fDetectorID ;
+  fX =  point.fX ;
+  fY =  point.fY ;
+  fZ =  point.fZ ;
+
+  return *this;
+}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------

@@ -307,7 +307,7 @@ G4bool  EmulsionDetector::ProcessHits(G4Step* step,G4TouchableHistory* ROHist)
         );
     }
 
-  
+	return true;
 }
 
 void EmulsionDetector::EndOfEventAction(const G4Event*)

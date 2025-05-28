@@ -17,6 +17,9 @@ target_sources(${Data_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector/EmulsionDataPoint.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimDataPoint.cpp)
 
-target_include_directories(${Data_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD)
+target_include_directories(${Data_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD 
+                            ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov
+                            ${CMAKE_CURRENT_SOURCE_DIR}/EmulsionDetector
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim)
 
 LIBRARY_FOOTER(${Data_Target} ${CMAKE_CURRENT_SOURCE_DIR}/DataLinkDef.h "${Data_Header}")
