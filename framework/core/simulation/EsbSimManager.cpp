@@ -179,7 +179,7 @@ void EsbSimManager::displayGeometry_fromFile(DisplayOption opt, const std::strin
 
     if(opt.renderOpt == RenderOption::GEANT4)
     {
-        if(!opt.volumeName.empty()) {
+        if(!opt.volumeNames.empty()) {
             LOG(warning) << "Geant4 rendering does not support volume selection";
         }
         detector::EsbDetectorConstructor* dc = new detector::EsbDetectorConstructor(file);
@@ -296,21 +296,20 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOpt
         TEveManager::Create();
         TFile::SetCacheFileDir(".");
         gGeoManager = gEve->GetGeometry(file);
-        TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
 
-        if(!opt.volumeName.empty()){
-            auto* newVolume = gGeoManager->FindVolumeFast(opt.volumeName.c_str());
-            gGeoManager->SetTopVolume(newVolume);
+        if(!opt.volumeNames.empty()){
+            for(int i = 0; i < opt.volumeNames.size(); ++i){
+                auto* rootVolume = gGeoManager->FindVolumeFast(opt.volumeNames[i].c_str());
+                if(rootVolume == nullptr) continue;
+                auto node = new TGeoNodeMatrix(rootVolume, new TGeoIdentity(opt.volumeNames[i].c_str()));
+                TEveGeoTopNode* geoEl = new TEveGeoTopNode(gGeoManager, node);
+                gEve->AddGlobalElement(geoEl);
+            } 
         }
+
         gGeoManager->DefaultColors();
 
-        auto node1 = gGeoManager->GetTopNode();
-        TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
-        gEve->AddGlobalElement(inn);
-
         gEve->FullRedraw3D(kTRUE);
-
-
         TEveViewer *ev = gEve->GetDefaultViewer();
         TGLViewer  *gv = ev->GetGLViewer();
         gv->SetGuideState(TGLUtil::kAxesOrigin, kTRUE, kFALSE, nullptr);
@@ -334,10 +333,13 @@ void EsbSimManager::displayGeometryUsingRoot(const std::string& file, DisplayOpt
         }
         TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
 
-        if(!opt.volumeName.empty()){
-            auto* newVolume = gGeoManager->FindVolumeFast(opt.volumeName.c_str());
+        if(!opt.volumeNames.empty()){
+            if(opt.volumeNames.size() != 1){
+                LOG(warning) << "OLG supports only 1 volume name. Displaying only name with index 1!";
+            }
+            auto* newVolume = gGeoManager->FindVolumeFast(opt.volumeNames[0].c_str());
             if(newVolume == nullptr){
-                LOG(error) << opt.volumeName << " was not found. Aborting rendering ...";
+                LOG(error) << opt.volumeNames[0] << " was not found. Aborting rendering ...";
                 return;
             }
             else{

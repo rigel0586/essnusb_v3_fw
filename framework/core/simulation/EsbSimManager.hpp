@@ -69,7 +69,7 @@ enum class RenderOption : int
 struct DisplayOption
 {
     RenderOption renderOpt = RenderOption::ROOT_TEVE;
-    std::string volumeName = "";
+    std::vector<std::string> volumeNames;
 };
 
 class EsbSimManager : public TObject

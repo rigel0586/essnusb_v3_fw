@@ -36,10 +36,10 @@ EsbEveManager::EsbEveManager(const std::string& inputGeomFile
 
 EsbEveManager::EsbEveManager(const std::string& inputGeomFile 
             , const std::string& inputFile 
-            , const std::string& selectedVolume)
+            , std::vector<std::string> selectedVolumes)
     : finputGeomFile(inputGeomFile),
         finputFile(inputFile),
-        fSelectedDisplayVolume(selectedVolume)
+        fSelectedDisplayVolumes(selectedVolumes)
 {
     io::EsbReaderPersistency::Instance().setInFile(finputFile);
 }
@@ -154,17 +154,22 @@ void EsbEveManager::visualize()
 {
     TFile::SetCacheFileDir(".");
     gGeoManager = gEve->GetGeometry(finputGeomFile);
-    TGeoVolume *volumeToDisplay = gGeoManager->GetTopVolume();
-    if(!fSelectedDisplayVolume.empty()){
-        auto* newVolume = gGeoManager->FindVolumeFast(fSelectedDisplayVolume.c_str());
-        gGeoManager->SetTopVolume(newVolume);
+
+    if(!fSelectedDisplayVolumes.empty()){
+        for(int i = 0; i < fSelectedDisplayVolumes.size(); ++i){
+            auto* rootVolume = gGeoManager->FindVolumeFast(fSelectedDisplayVolumes[i].c_str());
+            if(rootVolume == nullptr) continue;
+            auto node = new TGeoNodeMatrix(rootVolume, new TGeoIdentity(fSelectedDisplayVolumes[i].c_str()));
+            TEveGeoTopNode* geoEl = new TEveGeoTopNode(gGeoManager, node);
+            gEve->AddGlobalElement(geoEl);
+        } 
+    }else{
+        auto node1 = gGeoManager->GetTopNode();
+        TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
+        gEve->AddGlobalElement(inn);
     }
+
     gGeoManager->DefaultColors();
-
-    auto node1 = gGeoManager->GetTopNode();
-    TEveGeoTopNode* inn = new TEveGeoTopNode(gGeoManager, node1);
-    gEve->AddGlobalElement(inn);
-
     gEve->FullRedraw3D(kTRUE);
 
     // EClipType not exported to CINT (see TGLUtil.h):

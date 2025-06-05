@@ -37,7 +37,7 @@ void display_geometry()
     esbSim->AddDetector(static_cast<core::detector::IDetector*>(wcsimDetector));
 
     core::simulation::DisplayOption opt;
-    opt.renderOpt = core::simulation::RenderOption::ROOT_OGL;
-    opt.volumeName = "WCBarrel";
+    opt.renderOpt = core::simulation::RenderOption::ROOT_TEVE;
+    opt.volumeNames.emplace_back("WCBarrel");
     esbSim->displayGeometry(opt);
 }

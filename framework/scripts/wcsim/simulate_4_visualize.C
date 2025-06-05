@@ -11,7 +11,8 @@ void simulate_4_visualize(Int_t nEvents = 3)
   ssInput << gSystem->Getenv("WORKSPACE_DIR");
   ssInput << "/simulation/wcsim_sim_output.root";
   std::string inputFile = ssInput.str();
-  core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile, "WCBarrel");
+  std::vector<std::string> volumes = {"WCBarrel"};
+  core::eve::EsbEveManager* fRun = new core::eve::EsbEveManager(esbGeom, inputFile, volumes);
 
   fRun->setNumberOfEvents(nEvents);   
   fRun->setLoggerSeverity(core::eve::Severity::debug2);
