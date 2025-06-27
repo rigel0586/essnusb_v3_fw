@@ -45,11 +45,6 @@
        1. Add -DNO_IPO=TRUE to the cmake file (source: https://github.com/COMBINE-lab/salmon/issues/664 ).<br/>
        2. Update gcc to newer version ( at least > 11.4).<br/>
 <br/>
-3. On Linux Mint 22.1 Python 2 is not available, which causes lhapdf 5 error during compilation (lhapdf 5 requires python 2)<br/>
-   Solution: <br/>
-   a) Python has to be installed manually or with penv<br/>
-   b) lhapdf 5 to be removed during compilation of genie (TODO) - this also has to be tested<br/>
-<br/>
 <br/>
 
 ## Known framework simulation issues: <br/>
