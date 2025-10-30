@@ -15,6 +15,8 @@ genie_dir=${base_directory}/${third_party_dir}/genie
 googletest_dir=${base_directory}/${third_party_dir}/googletest
 pathfinder_dir=${base_directory}/${third_party_dir}/PathFinder
 
+lhapdf5_dir=${base_directory}/${third_party_dir}/dependencies/genie/lhapdf-5.9.1/install
+
 cd ${fw_directory}
 
 export GENIE=${genie_dir}
@@ -29,7 +31,7 @@ export VGM_LIB=${fw_directory}/vgm/install/lib/
 export PYTHONPATH=$ROOTSYS/lib:$ROOTSYS/geom/gdml
 
 framework_build_dir=${fw_directory}/framework/build
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:/usr/local/lib:${GENIE_install}/lib:${ROOTSYS}/lib:${PYTHIA6}:${framework_build_dir}/utility/:${framework_build_dir}/generators/:${framework_build_dir}/data/:${framework_build_dir}/geometry/:${framework_build_dir}/core/:${framework_build_dir}/digitizer/:${framework_build_dir}/reconstruction/:${framework_build_dir}/eve/:${fw_directory}/pathfinder/install/lib:${dependencies_dir}/geant4/xerces-c-3.2.5/install/lib:${fw_directory}/clhep/lib
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${fw_directory}/geant4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:${dependencies_dir}/geant4/2.4.6.4/install/lib/:${dependencies_dir}/genie/log4cpp/install/lib/:/usr/local/lib:${GENIE_install}/lib:${ROOTSYS}/lib:${PYTHIA6}:${framework_build_dir}/utility/:${framework_build_dir}/generators/:${framework_build_dir}/data/:${framework_build_dir}/geometry/:${framework_build_dir}/core/:${framework_build_dir}/digitizer/:${framework_build_dir}/reconstruction/:${framework_build_dir}/eve/:${fw_directory}/pathfinder/install/lib:${dependencies_dir}/geant4/xerces-c-3.2.5/install/lib:${fw_directory}/clhep/lib:${lhapdf5_dir}/lib
 
 export PATH=$PATH:${ROOTSYS}/bin:${GENIE_install}/bin 
 
