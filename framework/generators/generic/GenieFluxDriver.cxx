@@ -22,6 +22,7 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
                             , Double_t maxEnergy)
     :   fnuFluXFile(nuFluxFile)
         , fFluxNextPosition(ifluxposition)
+        , fFluxNextGenerator(nullptr)
         , f_generator_Id(0)
         , frndGen(seed)
         , frdnGenDeault(seed)
@@ -32,12 +33,35 @@ GenieFluxDriver::GenieFluxDriver(const char* nuFluxFile
         , fmaxEvents(maxEvents)
         , fUniformFlux(uniformFlux)
 { 
+    m_nextGen = (fFluxNextGenerator != nullptr);
     InitPDGList();
     Init4Momentum();
     Init4Position();
 
     ReadNuFluxFile(fnuFluXFile.c_str());
     CalculateProbability();
+}
+
+GenieFluxDriver::GenieFluxDriver(IFluxNextGenerator* ifluxGenerator
+                  , Int_t maxEvents
+                  , Double_t maxEnergy)
+    :   fnuFluXFile("")
+        , fFluxNextPosition(nullptr)
+        , fFluxNextGenerator(ifluxGenerator)
+        , f_generator_Id(0)
+        , frndGen(0)
+        , frdnGenDeault(0)
+        , fdis(0.0, 1.0)
+        , fpdgCode(0)
+        , fMaxEv(maxEnergy)
+        , fcurrentEvent(0)
+        , fmaxEvents(maxEvents)
+        , fUniformFlux(false)
+{ 
+    m_nextGen = (fFluxNextGenerator != nullptr);
+    InitPDGList();
+    Init4Momentum();
+    Init4Position();
 }
 
 GenieFluxDriver::GenieFluxDriver(const GenieFluxDriver& gf)
@@ -97,6 +121,26 @@ GenieFluxDriver& GenieFluxDriver::operator=(const GenieFluxDriver& gf)
 
 bool GenieFluxDriver::GenerateNext(void)
 {
+    if(m_nextGen)
+    {
+        if(fFluxNextGenerator == nullptr){
+            LOG(fatal) <<  "fFluxNextGenerator is not set! Exiting ...";
+            exit(0);
+        }
+
+        TVector3 pos_det = fFluxNextGenerator->NextVertexPosition();
+        f4position.SetX(pos_det.X());
+        f4position.SetY(pos_det.Y());
+        f4position.SetZ(pos_det.Z());
+        f4position.SetT(0.);
+
+        f4momentum = fFluxNextGenerator->NextVertexMomentum();
+        fpdgCode = fFluxNextGenerator->NextPdgNuCode();
+
+        ++f_generator_Id;
+        return true;
+    }
+
     static size_t uniformId = 0;
     if(fUniformFlux && !fFlux.empty())
     {

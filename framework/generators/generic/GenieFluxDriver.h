@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "generators/generic/IFluxNextPosition.h"
+#include "generators/generic/IFluxNextGenerator.h"
 
 #include "Framework/EventGen/GFluxI.h"
 #include "Framework/ParticleData/PDGCodeList.h"
@@ -38,6 +39,10 @@ public:
                   , IFluxNextPosition* ifluxposition
                   , unsigned int seed
                   , Bool_t uniformFlux
+                  , Int_t maxEvents = 1
+                  , Double_t maxEnergy = 2. /* GeV */);
+
+    GenieFluxDriver(IFluxNextGenerator* ifluxGenerator
                   , Int_t maxEvents = 1
                   , Double_t maxEnergy = 2. /* GeV */);
 
@@ -110,6 +115,8 @@ protected:
     std::vector<IFluxNextPosition*> fFluxNextPositions;
     int f_generator_Id;
 
+    bool m_nextGen{false};
+    IFluxNextGenerator* fFluxNextGenerator{nullptr};
 
     PDGCodeList fPdgCList;
 
