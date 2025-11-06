@@ -84,6 +84,30 @@ GenericGenieGenerator::GenericGenieGenerator(std::vector<IFluxNextPosition*> flu
 }
 
 
+GenericGenieGenerator::GenericGenieGenerator(IFluxNextGenerator* fluxGenerator
+									, const std::string& volumeName
+									, Int_t numEvents
+									, genie::GFluxI* extFlux
+									, TGeoManager* gm
+									, Bool_t keepThrowingFluxNu)
+	  : esbroot::generators::generic::GenieGenerator()
+	 	, fFluxGenerator(fluxGenerator)
+		, fGenType(GeneratorType::BasicPosMomPdg)
+		, fvolumeName(volumeName)
+		, fnuFluxFile("")
+		, fseed(0)
+		, fnumEvents(numEvents)
+		, fgm(gm)
+		, fExtFlux(extFlux)
+		, fCurrentEvent(0)
+		, fUseFixedVertex(false)
+		, fvertexPos(0,0,0)
+		, fUseUniformflux(false)
+		, fKeepThrowingFluxNu(keepThrowingFluxNu)
+{
+}
+
+
 void GenericGenieGenerator::PostProcessEvent(/*IN OUT*/ genie::GHepRecord* event)
 {
 	if(fUseFixedVertex)
@@ -125,12 +149,15 @@ Bool_t GenericGenieGenerator::Configure()
 			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), static_cast<IFluxNextPosition*>(fCompositeFlux), fseed, fUseUniformflux);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
+		} else if(fGenType == GeneratorType::BasicPosMomPdg){
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fFluxGenerator, fseed, fUseUniformflux);
+			gFluxD->SetMaxEvents(fnumEvents);
+			SetFluxI(gFluxD);
 		} else{
 			LOG(fatal) <<  "Unknown type of GeneratorType ...";
         	exit(0);
 		}
 		
-
 		geomAnalyzer = dynamic_cast<GenericGeomAnalyzer*>(GetGeomI().get());
 		geomAnalyzer->SetScannerFlux(GetFluxI().get()); // Force to use MaxPathLengthsFluxMethod, otherwise it uses MaxPathLengthsBoxMethod
 	}

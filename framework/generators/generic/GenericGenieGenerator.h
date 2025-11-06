@@ -3,6 +3,7 @@
 
 #include "GenieGenerator.h"
 #include "generators/generic/IFluxNextPosition.h"
+#include "generators/generic/IFluxNextGenerator.h"
 #include "core/generator/IGenerator.hpp"
 #include "utility/Utility.hpp"
 
@@ -61,6 +62,14 @@ public:
 									, TGeoManager* gm = nullptr
 									, Bool_t keepThrowingFluxNu = true);
 
+	// ! Basic  position/momentum/pdg constructor
+	GenericGenieGenerator(IFluxNextGenerator* fluxGenerator
+									, const std::string& volumeName
+									, Int_t numEvents
+									, genie::GFluxI* extFlux = nullptr
+									, TGeoManager* gm = nullptr
+									, Bool_t keepThrowingFluxNu = true);
+
 	//! Destructor
 	~GenericGenieGenerator();
 	
@@ -85,7 +94,8 @@ protected:
 private:
 	enum class GeneratorType{
       Basic,
-      Composite
+      Composite,
+	  BasicPosMomPdg
     };
 
 	TGeoManager* fgm;//!<!
@@ -100,7 +110,8 @@ private:
 	Bool_t fUseUniformflux;//!<!
 	Bool_t fKeepThrowingFluxNu;//!<!
 
-	IFluxNextPosition* fFluxPosition;//!<!
+	IFluxNextPosition* fFluxPosition{nullptr};//!<!
+	IFluxNextGenerator* fFluxGenerator{nullptr};//!<!
 	CompositeIFluxNextPosition* fCompositeFlux{nullptr};
 	std::vector<IFluxNextPosition*> fCompositeFluxPositions;//!<!
 	GeneratorType fGenType;
