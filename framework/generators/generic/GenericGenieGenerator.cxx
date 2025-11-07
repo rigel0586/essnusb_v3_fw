@@ -150,7 +150,7 @@ Bool_t GenericGenieGenerator::Configure()
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
 		} else if(fGenType == GeneratorType::BasicPosMomPdg){
-			auto gFluxD = std::make_shared<GenieFluxDriver>(fFluxGenerator, fseed, fUseUniformflux);
+			auto gFluxD = std::make_shared<GenieFluxDriver>(fFluxGenerator);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
 		} else{

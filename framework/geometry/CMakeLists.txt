@@ -24,7 +24,8 @@ set(Geometry_Header ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/FgdDetector.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCHit.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimWCDigi.hpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimTuningParameters.hpp
-                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.hpp)
+                            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.hpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/LemmonD/SimpleLemonD.hpp)
 
 add_library(${Geometry_Target} SHARED)
 
@@ -55,7 +56,8 @@ target_sources(${Geometry_Target} PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimLC.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructEggShapedHyperK.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructCylinder.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructGeometryTables.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/WCSim/WCSimConstructGeometryTables.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/LemmonD/SimpleLemonD.cxx)
 
 target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD
@@ -63,6 +65,7 @@ target_include_directories(${Geometry_Target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/PhysicsList
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/WCSim
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/LemmonD
 )
 
 LIBRARY_FOOTER(${Geometry_Target} ${CMAKE_CURRENT_SOURCE_DIR}/GeometryLinkDef.h "${Geometry_Header}")

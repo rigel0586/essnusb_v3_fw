@@ -39,4 +39,7 @@
 #pragma link C++ class WCSimWCDigi+;
 #pragma link C++ class WCSimTuningParameters+;
 
+#pragma link C++ class esbroot::geometry::SimpleLemonD+;
+#pragma link C++ class esbroot::geometry::SimpleLemonD::NuFileEntry+;
+
 #endif
