@@ -25,6 +25,7 @@
 #pragma link C++ class esbroot::generators::generic::CompositeIFluxNextPosition+;
 #pragma link C++ class esbroot::generators::generic::IFluxNextGenerator+;
 #pragma link C++ class esbroot::generators::generic::CompositeIFluxNextGenerator+;
+#pragma link C++ class esbroot::generators::generic::IWriteEvent+;
 
 #pragma link C++ class esbroot::generators::ndcherenkov::NDSimpleGenerator+;
 

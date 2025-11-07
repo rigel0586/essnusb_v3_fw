@@ -144,15 +144,18 @@ Bool_t GenericGenieGenerator::Configure()
 			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), fFluxPosition, fseed, fUseUniformflux);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
+			fWriteEvent = static_cast<IWriteEvent*>(fFluxPosition);
 		} else if(fGenType == GeneratorType::Composite){
 			fCompositeFlux = new CompositeIFluxNextPosition(fCompositeFluxPositions);
 			auto gFluxD = std::make_shared<GenieFluxDriver>(fnuFluxFile.c_str(), static_cast<IFluxNextPosition*>(fCompositeFlux), fseed, fUseUniformflux);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
+			fWriteEvent = static_cast<IWriteEvent*>(fCompositeFlux);
 		} else if(fGenType == GeneratorType::BasicPosMomPdg){
 			auto gFluxD = std::make_shared<GenieFluxDriver>(fFluxGenerator);
 			gFluxD->SetMaxEvents(fnumEvents);
 			SetFluxI(gFluxD);
+			fWriteEvent = static_cast<IWriteEvent*>(fFluxGenerator);
 		} else{
 			LOG(fatal) <<  "Unknown type of GeneratorType ...";
         	exit(0);
@@ -269,6 +272,12 @@ void GenericGenieGenerator::IGeneratePrimaries(G4Event* anEvent)
 		        {
 			        WriteToOutputFile(event, false /* flaGkeepThrowing - check made in GenerateEvents*/);
 		        }
+
+				if(fWriteEvent != nullptr)
+				{
+					// Invoke Geometry callback event if needed for analysis
+					fWriteEvent->WriteEvent(event);
+				}
 
 				delete event;
 				break;

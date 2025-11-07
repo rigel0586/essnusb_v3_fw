@@ -128,17 +128,21 @@ bool GenieFluxDriver::GenerateNext(void)
             exit(0);
         }
 
-        TVector3 pos_det = fFluxNextGenerator->NextVertexPosition();
-        f4position.SetX(pos_det.X());
-        f4position.SetY(pos_det.Y());
-        f4position.SetZ(pos_det.Z());
+        TVector3 position;
+        TLorentzVector momentum;
+        Int_t pdgnu;
+        bool rc = fFluxNextGenerator->NextPosMomPdg(position, momentum, pdgnu);
+   
+        f4position.SetX(position.X());
+        f4position.SetY(position.Y());
+        f4position.SetZ(position.Z());
         f4position.SetT(0.);
 
-        f4momentum = fFluxNextGenerator->NextVertexMomentum();
-        fpdgCode = fFluxNextGenerator->NextPdgNuCode();
+        f4momentum = momentum;
+        fpdgCode = pdgnu;
 
         ++f_generator_Id;
-        return true;
+        return rc;
     }
 
     static size_t uniformId = 0;

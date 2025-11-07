@@ -44,9 +44,7 @@ public:
 	TGeoVolume* getVolume(){return fLemonDWater;}
 
 	// IFluxNextGenerator
-	TVector3 NextVertexPosition() override;
-    TLorentzVector NextVertexMomentum() override;
-    int NextPdgNuCode() override;
+	bool NextPosMomPdg(TVector3& position, TLorentzVector& momentum, int& pdgCode) override;
 
 	const std::vector<NuFileEntry>& getNuEntries() {return fnuEntries;}
 

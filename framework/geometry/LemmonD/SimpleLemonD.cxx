@@ -36,15 +36,6 @@ SimpleLemonD::~SimpleLemonD()
 
 }
 
-TVector3 SimpleLemonD::NextVertexPosition() 
-{
-    TVector3 pos;
-    pos.SetX(0.);
-    pos.SetY(0.);
-    pos.SetZ(0.);
-    return pos;
-}
-
 
 void SimpleLemonD::ConstructGeometry()
 {
@@ -56,12 +47,16 @@ void SimpleLemonD::ConstructGeometry()
     top->AddNode(fLemonDWater, 1, new TGeoTranslation(0, 0, 0));
 }
 	
-
-TLorentzVector SimpleLemonD::NextVertexMomentum()
+bool SimpleLemonD::NextPosMomPdg(TVector3& position, TLorentzVector& momentum, int& pdgCode) 
 {
+    // position -> always 0 for Simple LemmonD
+    position.SetX(0.);
+    position.SetY(0.);
+    position.SetZ(0.);
+
     if(fnuEntries.empty())
     {
-        return TLorentzVector{};
+        return false;
     }
 
     if(fCounter >= fnuEntries.size())
@@ -71,25 +66,18 @@ TLorentzVector SimpleLemonD::NextVertexMomentum()
 
     NuFileEntry entry = fnuEntries[fCounter];
 
-    constexpr double ENERGY_MOMENTUM_GEV = 1000; // Momentum is in MeV in file
+    constexpr double ENERGY_MOMENTUM_GEV = 1000; // Momentum is in MeV in file, convert to GeV
     
     double momX = entry.momX/ ENERGY_MOMENTUM_GEV;
     double momY = entry.momY/ ENERGY_MOMENTUM_GEV;
     double momZ = entry.momZ/ ENERGY_MOMENTUM_GEV;
     double E = momX*momX + momY*momY + momZ*momZ;
 
-    TLorentzVector fourMomentum;
-    fourMomentum.SetPxPyPzE(momX, momY, momZ, E);
+    momentum.SetPxPyPzE(momX, momY, momZ, E);
 
-    fPdgNu = entry.pdgNu;
+    pdgCode = entry.pdgNu;
+
     ++fCounter;
-
-    return fourMomentum;
-}
-
-Int_t SimpleLemonD::NextPdgNuCode()
-{
-    return fPdgNu;
 }
 
 

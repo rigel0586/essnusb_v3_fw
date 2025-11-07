@@ -11,6 +11,10 @@ set(Generator_Header        ${CMAKE_CURRENT_SOURCE_DIR}/SuperFGD/GenieGenerator.
                             ${CMAKE_CURRENT_SOURCE_DIR}/generic/GenericGeomAnalyzer.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/generic/GenieFluxDriver.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/generic/IFluxNextPosition.h
+                            ${CMAKE_CURRENT_SOURCE_DIR}/generic/ICompositeIFluxNextPosition.h
+                            ${CMAKE_CURRENT_SOURCE_DIR}/generic/IFluxNextGenerator.h
+                            ${CMAKE_CURRENT_SOURCE_DIR}/generic/ICompositeIFluxNextGenerator.h
+                            ${CMAKE_CURRENT_SOURCE_DIR}/generic/IWriteEvent.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/NDCherenkov/NDSimpleGenerator.h)
 
 add_library(${Generators_Target} SHARED)

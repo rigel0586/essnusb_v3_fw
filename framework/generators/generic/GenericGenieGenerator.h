@@ -3,7 +3,9 @@
 
 #include "GenieGenerator.h"
 #include "generators/generic/IFluxNextPosition.h"
+#include "generators/generic/ICompositeIFluxNextPosition.h"
 #include "generators/generic/IFluxNextGenerator.h"
+#include "generators/generic/IWriteEvent.h"
 #include "core/generator/IGenerator.hpp"
 #include "utility/Utility.hpp"
 
@@ -112,6 +114,7 @@ private:
 
 	IFluxNextPosition* fFluxPosition{nullptr};//!<!
 	IFluxNextGenerator* fFluxGenerator{nullptr};//!<!
+	IWriteEvent* fWriteEvent{nullptr};//!<!
 	CompositeIFluxNextPosition* fCompositeFlux{nullptr};
 	std::vector<IFluxNextPosition*> fCompositeFluxPositions;//!<!
 	GeneratorType fGenType;
