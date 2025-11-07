@@ -21,8 +21,16 @@ void simulate_nu_events(Int_t nEvents = 15)
 
 
     // Lemmond Simple
-    std::string nuFilePath = "/home/rook/Documents/essnusb/fw/essnusb_v3_fw/framework/geometry/LemmonD/outnu.txt";
-    geometry::SimpleLemonD* lemmond = new geometry::SimpleLemonD( nuFilePath.c_str());
+    std::stringstream ssOutNu;
+    ssOutNu << gSystem->Getenv("ESB_BASE_DIR");
+    ssOutNu << "/geometry/LemmonD/outnu.txt";
+    std::string outnu = ssOutNu.str();
+    
+    std::stringstream ssWriteFile;
+    ssWriteFile << gSystem->Getenv("WORKSPACE_DIR");
+    ssWriteFile << "/simulation/lemmond_events.dat";
+    std::string writeFile = ssWriteFile.str();
+    geometry::SimpleLemonD* lemmond = new geometry::SimpleLemonD( outnu, writeFile);
 
     esbSim->AddDetector(static_cast<core::detector::IDetector*>(lemmond));
     esbroot::generators::generic::IFluxNextGenerator* fluxLemonD = static_cast<esbroot::generators::generic::IFluxNextGenerator*>(lemmond); 
@@ -50,14 +58,14 @@ void simulate_nu_events(Int_t nEvents = 15)
     //Add to list of generators
     esbSim->setGenerator(partGen);
 
-    const std::vector<geometry::SimpleLemonD::NuFileEntry>& nuEntries = lemmond->getNuEntries();
+    // const std::vector<geometry::SimpleLemonD::NuFileEntry>& nuEntries = lemmond->getNuEntries();
 
-    for(int i = 0; i < nuEntries.size(); ++i)
-    {
-      std::cout<< "Pdg " << nuEntries[i].pdgNu << "  momX = " << nuEntries[i].momX 
-                << "  momY = " << nuEntries[i].momY 
-                << "  momZ = " << nuEntries[i].momZ << std::endl; 
-    }
+    // for(int i = 0; i < nuEntries.size(); ++i)
+    // {
+    //   std::cout<< "Pdg " << nuEntries[i].pdgNu << "  momX = " << nuEntries[i].momX 
+    //             << "  momY = " << nuEntries[i].momY 
+    //             << "  momZ = " << nuEntries[i].momZ << std::endl; 
+    // }
 
     esbSim->run();
 }

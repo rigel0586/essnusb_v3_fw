@@ -11,6 +11,12 @@ ClassImp(esbroot::geometry::SimpleLemonD)
 #include "SuperFGD/EsbSuperFGD/Materials.h"
 #include "SuperFGD/EsbSuperFGD/Names.h"
 
+#include "Framework/ParticleData/PDGCodes.h"
+#include "Framework/ParticleData/PDGUtils.h"
+#include "Framework/EventGen/EventRecord.h"
+#include "Framework/GHEP/GHepParticle.h"
+#include "Framework/GHEP/GHepStatus.h"      // for kIStStableFinalState
+
 #include <fairlogger/Logger.h>
 
 #include "TGeoManager.h"
@@ -24,16 +30,18 @@ namespace esbroot {
 namespace geometry {
 
 //___________________________________________________________________
-SimpleLemonD::SimpleLemonD(const std::string& outnuFile)
+SimpleLemonD::SimpleLemonD(const std::string& outnuFile, const std::string& eventWriteFile)
     : G4VSensitiveDetector("SimpleLemonD")
+    , fEventWriteFile(eventWriteFile)
 {
+    LOG(INFO) << "Using neutrno file: " << outnuFile;
+    LOG(INFO) << "Writing to file: " << eventWriteFile;
     init();
     ReadNuFluxFile(outnuFile.c_str());
 }
 
 SimpleLemonD::~SimpleLemonD()
 {
-
 }
 
 
@@ -71,13 +79,15 @@ bool SimpleLemonD::NextPosMomPdg(TVector3& position, TLorentzVector& momentum, i
     double momX = entry.momX/ ENERGY_MOMENTUM_GEV;
     double momY = entry.momY/ ENERGY_MOMENTUM_GEV;
     double momZ = entry.momZ/ ENERGY_MOMENTUM_GEV;
-    double E = momX*momX + momY*momY + momZ*momZ;
+    double E = std::sqrt(momX*momX + momY*momY + momZ*momZ);
 
     momentum.SetPxPyPzE(momX, momY, momZ, E);
 
     pdgCode = entry.pdgNu;
 
     ++fCounter;
+
+    return true;
 }
 
 
@@ -166,6 +176,49 @@ void SimpleLemonD::ReadNuFluxFile(const char* fluxFile)
             fluxFileStream.close();
         }
     }
+}
+
+void SimpleLemonD::WriteEvent(const genie::EventRecord *event)
+{
+	
+    int nParticles = event->GetEntries();
+    bool hasChargedLepton{false};
+
+    for (int i = 0; (i < nParticles && !hasChargedLepton); i++) 
+    {
+        genie::GHepParticle *p = event->Particle(i);
+        if ((p->Status() == genie::EGHepStatus::kIStStableFinalState) 
+            && (p->Pdg() < 2000000000 ) 
+            && genie::pdg::IsChargedLepton(p->Pdg()) ) 
+        {
+            LOG(INFO) << "Leptonic event pdg: " << p->Pdg();
+            hasChargedLepton = true;
+        }
+    }
+
+    // If charged lepton is not present, do not write to output file
+    if(!hasChargedLepton)
+    {
+        LOG(warning) << "No Leptonic event";
+        return;
+    }
+
+    std::ofstream outputFile(fEventWriteFile.c_str(), std::ios::app);
+    if(outputFile.is_open())
+	{
+		for (int i = 0; i < nParticles; i++) 
+		{
+			genie::GHepParticle *p = event->Particle(i);
+			// kIStStableFinalState - Genie documentation: generator-level final state
+			// particles to be tracked by the detector-level MC
+			if ((p->Status() == genie::EGHepStatus::kIStStableFinalState) && (p->Pdg() < 2000000000 )) 
+			{
+				outputFile << " " << p->Pdg() << " " <<  p->Px() << " " << p->Py() << " " << p->Pz();
+			}
+		}
+		outputFile << std::endl;
+	}
+    outputFile.close();
 }
 
 } // namespace geometry

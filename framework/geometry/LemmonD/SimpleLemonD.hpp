@@ -37,7 +37,7 @@ public:
 		double radius;
 	};
 
-	SimpleLemonD(const std::string& outnuFile);
+	SimpleLemonD(const std::string& outnuFile, const std::string& eventWriteFile);
 
 	virtual ~SimpleLemonD();
 
@@ -45,6 +45,7 @@ public:
 
 	// IFluxNextGenerator
 	bool NextPosMomPdg(TVector3& position, TLorentzVector& momentum, int& pdgCode) override;
+	void WriteEvent(const genie::EventRecord *event) override;
 
 	const std::vector<NuFileEntry>& getNuEntries() {return fnuEntries;}
 
@@ -69,6 +70,7 @@ private:
 	size_t fCounter{0};
 	Int_t fPdgNu;
 	const std::string fName = "SimpleLemonD";
+	const std::string fEventWriteFile;
 	ClassDef(SimpleLemonD,2)
 };
 
